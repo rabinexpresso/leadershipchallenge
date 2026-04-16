@@ -1356,7 +1356,7 @@ function buildFinal() {
   const cards = document.getElementById('final-cards');
   cards.innerHTML = sorted.map(player => {
     const profile = getProfile(player.scores);
-    const lowestDims = [...DIMS].sort((a,b) => pct(player.scores[a],MAX[a]) - pct(player.scores[b],MAX[b])).slice(0,4);
+    const lowestDims = [...DIMS].sort((a,b) => pct(player.scores[a],MAX[a]) - pct(player.scores[b],MAX[b])).slice(0,3);
 
     const bars = DIMS.map(d => {
       const p = pct(player.scores[d], MAX[d]);
@@ -1392,7 +1392,13 @@ function buildFinal() {
       + '<span class="pr-insights-toggle-label">📈 Growth Insights &nbsp;(tap to expand)</span>'
       + '<span class="pr-insights-arrow" id="arr-' + cardId + '">▼</span>'
       + '</button>'
-      + '<div class="pr-insights-body" id="' + cardId + '">' + insights + '</div>'
+      + '<div class="pr-insights-body" id="' + cardId + '">'
+      + insights
+      + '<button class="pr-insights-toggle" onclick="toggleInsights(\'' + cardId + '\')" style="margin-top:4px;">'
+      + '<span class="pr-insights-toggle-label">▲ &nbsp;Tap to close</span>'
+      + '<span></span>'
+      + '</button>'
+      + '</div>'
       + '</div>';
   }).join('');
 
