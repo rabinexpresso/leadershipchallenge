@@ -1432,7 +1432,20 @@ function buildShareText() {
     text += '🛡️ Trust: ' + pct(player.scores.trust, MAX.trust) + '%  ';
     text += '👁️ Proactivity: ' + pct(player.scores.proactivity, MAX.proactivity) + '%  ';
     text += '🎯 Delegation: ' + pct(player.scores.delegation, MAX.delegation) + '%  ';
-    text += '🔄 Adaptability: ' + pct(player.scores.adaptability, MAX.adaptability) + '%\n\n';
+    text += '🔄 Adaptability: ' + pct(player.scores.adaptability, MAX.adaptability) + '%\n';
+    text += '\n' + profile.desc + '\n';
+    text += '\n📈 Growth Insights:\n';
+    const lowestDims = [...DIMS].sort((a,b) => pct(player.scores[a],MAX[a]) - pct(player.scores[b],MAX[b])).slice(0,3);
+    const usedSc = [];
+    lowestDims.forEach(d => {
+      const ins = getDimInsight(player, d, usedSc);
+      usedSc.push(ins.scenarioIdx);
+      text += '\n' + DIM_ICONS[d] + ' ' + DIM_LABELS[d] + ' (' + pct(player.scores[d], MAX[d]) + '%)';
+      text += ' — From "' + ins.scenarioTitle + '", Choice ' + ins.choiceLetter + '\n';
+      text += ins.insight + '\n';
+      text += '▶ Try this: ' + ins.action + '\n';
+    });
+    text += '\n━━━━━━━━━━━━━━━━━━━━━━\n\n';
   });
   text += 'Played at HLE/Alaya Leadership Challenge 2026';
   return text;
