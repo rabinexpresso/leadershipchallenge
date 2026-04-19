@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>The Leadership Challenge</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
   :root {
     --bg: #080b12;
@@ -23,9 +23,39 @@
 
   *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
   html { scroll-behavior:smooth; }
-  body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; min-height:100dvh; overflow-x:hidden; }
+  body { background:var(--bg); color:var(--text); font-family:'Plus Jakarta Sans',sans-serif; min-height:100dvh; overflow-x:hidden; }
 
   .screen { display:none; flex-direction:column; min-height:100dvh; }
+  /* Laptop: centre and constrain width */
+  /* ── Responsive layout ─────────────────────────────────── */
+  /* ── Responsive layout ─────────────────────────────────────
+     Padding stays minimal everywhere — max-width grows with screen
+     so more content is visible horizontally, not more whitespace.
+     < 600px    : full width (mobile)
+     600–960px  : 640px centred
+     960–1400px : 860px centred  (13–14" laptop)
+     1400–1920px: 1080px centred (15–17" / large)
+     > 1920px   : 1320px centred (27"+ monitor)
+  ──────────────────────────────────────────────────────────── */
+  @media (min-width: 600px) {
+    body   { display:flex; justify-content:center; background:var(--bg); }
+    .screen { width:100%; max-width:640px; min-height:100dvh; position:relative; box-shadow:0 0 80px rgba(0,0,0,.5); }
+  }
+  @media (min-width: 960px) {
+    .screen { max-width:860px; }
+  }
+  @media (min-width: 1400px) {
+    .screen { max-width:1080px; }
+    .s-box  { font-size:16px; }
+    .c-text { font-size:15px; }
+    .cq-outcome { font-size:16px; }
+  }
+  @media (min-width: 1920px) {
+    .screen { max-width:1320px; }
+    .s-box  { font-size:17px; }
+    .cq-outcome { font-size:17px; }
+    .tut-text { font-size:17px; }
+  }
   .screen.active { display:flex; animation:fadeUp .35s cubic-bezier(.22,1,.36,1); }
   @keyframes fadeUp   { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
   @keyframes popIn    { from{opacity:0;transform:scale(.85)} to{opacity:1;transform:scale(1)} }
@@ -43,25 +73,25 @@
   }
   .back-btn {
     background:var(--card); border:1px solid var(--border2); color:var(--body);
-    font-family:'Syne',sans-serif; font-size:13px; font-weight:700;
+    font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:700;
     padding:8px 14px; border-radius:100px; cursor:pointer;
     display:flex; align-items:center; gap:5px; transition:all .2s; flex-shrink:0;
   }
   .back-btn:hover { border-color:var(--gold-border); color:var(--gold); }
-  .topbar-center { font-family:'Syne',sans-serif; font-size:13px; font-weight:700; color:var(--sub); flex:1; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .topbar-center { font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:700; color:var(--sub); flex:1; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .topbar-spacer { width:70px; flex-shrink:0; }
   .quit-btn {
     background:transparent; border:1px solid rgba(248,113,113,.2); color:#f87171;
-    font-family:'Syne',sans-serif; font-size:12px; font-weight:700;
+    font-family:'Bricolage Grotesque',sans-serif; font-size:12px; font-weight:700;
     padding:7px 13px; border-radius:100px; cursor:pointer; transition:all .2s;
   }
   .quit-btn:hover { background:rgba(248,113,113,.1); }
 
   /* ─── SHARED ─── */
-  .eyebrow { font-family:'Syne',sans-serif; font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--gold); }
+  .eyebrow { font-family:'Bricolage Grotesque',sans-serif; font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--gold); }
   .page-inner { flex:1; padding:28px 22px 52px; display:flex; flex-direction:column; }
 
-  .btn { display:flex; align-items:center; justify-content:center; gap:8px; font-family:'Syne',sans-serif; font-weight:700; font-size:15px; padding:16px 28px; border-radius:100px; border:none; cursor:pointer; width:100%; transition:all .2s cubic-bezier(.22,1,.36,1); letter-spacing:.2px; }
+  .btn { display:flex; align-items:center; justify-content:center; gap:8px; font-family:'Bricolage Grotesque',sans-serif; font-weight:700; font-size:15px; padding:16px 28px; border-radius:100px; border:none; cursor:pointer; width:100%; transition:all .2s cubic-bezier(.22,1,.36,1); letter-spacing:.2px; }
   .btn:active { transform:scale(.97); }
   .btn-gold { background:var(--gold); color:#07090d; position:relative; overflow:hidden; }
   .btn-gold::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,.15) 0%,transparent 50%); pointer-events:none; }
@@ -76,8 +106,8 @@
     background:radial-gradient(ellipse 80% 55% at 50% 15%, rgba(245,166,35,.07) 0%, transparent 70%), var(--bg);
   }
   .splash-grid { position:absolute; inset:0; background-image:linear-gradient(rgba(245,166,35,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(245,166,35,.035) 1px,transparent 1px); background-size:44px 44px; pointer-events:none; }
-  .splash-pill { display:inline-block; font-family:'Syne',sans-serif; font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--gold); border:1px solid var(--gold-border); padding:7px 18px; border-radius:100px; margin-bottom:28px; background:var(--gold-dim); position:relative; }
-  .splash-title { font-family:'Syne',sans-serif; font-size:clamp(42px,11vw,60px); font-weight:800; line-height:1.0; letter-spacing:-2px; margin-bottom:18px; }
+  .splash-pill { display:inline-block; font-family:'Bricolage Grotesque',sans-serif; font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--gold); border:1px solid var(--gold-border); padding:7px 18px; border-radius:100px; margin-bottom:28px; background:var(--gold-dim); position:relative; }
+  .splash-title { font-family:'Bricolage Grotesque',sans-serif; font-size:clamp(42px,11vw,60px); font-weight:800; line-height:1.0; letter-spacing:-2px; margin-bottom:18px; }
   .splash-title .hl { color:var(--gold); display:block; }
   .splash-sub { font-size:16px; color:var(--body); line-height:1.65; max-width:280px; margin:0 auto 32px; }
   .dim-tags { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:40px; }
@@ -89,28 +119,28 @@
   .tut-inner { flex:1; padding:24px 22px 32px; display:flex; flex-direction:column; overflow:hidden; }
   .tut-slide { display:none; flex-direction:column; flex:1; overflow-y:auto; }
   .tut-slide.active { display:flex; animation:fadeUp .3s ease; }
-  .ghost-num { font-family:'Syne',sans-serif; font-size:80px; font-weight:800; color:rgba(245,166,35,.07); line-height:1; margin-bottom:-18px; user-select:none; }
-  .tut-heading { font-family:'Syne',sans-serif; font-size:26px; font-weight:700; line-height:1.15; margin-bottom:14px; }
+  .ghost-num { font-family:'Bricolage Grotesque',sans-serif; font-size:80px; font-weight:800; color:rgba(245,166,35,.07); line-height:1; margin-bottom:-18px; user-select:none; }
+  .tut-heading { font-family:'Bricolage Grotesque',sans-serif; font-size:26px; font-weight:700; line-height:1.15; margin-bottom:14px; }
   .tut-text { font-size:15px; color:var(--body); line-height:1.8; margin-bottom:20px; }
   .tut-nav { display:flex; align-items:center; gap:10px; padding-top:20px; flex-shrink:0; }
   .tut-dots { display:flex; gap:6px; flex:1; justify-content:center; }
   .tut-dot { width:6px; height:6px; border-radius:50%; background:var(--border2); transition:all .25s; }
   .tut-dot.on { background:var(--gold); width:20px; border-radius:3px; }
-  .t-prev { font-family:'Syne',sans-serif; font-size:14px; font-weight:700; padding:12px 18px; border-radius:100px; background:var(--card); color:var(--body); border:1px solid var(--border2); cursor:pointer; transition:all .2s; flex-shrink:0; }
+  .t-prev { font-family:'Bricolage Grotesque',sans-serif; font-size:14px; font-weight:700; padding:12px 18px; border-radius:100px; background:var(--card); color:var(--body); border:1px solid var(--border2); cursor:pointer; transition:all .2s; flex-shrink:0; }
   .t-prev:hover { color:var(--gold); border-color:var(--gold-border); }
-  .t-next { font-family:'Syne',sans-serif; font-size:14px; font-weight:700; padding:12px 20px; border-radius:100px; background:var(--gold); color:#07090d; border:none; cursor:pointer; transition:all .2s; flex:1; }
+  .t-next { font-family:'Bricolage Grotesque',sans-serif; font-size:14px; font-weight:700; padding:12px 20px; border-radius:100px; background:var(--gold); color:#07090d; border:none; cursor:pointer; transition:all .2s; flex:1; }
   .t-next:hover { transform:translateY(-1px); box-shadow:0 6px 20px rgba(245,166,35,.3); }
 
   .dim-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
   .dim-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:15px 13px; }
   .dim-icon-big { font-size:22px; margin-bottom:6px; }
-  .dim-title { font-family:'Syne',sans-serif; font-size:13px; font-weight:700; color:var(--text); margin-bottom:3px; }
-  .dim-desc-sm { font-size:11.5px; color:var(--body); line-height:1.5; }
-  .dim-source { font-size:11px; color:var(--sub); font-style:italic; margin-top:3px; }
+  .dim-title { font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:700; color:var(--text); margin-bottom:3px; }
+  .dim-desc-sm { font-size:14px; color:var(--body); line-height:1.55; }
+  .dim-source { font-size:12px; color:var(--sub); font-style:italic; margin-top:4px; }
 
   .fw-item { display:flex; gap:12px; margin-bottom:16px; align-items:flex-start; }
   .fw-ico { font-size:22px; flex-shrink:0; margin-top:2px; }
-  .fw-name { font-family:'Syne',sans-serif; font-size:14px; font-weight:700; color:var(--text); margin-bottom:2px; }
+  .fw-name { font-family:'Bricolage Grotesque',sans-serif; font-size:14px; font-weight:700; color:var(--text); margin-bottom:2px; }
   .fw-desc { font-size:13px; color:var(--body); line-height:1.55; }
   .fw-src { font-size:11.5px; color:var(--sub); font-style:italic; }
 
@@ -119,17 +149,17 @@
   .info-box strong { color:var(--text); }
 
   /* ─── ADD PLAYERS ─── */
-  .ap-heading { font-family:'Syne',sans-serif; font-size:26px; font-weight:700; margin-bottom:8px; }
+  .ap-heading { font-family:'Bricolage Grotesque',sans-serif; font-size:26px; font-weight:700; margin-bottom:8px; }
   .ap-sub { font-size:15px; color:var(--body); line-height:1.65; margin-bottom:28px; }
   .player-list { display:flex; flex-direction:column; gap:10px; margin-bottom:16px; }
   .p-row { display:flex; align-items:center; gap:10px; }
   .p-dot { width:12px; height:12px; border-radius:50%; flex-shrink:0; }
-  .p-input { flex:1; background:var(--card); border:1px solid var(--border2); color:var(--text); font-family:'DM Sans',sans-serif; font-size:15px; padding:14px 16px; border-radius:12px; outline:none; transition:border-color .2s; }
+  .p-input { flex:1; background:var(--card); border:1px solid var(--border2); color:var(--text); font-family:'Plus Jakarta Sans',sans-serif; font-size:15px; padding:14px 16px; border-radius:12px; outline:none; transition:border-color .2s; }
   .p-input::placeholder { color:var(--sub); }
   .p-input:focus { border-color:var(--gold-border); }
   .p-remove { background:none; border:none; color:var(--sub); font-size:20px; cursor:pointer; padding:6px; transition:color .2s; flex-shrink:0; line-height:1; }
   .p-remove:hover { color:#f87171; }
-  .add-p-btn { display:flex; align-items:center; justify-content:center; gap:8px; background:transparent; border:1px dashed var(--border2); color:var(--sub); font-family:'Syne',sans-serif; font-size:13px; font-weight:700; padding:14px; border-radius:12px; cursor:pointer; transition:all .2s; width:100%; margin-bottom:24px; }
+  .add-p-btn { display:flex; align-items:center; justify-content:center; gap:8px; background:transparent; border:1px dashed var(--border2); color:var(--sub); font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:700; padding:14px; border-radius:12px; cursor:pointer; transition:all .2s; width:100%; margin-bottom:24px; }
   .add-p-btn:hover { border-color:var(--gold-border); color:var(--gold); }
   .ap-note { font-size:13px; color:var(--sub); text-align:center; margin-bottom:20px; }
 
@@ -142,7 +172,7 @@
     flex-shrink:0;
   }
   .gb-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
-  .gb-label { font-family:'Syne',sans-serif; font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--gold); }
+  .gb-label { font-family:'Bricolage Grotesque',sans-serif; font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--gold); }
   .prog-track { height:3px; background:rgba(255,255,255,.07); border-radius:10px; overflow:hidden; margin-bottom:8px; }
   .prog-fill { height:100%; background:linear-gradient(90deg, var(--gold), var(--gold-l)); border-radius:10px; transition:width .5s cubic-bezier(.4,0,.2,1); }
   .sp-row { display:flex; gap:6px; flex-wrap:wrap; }
@@ -151,18 +181,18 @@
 
   /* Pick phase */
   .game-body { padding:22px 22px 48px; }
-  .player-badge { display:inline-flex; align-items:center; gap:8px; padding:7px 15px; border-radius:100px; font-family:'Syne',sans-serif; font-size:12px; font-weight:700; margin-bottom:18px; border:1px solid; }
+  .player-badge { display:inline-flex; align-items:center; gap:8px; padding:7px 15px; border-radius:100px; font-family:'Bricolage Grotesque',sans-serif; font-size:12px; font-weight:700; margin-bottom:18px; border:1px solid; }
   .player-badge-dot { width:8px; height:8px; border-radius:50%; }
   .s-tag { margin-bottom:10px; }
-  .s-heading { font-family:'Syne',sans-serif; font-size:23px; font-weight:700; line-height:1.15; margin-bottom:14px; }
+  .s-heading { font-family:'Bricolage Grotesque',sans-serif; font-size:23px; font-weight:700; line-height:1.15; margin-bottom:14px; }
   .s-box { font-size:15px; color:var(--body); line-height:1.8; background:var(--card); border:1px solid var(--border); border-left:3px solid var(--gold); border-radius:0 12px 12px 0; padding:16px 18px; margin-bottom:24px; }
-  .choices-label { font-family:'Syne',sans-serif; font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--sub); margin-bottom:12px; }
-  .c-btn { width:100%; background:var(--card); border:1px solid var(--border); border-radius:16px; padding:15px 16px; text-align:left; cursor:pointer; margin-bottom:10px; transition:all .2s cubic-bezier(.22,1,.36,1); display:flex; gap:12px; align-items:flex-start; color:var(--text); font-family:'DM Sans',sans-serif; }
+  .choices-label { font-family:'Bricolage Grotesque',sans-serif; font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--sub); margin-bottom:12px; }
+  .c-btn { width:100%; background:var(--card); border:1px solid var(--border); border-radius:16px; padding:15px 16px; text-align:left; cursor:pointer; margin-bottom:10px; transition:all .2s cubic-bezier(.22,1,.36,1); display:flex; gap:12px; align-items:flex-start; color:var(--text); font-family:'Plus Jakarta Sans',sans-serif; }
   .c-btn:hover { border-color:var(--gold-border); background:var(--card2); transform:translateX(3px); }
   .c-btn:active { transform:scale(.98); }
   .c-btn.sel { border-color:var(--gold); background:var(--gold-dim); pointer-events:none; }
   .c-btn.dim { opacity:.35; pointer-events:none; }
-  .c-alpha { font-family:'Syne',sans-serif; font-size:12px; font-weight:800; color:var(--gold); background:var(--gold-dim); border:1px solid var(--gold-border); border-radius:8px; width:28px; height:28px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+  .c-alpha { font-family:'Bricolage Grotesque',sans-serif; font-size:12px; font-weight:800; color:var(--gold); background:var(--gold-dim); border:1px solid var(--gold-border); border-radius:8px; width:28px; height:28px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
   .c-text { font-size:14px; line-height:1.65; color:var(--body); }
 
   /* Locked phase */
@@ -170,114 +200,116 @@
   #game-locked.vis { display:flex; }
   #game-pick.hidden { display:none; }
   .locked-check { font-size:60px; margin-bottom:20px; animation:popIn .4s cubic-bezier(.22,1,.36,1); }
-  .locked-h { font-family:'Syne',sans-serif; font-size:26px; font-weight:700; margin-bottom:10px; }
+  .locked-h { font-family:'Bricolage Grotesque',sans-serif; font-size:26px; font-weight:700; margin-bottom:10px; }
   .locked-sub { font-size:16px; color:var(--body); line-height:1.65; max-width:280px; margin:0 auto 32px; }
-  .next-badge { display:inline-flex; align-items:center; gap:8px; padding:10px 20px; border-radius:100px; font-family:'Syne',sans-serif; font-size:14px; font-weight:700; margin-bottom:32px; border:2px solid; }
+  .next-badge { display:inline-flex; align-items:center; gap:8px; padding:10px 20px; border-radius:100px; font-family:'Bricolage Grotesque',sans-serif; font-size:14px; font-weight:700; margin-bottom:32px; border:2px solid; }
   .next-badge-dot { width:9px; height:9px; border-radius:50%; }
 
   /* ─── REVEAL ─── */
   .rv-body { padding:22px 22px 52px; flex:1; }
-  .rv-heading { font-family:'Syne',sans-serif; font-size:26px; font-weight:700; line-height:1.15; margin-bottom:6px; }
+  .rv-heading { font-family:'Bricolage Grotesque',sans-serif; font-size:26px; font-weight:700; line-height:1.15; margin-bottom:6px; }
   .rv-sub { font-size:15px; color:var(--body); margin-bottom:26px; line-height:1.65; }
   .rv-cards { display:flex; flex-direction:column; gap:10px; margin-bottom:24px; }
   .rv-card { display:flex; align-items:flex-start; gap:14px; background:var(--card); border:1px solid var(--border); border-radius:16px; padding:16px; animation:slideIn .3s ease both; }
   .rv-player-info { flex:1; min-width:0; }
-  .rv-pname { font-family:'Syne',sans-serif; font-size:14px; font-weight:700; margin-bottom:3px; }
-  .rv-chose { font-size:11px; color:var(--sub); font-family:'Syne',sans-serif; letter-spacing:1px; text-transform:uppercase; margin-bottom:5px; }
+  .rv-pname { font-family:'Bricolage Grotesque',sans-serif; font-size:14px; font-weight:700; margin-bottom:3px; }
+  .rv-chose { font-size:11px; color:var(--sub); font-family:'Bricolage Grotesque',sans-serif; letter-spacing:1px; text-transform:uppercase; margin-bottom:5px; }
   .rv-choice-text { font-size:13.5px; color:var(--body); line-height:1.55; }
-  .rv-letter { font-family:'Syne',sans-serif; font-size:14px; font-weight:800; width:32px; height:32px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-  .rv-stat { font-family:'Syne',sans-serif; font-size:13px; font-weight:700; padding:8px 16px; border-radius:100px; background:var(--gold-dim); border:1px solid var(--gold-border); color:var(--gold); margin-bottom:24px; display:inline-block; }
+  .rv-letter { font-family:'Bricolage Grotesque',sans-serif; font-size:14px; font-weight:800; width:32px; height:32px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .rv-stat { font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:700; padding:8px 16px; border-radius:100px; background:var(--gold-dim); border:1px solid var(--gold-border); color:var(--gold); margin-bottom:24px; display:inline-block; }
 
   /* ─── CONSEQUENCE ─── */
   .cq-body { padding:22px 22px 52px; flex:1; }
   .cq-tag { margin-bottom:8px; }
-  .cq-heading { font-family:'Syne',sans-serif; font-size:24px; font-weight:700; line-height:1.15; margin-bottom:20px; }
+  .cq-heading { font-family:'Bricolage Grotesque',sans-serif; font-size:24px; font-weight:700; line-height:1.15; margin-bottom:20px; }
   .cq-outcome-block { margin-bottom:22px; }
   .cq-choice-header { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
-  .cq-choice-alpha { font-family:'Syne',sans-serif; font-size:13px; font-weight:800; width:32px; height:32px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-  .cq-who-picked { font-family:'Syne',sans-serif; font-size:12px; font-weight:700; color:var(--sub); }
+  .cq-choice-alpha { font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:800; width:32px; height:32px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .cq-who-picked { font-family:'Bricolage Grotesque',sans-serif; font-size:12px; font-weight:700; color:var(--sub); }
   .cq-choice-text { font-size:14px; font-style:italic; color:var(--body); border-left:2px solid var(--gold); padding-left:14px; line-height:1.65; margin-bottom:14px; }
   .cq-explanation { font-size:15px; color:var(--body); line-height:1.8; margin-bottom:16px; }
   .cq-chips { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:4px; }
-  .cq-chip { font-family:'Syne',sans-serif; font-size:12px; font-weight:700; padding:5px 11px; border-radius:100px; }
+  .cq-chip { font-family:'Bricolage Grotesque',sans-serif; font-size:12px; font-weight:700; padding:5px 11px; border-radius:100px; }
   .cq-chip.pos { background:var(--gold-dim); border:1px solid var(--gold-border); color:var(--gold); }
   .cq-chip.zero { background:var(--card); border:1px solid var(--border); color:var(--sub); }
   .cq-divider { height:1px; background:var(--border); margin:20px 0; }
+.cq-situation { font-size:14px; color:var(--body); line-height:1.7; background:var(--card); border:1px solid var(--border); border-left:3px solid var(--gold); border-radius:0 10px 10px 0; padding:13px 16px; margin-bottom:8px; font-style:italic; }
+.cq-scoring-note { font-size:12px; color:var(--sub); line-height:1.6; padding:8px 4px 16px; }
   .cq-players-who { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:8px; }
   .cq-player-chip { display:flex; align-items:center; gap:6px; padding:5px 12px; border-radius:100px; background:var(--card2); border:1px solid var(--border2); }
   .cq-pdot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
-  .cq-pname { font-family:'Syne',sans-serif; font-size:12px; font-weight:700; color:var(--body); }
+  .cq-pname { font-family:'Bricolage Grotesque',sans-serif; font-size:12px; font-weight:700; color:var(--body); }
 
   /* ─── SCOREBOARD ─── */
   .sb-body { padding:22px 22px 52px; flex:1; overflow-y:auto; }
-  .sb-heading { font-family:'Syne',sans-serif; font-size:26px; font-weight:700; margin-bottom:6px; }
+  .sb-heading { font-family:'Bricolage Grotesque',sans-serif; font-size:26px; font-weight:700; margin-bottom:6px; }
   .sb-sub { font-size:15px; color:var(--body); margin-bottom:26px; line-height:1.65; }
   .sb-card { background:var(--card); border:1px solid var(--border); border-radius:18px; padding:20px; margin-bottom:12px; transition:border-color .3s; }
   .sb-card.first { border-color:var(--gold-border); background:linear-gradient(135deg, rgba(245,166,35,.05) 0%, var(--card) 60%); }
   .sb-header { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
-  .sb-rank { font-family:'Syne',sans-serif; font-size:20px; font-weight:800; color:var(--sub); width:28px; flex-shrink:0; }
+  .sb-rank { font-family:'Bricolage Grotesque',sans-serif; font-size:20px; font-weight:800; color:var(--sub); width:28px; flex-shrink:0; }
   .sb-rank.g { color:var(--gold); }
-  .sb-pname { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; flex:1; }
-  .sb-total { font-family:'Syne',sans-serif; font-size:14px; font-weight:700; color:var(--gold); }
+  .sb-pname { font-family:'Bricolage Grotesque',sans-serif; font-size:16px; font-weight:700; flex:1; }
+  .sb-total { font-family:'Bricolage Grotesque',sans-serif; font-size:14px; font-weight:700; color:var(--gold); }
   .sb-bars { display:flex; flex-direction:column; gap:8px; }
   .sb-br { }
   .sb-bl { display:flex; justify-content:space-between; font-size:12px; color:var(--sub); margin-bottom:4px; }
-  .sb-bl-pct { font-family:'Syne',sans-serif; font-weight:700; }
+  .sb-bl-pct { font-family:'Bricolage Grotesque',sans-serif; font-weight:700; }
   .sb-track { height:6px; background:rgba(255,255,255,.06); border-radius:100px; overflow:hidden; }
   .sb-fill { height:100%; background:linear-gradient(90deg, var(--gold), var(--gold-l)); border-radius:100px; width:0%; transition:width 1s cubic-bezier(.4,0,.2,1); }
 
   /* ─── FINAL ─── */
   .final-hero { background:radial-gradient(ellipse 90% 60% at 50% 0%, rgba(245,166,35,.1) 0%, transparent 60%), var(--bg); padding:40px 24px 28px; text-align:center; border-bottom:1px solid var(--border); flex-shrink:0; }
-  .final-title { font-family:'Syne',sans-serif; font-size:clamp(28px,8vw,40px); font-weight:800; line-height:1.1; letter-spacing:-1px; margin-bottom:8px; }
+  .final-title { font-family:'Bricolage Grotesque',sans-serif; font-size:clamp(28px,8vw,40px); font-weight:800; line-height:1.1; letter-spacing:-1px; margin-bottom:8px; }
   .final-title span { color:var(--gold); }
   .final-sub { font-size:15px; color:var(--body); max-width:300px; margin:0 auto; line-height:1.65; }
   .final-body { padding:22px 22px 52px; flex:1; }
   .pr-card { background:var(--card); border:1px solid var(--border); border-radius:20px; padding:22px; margin-bottom:14px; }
   .pr-header { display:flex; align-items:center; gap:12px; margin-bottom:14px; }
   .pr-dot { width:14px; height:14px; border-radius:50%; flex-shrink:0; }
-  .pr-name { font-family:'Syne',sans-serif; font-size:16px; font-weight:700; flex:1; }
+  .pr-name { font-family:'Bricolage Grotesque',sans-serif; font-size:16px; font-weight:700; flex:1; }
   .pr-emoji { font-size:28px; }
-  .pr-profile { font-family:'Syne',sans-serif; font-size:20px; font-weight:800; margin-bottom:10px; }
+  .pr-profile { font-family:'Bricolage Grotesque',sans-serif; font-size:20px; font-weight:800; margin-bottom:10px; }
   .pr-desc { font-size:14px; color:var(--body); line-height:1.75; margin-bottom:18px; }
-  .pr-insight-label { font-family:'Syne',sans-serif; font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--sub); margin-bottom:12px; }
+  .pr-insight-label { font-family:'Bricolage Grotesque',sans-serif; font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--sub); margin-bottom:12px; }
   .pr-insight { background:var(--card2); border:1px solid var(--border); border-radius:14px; padding:16px; margin-bottom:10px; }
-  .pr-insight-dim { font-family:'Syne',sans-serif; font-size:11px; font-weight:800; color:var(--gold); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:5px; display:flex; align-items:center; gap:6px; }
+  .pr-insight-dim { font-family:'Bricolage Grotesque',sans-serif; font-size:11px; font-weight:800; color:var(--gold); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:5px; display:flex; align-items:center; gap:6px; }
   .pr-insight-pct { font-size:11px; font-weight:700; color:var(--sub); }
-  .pr-insight-from { font-size:12px; color:var(--gold); font-family:'Syne',sans-serif; font-weight:600; margin-bottom:10px; opacity:0.75; }
+  .pr-insight-from { font-size:12px; color:var(--gold); font-family:'Bricolage Grotesque',sans-serif; font-weight:600; margin-bottom:10px; opacity:0.75; }
   .pr-insight-text { font-size:14px; color:var(--body); line-height:1.75; margin-bottom:12px; }
   .pr-insight-action { background:rgba(245,166,35,0.06); border:1px solid rgba(245,166,35,0.18); border-radius:10px; padding:12px 14px; font-size:13.5px; color:var(--body); line-height:1.7; }
-  .pr-insight-action-label { display:block; font-family:'Syne',sans-serif; font-size:9px; font-weight:800; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold); margin-bottom:6px; }
+  .pr-insight-action-label { display:block; font-family:'Bricolage Grotesque',sans-serif; font-size:9px; font-weight:800; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold); margin-bottom:6px; }
   .pr-bars { margin-bottom:16px; }
   /* Accordion toggle */
   .pr-insights-toggle { display:flex; align-items:center; justify-content:space-between; width:100%; background:var(--card2); border:1px solid var(--border2); border-radius:12px; padding:13px 16px; cursor:pointer; transition:all .2s; margin-top:4px; }
   .pr-insights-toggle:hover { border-color:var(--gold-border); background:rgba(245,166,35,.05); }
-  .pr-insights-toggle-label { font-family:'Syne',sans-serif; font-size:11px; font-weight:800; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold); display:flex; align-items:center; gap:8px; }
+  .pr-insights-toggle-label { font-family:'Bricolage Grotesque',sans-serif; font-size:11px; font-weight:800; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold); display:flex; align-items:center; gap:8px; }
   .pr-insights-arrow { font-size:16px; color:var(--gold); transition:transform .3s cubic-bezier(.22,1,.36,1); flex-shrink:0; }
   .pr-insights-arrow.open { transform:rotate(180deg); }
   .pr-insights-body { display:none; padding-top:14px; }
   .pr-insights-body.open { display:block; animation:fadeUp .25s ease; }
   /* Share button */
-  .share-btn { display:inline-flex; align-items:center; gap:8px; background:var(--card); border:1px solid var(--border2); color:var(--body); font-family:'Syne',sans-serif; font-size:13px; font-weight:700; padding:10px 20px; border-radius:100px; cursor:pointer; transition:all .2s; margin-top:16px; }
+  .share-btn { display:inline-flex; align-items:center; gap:8px; background:var(--card); border:1px solid var(--border2); color:var(--body); font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:700; padding:10px 20px; border-radius:100px; cursor:pointer; transition:all .2s; margin-top:16px; }
   .share-btn:hover { border-color:var(--gold-border); color:var(--gold); }
   /* Share modal */
   .share-modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); backdrop-filter:blur(6px); z-index:100; align-items:flex-end; justify-content:center; padding:0; }
   .share-modal-overlay.vis { display:flex; }
   .share-modal-box { background:#111520; border:1px solid rgba(255,255,255,0.13); border-radius:24px 24px 0 0; padding:28px 22px 40px; width:100%; max-width:480px; animation:slideUp .3s cubic-bezier(.22,1,.36,1); }
   @keyframes slideUp { from{transform:translateY(100%);opacity:0} to{transform:translateY(0);opacity:1} }
-  .share-modal-title { font-family:'Syne',sans-serif; font-size:18px; font-weight:800; margin-bottom:6px; }
+  .share-modal-title { font-family:'Bricolage Grotesque',sans-serif; font-size:18px; font-weight:800; margin-bottom:6px; }
   .share-modal-sub { font-size:14px; color:var(--body); margin-bottom:24px; }
   .share-options { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
   .share-option { display:flex; flex-direction:column; align-items:center; gap:8px; background:var(--card2); border:1px solid var(--border); border-radius:16px; padding:18px 12px; cursor:pointer; transition:all .2s; border:1px solid var(--border2); }
   .share-option:hover { border-color:var(--gold-border); background:rgba(245,166,35,.05); }
   .share-option-icon { font-size:28px; line-height:1; }
-  .share-option-label { font-family:'Syne',sans-serif; font-size:12px; font-weight:700; color:var(--body); text-align:center; }
-  .share-close { width:100%; background:transparent; border:1px solid var(--border2); color:var(--sub); font-family:'Syne',sans-serif; font-size:14px; font-weight:700; padding:14px; border-radius:100px; cursor:pointer; transition:all .2s; }
+  .share-option-label { font-family:'Bricolage Grotesque',sans-serif; font-size:12px; font-weight:700; color:var(--body); text-align:center; }
+  .share-close { width:100%; background:transparent; border:1px solid var(--border2); color:var(--sub); font-family:'Bricolage Grotesque',sans-serif; font-size:14px; font-weight:700; padding:14px; border-radius:100px; cursor:pointer; transition:all .2s; }
   .share-close:hover { color:var(--text); border-color:var(--border2); }
-  .share-toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:var(--gold); color:#07090d; font-family:'Syne',sans-serif; font-size:13px; font-weight:700; padding:12px 22px; border-radius:100px; z-index:200; opacity:0; pointer-events:none; transition:opacity .3s; white-space:nowrap; }
+  .share-toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:var(--gold); color:#07090d; font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:700; padding:12px 22px; border-radius:100px; z-index:200; opacity:0; pointer-events:none; transition:opacity .3s; white-space:nowrap; }
   .pr-br { margin-bottom:8px; }
   .pr-bl { display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px; }
   .pr-bl-name { color:var(--sub); }
-  .pr-bl-pct { color:var(--gold); font-weight:700; font-family:'Syne',sans-serif; }
+  .pr-bl-pct { color:var(--gold); font-weight:700; font-family:'Bricolage Grotesque',sans-serif; }
   .pr-track { height:5px; background:rgba(255,255,255,.06); border-radius:100px; overflow:hidden; }
   .pr-fill { height:100%; background:linear-gradient(90deg, var(--gold), var(--gold-l)); border-radius:100px; width:0%; transition:width 1s cubic-bezier(.4,0,.2,1); }
   .final-cta { text-align:center; padding-top:4px; }
@@ -292,18 +324,18 @@
   <div class="splash-grid"></div>
   <div class="splash-pill">HLE / Alaya · 2026</div>
   <h1 class="splash-title">The<span class="hl">Leadership</span>Challenge</h1>
-  <p class="splash-sub">5 real leadership situations.<br>No perfect answers. Just yours.</p>
+  <p class="splash-sub">12 real leadership situations.<br>No perfect answers. Just yours.</p>
   <div class="dim-tags">
     <div class="dim-tag">🛡️ Trust</div>
     <div class="dim-tag">👁️ Proactivity</div>
-    <div class="dim-tag">🎯 Delegation</div>
+    <div class="dim-tag">🎯 Empowerment</div>
     <div class="dim-tag">🔄 Adaptability</div>
   </div>
   <div class="splash-actions">
     <button class="btn btn-gold" onclick="go('tutorial')">Start the Challenge →</button>
     <button class="btn btn-ghost" onclick="skipTutorial()">Skip Tutorial</button>
   </div>
-  <p class="splash-meta">~8 min · based on real leader insights</p>
+  <p class="splash-meta">Choose your pace when you start · based on real leader insights</p>
 </div>
 
 
@@ -311,19 +343,14 @@
      TUTORIAL
 ══════════════════════════════════ -->
 <div id="tutorial" class="screen">
-  <div class="topbar">
-    <button class="back-btn" onclick="go('splash')">← Back</button>
-    <div class="topbar-center">How to Play</div>
-    <div class="topbar-spacer"></div>
-  </div>
   <div class="tut-inner">
     <div id="tut-slides">
 
       <!-- Slide 1 -->
       <div class="tut-slide active">
         <div class="ghost-num">01</div>
-        <h2 class="tut-heading">What is<br>this challenge?</h2>
-        <p class="tut-text">You'll face <strong style="color:var(--text)">5 real workplace situations</strong> drawn directly from conversations with leaders at HLE/Alaya — the exact problems they described facing day-to-day.</p>
+        <h2 class="tut-heading">What is this challenge?</h2>
+        <p class="tut-text">You'll face <strong style="color:var(--text)">12 real leadership situations</strong> drawn directly from conversations with leaders at HLE/Alaya — the exact problems they described facing day-to-day. You choose how many to play when you start.</p>
         <p class="tut-text">For each situation, you'll pick how you'd respond. After everyone picks, you'll see what actually happens as a result — and why.</p>
         <p class="tut-text">At the end, you'll get a <strong style="color:var(--text)">Leadership Profile</strong> showing your strengths and where to grow next.</p>
         <div class="info-box"><p>💡 <strong>In multiplayer mode:</strong> pass the device around so each person picks privately. After all players choose, you'll reveal your answers at the same time — which is where the real discussion starts.</p></div>
@@ -349,9 +376,9 @@
           </div>
           <div class="dim-card">
             <div class="dim-icon-big">🎯</div>
-            <div class="dim-title">Delegation</div>
-            <div class="dim-desc-sm">Are you empowering others or bottlenecking?</div>
-            <div class="dim-source">Hersey & Blanchard</div>
+            <div class="dim-title">Empowerment</div>
+            <div class="dim-desc-sm">Are you developing others or creating dependency?</div>
+            <div class="dim-source">Hersey &amp; Blanchard</div>
           </div>
           <div class="dim-card">
             <div class="dim-icon-big">🔄</div>
@@ -369,28 +396,28 @@
         <div class="fw-item">
           <div class="fw-ico">🛡️</div>
           <div>
-            <div class="fw-name">Trust — max 12 pts</div>
+            <div class="fw-name">Trust — max 21 pts</div>
             <div class="fw-desc">Based on Patrick Lencioni's <em>Five Dysfunctions of a Team</em> and Brené Brown's vulnerability-based trust research. The question: does your team feel safe enough to be honest with you?</div>
           </div>
         </div>
         <div class="fw-item">
           <div class="fw-ico">👁️</div>
           <div>
-            <div class="fw-name">Proactivity — max 9 pts</div>
+            <div class="fw-name">Proactivity — max 23 pts</div>
             <div class="fw-desc">Covey's "Be Proactive" habit combined with Goleman's Emotional Intelligence research — specifically social awareness: noticing what's happening in your team before anyone says it out loud.</div>
           </div>
         </div>
         <div class="fw-item">
           <div class="fw-ico">🎯</div>
           <div>
-            <div class="fw-name">Delegation — max 7 pts</div>
+            <div class="fw-name">Empowerment — max 19 pts</div>
             <div class="fw-desc">Hersey & Blanchard's Situational Leadership model. Real delegation means transferring the <em>why</em>, not just the <em>what</em> — and trusting people to make it better than you would have.</div>
           </div>
         </div>
         <div class="fw-item">
           <div class="fw-ico">🔄</div>
           <div>
-            <div class="fw-name">Adaptability — max 6 pts</div>
+            <div class="fw-name">Adaptability — max 21 pts</div>
             <div class="fw-desc">John Kotter's change leadership model and McKinsey's adaptive leadership research. The best leaders don't just survive change — they help their team move through it with momentum.</div>
           </div>
         </div>
@@ -400,7 +427,7 @@
       <!-- Slide 4 -->
       <div class="tut-slide">
         <div class="ghost-num">04</div>
-        <h2 class="tut-heading">How to play<br>together</h2>
+        <h2 class="tut-heading">How to play together</h2>
         <p class="tut-text">Once you add players, here's what happens for each round:</p>
         <div class="fw-item">
           <div class="fw-ico">👤</div>
@@ -423,7 +450,7 @@
     </div><!-- /tut-slides -->
 
     <div class="tut-nav">
-      <button class="t-prev" id="tut-prev" onclick="tutNav(-1)" style="display:none">←</button>
+      <button class="t-prev" id="tut-prev" onclick="tutNav(-1)">← Back</button>
       <div class="tut-dots" id="tut-dots"></div>
       <button class="t-next" id="tut-next" onclick="tutNav(1)">Next →</button>
     </div>
@@ -454,6 +481,42 @@
 <!-- ══════════════════════════════════
      GAME
 ══════════════════════════════════ -->
+<div id="mode-select" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="go('add-players')">&#8592; Back</button>
+    <div class="topbar-center">Game Mode</div>
+    <div class="topbar-space"></div>
+  </div>
+  <div class="page-inner">
+    <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-size:26px;font-weight:700;margin-bottom:8px">How long do you have?</h2>
+    <p style="font-size:15px;color:var(--body);line-height:1.65;margin-bottom:24px">Choose a mode based on your session time. All modes use a different random selection of scenarios each game.</p>
+    <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px">
+      <div onclick="startGameWithCount(5)" style="background:var(--card);border:1px solid var(--border2);border-radius:18px;padding:20px;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--gold-border)'" onmouseout="this.style.borderColor='var(--border2)'">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+          <span style="font-size:24px">&#x26A1;</span>
+          <div><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:700">Quick Round</div><div style="font-size:13px;color:var(--gold)">5 scenarios &middot; ~20 min</div></div>
+        </div>
+        <div style="font-size:13px;color:var(--body);line-height:1.6">Good for a warmup, a short break, or playing for the first time.</div>
+      </div>
+      <div onclick="startGameWithCount(8)" style="background:var(--card);border:1px solid var(--gold-border);border-radius:18px;padding:20px;cursor:pointer;transition:all .2s;position:relative" onmouseover="this.style.background='var(--card2)'" onmouseout="this.style.background='var(--card)'">
+        <div style="position:absolute;top:-1px;right:16px;font-family:'Bricolage Grotesque',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--bg);background:var(--gold);padding:4px 10px;border-radius:0 0 8px 8px">RECOMMENDED</div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+          <span style="font-size:24px">&#x1F3AF;</span>
+          <div><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:700">Full Game</div><div style="font-size:13px;color:var(--gold)">8 scenarios &middot; ~35 min</div></div>
+        </div>
+        <div style="font-size:13px;color:var(--body);line-height:1.6">Good for a workshop session or team lunch. Covers all four signals thoroughly.</div>
+      </div>
+      <div onclick="startGameWithCount(12)" style="background:var(--card);border:1px solid var(--border2);border-radius:18px;padding:20px;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--gold-border)'" onmouseout="this.style.borderColor='var(--border2)'">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+          <span style="font-size:24px">&#x1F3C6;</span>
+          <div><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:700">Deep Dive</div><div style="font-size:13px;color:var(--gold)">12 scenarios &middot; ~55 min</div></div>
+        </div>
+        <div style="font-size:13px;color:var(--body);line-height:1.6">The full experience. For a dedicated leadership development session.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="game" class="screen">
   <!-- sticky progress bar -->
   <div class="game-bar">
@@ -494,7 +557,7 @@
     <p class="rv-sub" id="rv-sub"></p>
     <div class="rv-cards" id="rv-cards"></div>
     <div id="rv-stat-wrap"></div>
-    <button class="btn btn-gold" onclick="showConsequence()">See what happened →</button>
+    <button class="btn btn-gold" onclick="showDiscuss()">Discuss first →</button>
   </div>
 </div>
 
@@ -502,6 +565,42 @@
 <!-- ══════════════════════════════════
      CONSEQUENCE
 ══════════════════════════════════ -->
+<div id="discuss" class="screen">
+  <div class="topbar">
+    <div style="width:70px"></div>
+    <div class="topbar-center" id="discuss-title">Discuss</div>
+    <div style="width:70px"></div>
+  </div>
+  <div style="padding:22px 22px 52px;flex:1;display:flex;flex-direction:column">
+    <div style="display:flex;justify-content:center;margin-bottom:20px;flex-shrink:0">
+      <div style="position:relative;width:80px;height:80px">
+        <svg width="80" height="80" viewBox="0 0 90 90" style="transform:rotate(-90deg)">
+          <circle cx="45" cy="45" r="40" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="5"/>
+          <circle id="timer-prog" cx="45" cy="45" r="40" fill="none" stroke="#f5a623" stroke-width="5" stroke-dasharray="283" stroke-dashoffset="0" stroke-linecap="round" style="transition:stroke-dashoffset .5s linear"/>
+        </svg>
+        <div id="timer-num" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:#f5a623">2:30</div>
+      </div>
+    </div>
+    <div class="eyebrow" id="discuss-tag" style="margin-bottom:10px"></div>
+    <h3 id="discuss-heading" style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:700;line-height:1.2;margin-bottom:16px"></h3>
+    <div style="background:var(--card);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:0 14px 14px 0;padding:16px 18px;margin-bottom:14px">
+      <p id="discuss-prompt" style="font-size:16px;color:var(--text);line-height:1.75;font-style:italic"></p>
+    </div>
+    <div style="background:var(--gold-dim);border:1px solid var(--gold-border);border-radius:12px;padding:14px 16px;margin-bottom:14px">
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:6px">Hand on heart</div>
+      <p style="font-size:14px;color:var(--body);line-height:1.65">Is this what you would actually do &#8212; or what you know you should do?</p>
+    </div>
+    <div id="discuss-split" style="display:none;background:var(--card2);border:1px solid var(--border2);border-radius:12px;padding:14px 16px;margin-bottom:20px">
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--sub);margin-bottom:6px">You did not all see it the same way</div>
+      <p id="discuss-split-text" style="font-size:13.5px;color:var(--body);line-height:1.65"></p>
+    </div>
+    <div style="display:flex;gap:10px;flex-shrink:0;margin-top:auto;padding-top:16px">
+      <button class="btn btn-ghost" style="flex:1;padding:14px 20px" onclick="skipDiscuss()">Skip &#8594;</button>
+      <button class="btn btn-gold" style="flex:2;padding:14px 20px" onclick="skipDiscuss()">See What Happened &#8594;</button>
+    </div>
+  </div>
+</div>
+
 <div id="consequence" class="screen">
   <div class="topbar">
     <div style="width:70px"></div>
@@ -584,1000 +683,17 @@
 <div id="quit-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);z-index:100;align-items:center;justify-content:center;padding:24px;">
   <div style="background:#0f1421;border:1px solid rgba(255,255,255,0.13);border-radius:20px;padding:28px 24px;max-width:320px;width:100%;text-align:center;">
     <div style="font-size:36px;margin-bottom:14px;">⚠️</div>
-    <h3 style="font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:10px;color:#eef1ff;">Quit the game?</h3>
+    <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:700;margin-bottom:10px;color:#eef1ff;">Quit the game?</h3>
     <p style="font-size:14px;color:#ced4e0;line-height:1.65;margin-bottom:24px;">All progress and scores will be lost. This can't be undone.</p>
     <div style="display:flex;flex-direction:column;gap:10px;">
-      <button onclick="doQuit()" style="background:#f5a623;color:#07090d;font-family:'Syne',sans-serif;font-weight:700;font-size:15px;padding:14px;border-radius:100px;border:none;cursor:pointer;">Yes, quit</button>
-      <button onclick="closeQuitModal()" style="background:transparent;color:#9ca3af;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;padding:12px;border-radius:100px;border:1px solid rgba(255,255,255,0.13);cursor:pointer;">Keep playing</button>
+      <button onclick="doQuit()" style="background:#f5a623;color:#07090d;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:15px;padding:14px;border-radius:100px;border:none;cursor:pointer;">Yes, quit</button>
+      <button onclick="closeQuitModal()" style="background:transparent;color:#9ca3af;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:14px;padding:12px;border-radius:100px;border:1px solid rgba(255,255,255,0.13);cursor:pointer;">Keep playing</button>
     </div>
   </div>
 </div>
 
-<script>
-// ═══════════════════════════════════════════════════════
-//  DATA
-// ═══════════════════════════════════════════════════════
 
-const SCENARIOS = [
-  {
-    title: "The Pivot",
-    situation: "Management just announced a major new priority mid-week. Your team has been fully heads-down on a project for three weeks. The message came via Slack — minimal context, just \"we're shifting gears.\"",
-    choices: [
-      {
-        letter:"A", text:"Call an immediate team meeting. Share what you know, hear their concerns, and work through it together.",
-        outcome:"Your team was frustrated with the announcement — but not with you. They felt heard despite the uncertainty. Morale held steady because you stepped in quickly and made them feel like they mattered. This is what leaders who earn lasting trust do: they show up when the information is still incomplete.",
-        scores:{ trust:3, adaptability:2 }
-      },
-      {
-        letter:"B", text:"Sit on it for a day. Digest the change yourself first, then come to the team with a clear plan.",
-        outcome:"Your plan was solid when it arrived. But by then the team had already heard rumours and were wondering why you hadn't looped them in sooner. A small but real trust gap opened — even though your intent was completely reasonable. Digesting information privately is valuable, but silence has costs that compound quickly in uncertain moments.",
-        scores:{ trust:1, adaptability:1 }
-      },
-      {
-        letter:"C", text:"Go back to management first. Push for more context before saying anything to your team.",
-        outcome:"You got better answers, and the team benefited from the added clarity you brought back. But the delay left them feeling like the last to know. You showed good proactivity in seeking information upstream — the miss was not communicating to the team that you were actively working on getting clarity for them.",
-        scores:{ proactivity:2, trust:1 }
-      }
-    ]
-  },
-  {
-    title: "The Quiet One",
-    situation: "Jake — usually one of your most vocal team members — has barely spoken in the last two weeks. His last two tasks came in late. You're not sure what's going on. No one else seems to have noticed.",
-    choices: [
-      {
-        letter:"A", text:"Book a casual 1:1 this week. No formal agenda — just check in as a person first.",
-        outcome:"Jake opened up about some personal pressures he'd been managing quietly. The conversation itself was the turning point. You caught it before it became a performance issue — exactly the kind of proactive move that changes outcomes. Leaders who build this habit consistently have fewer crises, because they convert early signals into early conversations.",
-        scores:{ proactivity:3, trust:2 }
-      },
-      {
-        letter:"B", text:"Give it another week or two. Everyone has off periods — no need to make it a big thing.",
-        outcome:"Three weeks later, another team lead flagged Jake's performance to your manager. You were the last to act on something that had been visible for over a month. The window to intervene early — when the cost was low and a conversation would have been enough — had quietly closed. Waiting for certainty before acting is one of the most common leadership blind spots.",
-        scores:{ proactivity:0, trust:0 }
-      },
-      {
-        letter:"C", text:"Raise it lightly at the next team meeting — \"Is everyone doing okay lately?\"",
-        outcome:"It felt like a safe move in the moment. But Jake later told a colleague the indirect attention felt uncomfortable — and you never had the real conversation. You noticed the signal, which matters. But the response missed the mark. General check-ins don't substitute for a genuine one-on-one with the person who's actually struggling.",
-        scores:{ proactivity:1, trust:0 }
-      }
-    ]
-  },
-  {
-    title: "The Handover",
-    situation: "You've been asked to hand over one of your core processes to a new team lead. It took you 18 months to build. You know every edge case and workaround. They're smart — but completely new to this.",
-    choices: [
-      {
-        letter:"A", text:"Spend two weeks creating a thorough document covering everything. Then hand it over once it's perfect.",
-        outcome:"The document was detailed — but when real problems hit, they kept coming back to you because no document could capture your instincts. The dependency on you stayed intact. A handover in name only. Documentation is valuable, but it can't replace lived experience — and handing over a finished product isn't the same as handing over ownership.",
-        scores:{ delegation:1, trust:1 }
-      },
-      {
-        letter:"B", text:"Walk them through the why behind the process, not just the steps. Then let them own and evolve it.",
-        outcome:"Messier at first. But within a month they were solving problems you hadn't even anticipated — in ways you wouldn't have thought of yourself. The real handover happened. They made it better than you left it. This is what Hersey & Blanchard mean by true delegation: transferring capability, not just tasks.",
-        scores:{ delegation:3, trust:2 }
-      },
-      {
-        letter:"C", text:"Give them a list of the top 10 mistakes to avoid, then step back completely and let them run.",
-        outcome:"Bold. They struggled early, but the ownership stuck hard. Some of your 'don'ts' turned out to be context-specific — they learned to tell the difference themselves. A bit rough, but genuine. Sink-or-swim isn't the ideal delegation style, but it often beats no delegation at all when the person is capable.",
-        scores:{ delegation:2, adaptability:1 }
-      }
-    ]
-  },
-  {
-    title: "The Change You Didn't Choose",
-    situation: "A structural change is being rolled out company-wide. Your team didn't ask for it and isn't excited. Honestly — you have some private doubts yourself about whether it's the right call.",
-    choices: [
-      {
-        letter:"A", text:"Implement it as directed and keep your doubts private. Leaders should present a united front.",
-        outcome:"Your team sensed the gap between what you said and how you said it. Trust in your authenticity dipped noticeably. The change landed — but not with them, just around them. A united front that isn't genuine usually creates more cynicism than it prevents. People are remarkably good at detecting when someone doesn't believe what they're saying.",
-        scores:{ adaptability:1, trust:0 }
-      },
-      {
-        letter:"B", text:"Be honest with your team: \"I have questions too — but here's how we're going to make this work together.\"",
-        outcome:"It surprised them. Your transparency about the uncertainty made them feel less alone in it. The change landed with more genuine buy-in than anyone expected — because you treated them like adults who could handle complexity. Honesty about uncertainty is often the most accelerating thing a leader can do during a transition.",
-        scores:{ trust:3, adaptability:2 }
-      },
-      {
-        letter:"C", text:"Champion the change fully to your team. Take your questions privately to your manager.",
-        outcome:"Your team got behind it, which matters. Your concerns stayed professional and didn't erode their confidence. You built quiet credibility upward at the same time. The risk is that you didn't model how to navigate genuine disagreement — your team may not know you have private doubts, which limits what they can learn from watching you lead.",
-        scores:{ adaptability:2, proactivity:1 }
-      }
-    ]
-  },
-  {
-    title: "Monday Morning",
-    situation: "It's 8:45am Monday. Three things are waiting: a team member needs an urgent HR conversation, a client escalation needs your sign-off, and your manager wants a project update in 90 minutes.",
-    choices: [
-      {
-        letter:"A", text:"Tackle the client escalation first — external pressure takes priority.",
-        outcome:"The client issue resolved quickly. But the HR conversation got pushed to the afternoon. The team member had been waiting since Friday. That delay was felt — and remembered. External pressure is real, but routinely deprioritising people for clients creates a message about what you actually value — whether you intend it or not.",
-        scores:{ delegation:0, proactivity:0 }
-      },
-      {
-        letter:"B", text:"Delegate the client escalation to a capable team member, handle the HR conversation first, then prep the update.",
-        outcome:"The team member got your full attention when it mattered most. The delegated issue was handled well — and the team member who took it on grew visibly from the experience under pressure. This is triage leadership: knowing which problems require you specifically, and which ones are actually development opportunities for others.",
-        scores:{ delegation:3, trust:2, proactivity:1 }
-      },
-      {
-        letter:"C", text:"Message your manager for a 30-min extension, address the HR conversation first, then delegate the client issue.",
-        outcome:"Your manager respected the transparency. The HR matter got the attention it needed. The delegation worked. A slightly messier morning — but the right calls in the right order. Managing upward proactively (asking for more time before you're late) is a skill that earns credibility over time rather than burning it.",
-        scores:{ delegation:2, trust:2, proactivity:2 }
-      }
-    ]
-  }
-];
-
-const MAX = { trust:12, proactivity:9, delegation:7, adaptability:6 };
-
-const PROFILES = [
-  {
-    name:"The Visionary", emoji:"🌟",
-    match: s => avg4(s) >= 62,
-    desc:"You lead with clarity, empathy, and foresight. Your team trusts you. You catch things early. You know when to let go. And you move with change rather than against it. This is the standard every great leader is working toward.",
-    tips:{ trust:"Keep deepening psychological safety — the strongest teams tell each other the hard things without fear.", proactivity:"Your instincts are sharp. Build systems so your whole team develops the same early-warning radar.", delegation:"You empower well. Focus next on developing your team leads to delegate with the same quality.", adaptability:"You're a change anchor. Think about how you make that steadiness transferable to your people." }
-  },
-  {
-    name:"The Sentinel", emoji:"🛡️",
-    match: s => pct(s.trust,MAX.trust)>=60 && pct(s.proactivity,MAX.proactivity)>=50,
-    desc:"Your team trusts you deeply and you see problems coming before they arrive. You're the person people lean on when things get uncertain. Your growth edge: learning to let others carry more of the load.",
-    tips:{ trust:"Use your strong trust foundation to have the courageous conversations that actually drive growth.", proactivity:"You catch things early. Coach your team to do the same — make it a team skill, not just yours.", delegation:"This is your stretch zone. Try delegating the 'how', not just the 'what'. Let go of controlling the output.", adaptability:"When change is hard, your team mirrors you. Be explicit about your own process — they'll follow it." }
-  },
-  {
-    name:"The Enabler", emoji:"🎯",
-    match: s => pct(s.delegation,MAX.delegation)>=57 && pct(s.adaptability,MAX.adaptability)>=50,
-    desc:"You move with change and you build people up. You're not the bottleneck — you're the multiplier. Your growth edge: making sure people feel the connection and trust underneath all that empowerment.",
-    tips:{ trust:"You empower well. Pair that with visible presence — they want to feel you're in their corner, not just their manager.", proactivity:"Your adaptability is high. Channel some of it into proactive check-ins with your quieter team members.", delegation:"You delegate well. The next level: develop others to delegate just as thoughtfully as you do.", adaptability:"This is your superpower. Use it to explicitly coach others through change, not just navigate it yourself." }
-  },
-  {
-    name:"The Anchor", emoji:"⚓",
-    match: s => pct(s.trust,MAX.trust)>=55 && pct(s.delegation,MAX.delegation)<50,
-    desc:"Your team loves you and trusts you. You're the steady presence people gravitate toward when things get hard. Your growth edge: learning to let go. Your commitment to quality can quietly become a bottleneck.",
-    tips:{ trust:"Use your earned trust to have harder conversations about what you're holding that others could carry.", proactivity:"You notice things. Practise turning that awareness into earlier, lighter action before situations need you to intervene.", delegation:"Try delegating the 'why' behind a task, not just the task itself. Let people own the outcome, not just the steps.", adaptability:"You adapt best when you feel informed. Advocate for that clarity upstream, then carry it back down." }
-  },
-  {
-    name:"The Firefighter", emoji:"🔥",
-    match: s => avg4(s) < 38,
-    desc:"You're in deep water — reactive, stretched, and probably exhausted. The good news: recognising this pattern is the first real step. Start by buying yourself a little more time before you react to anything.",
-    tips:{ trust:"Start small — one honest, unhurried conversation a week. Trust is built in small, consistent moments.", proactivity:"Block 15 minutes every Monday morning and ask: 'What could go wrong this week?' That one habit changes everything.", delegation:"Find one thing you're carrying that someone else could genuinely own. Just one. Start there.", adaptability:"Change is hard when you're already full. Get clarity on your top three priorities first — then you can move." }
-  },
-  {
-    name:"The Steady Hand", emoji:"🤝",
-    match: () => true,
-    desc:"You're consistent, thoughtful, and intentional. You spread your attention across the whole picture rather than excelling sharply in one area. Your growth edge: picking one dimension to go deep on instead of staying balanced.",
-    tips:{ trust:"You build trust steadily. Try one bold move — be genuinely vulnerable in a team moment and see what it opens up.", proactivity:"Your awareness is solid. Practise naming what you notice earlier, out loud, before it becomes something bigger.", delegation:"You delegate reasonably. The next level is delegating things that genuinely stretch people — not just offload tasks.", adaptability:"You manage change well. Start modelling what your internal process actually looks like — your team needs to see it." }
-  }
-];
-
-// ═══════════════════════════════════════════════════════
-//  STATE
-// ═══════════════════════════════════════════════════════
-
-const COLORS = ['#f5a623','#60a5fa','#10b981','#f472b6','#a78bfa','#fb923c','#34d399','#e879f9'];
-const DIM_ICONS = { trust:'🛡️', proactivity:'👁️', delegation:'🎯', adaptability:'🔄' };
-const DIM_LABELS = { trust:'Trust', proactivity:'Proactivity', delegation:'Delegation', adaptability:'Adaptability' };
-const DIMS = ['trust','proactivity','delegation','adaptability'];
-
-let S = {
-  players: [],        // [{name, color, scores:{...}}]
-  step: 0,
-  roundChoices: [],   // [{playerIdx, choiceIdx}] for current scenario
-  pickerIdx: 0,
-  tutSlide: 0,
-  fromTutorial: true,
-};
-
-// ═══════════════════════════════════════════════════════
-//  NAVIGATION
-// ═══════════════════════════════════════════════════════
-
-function go(id) {
-  document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  window.scrollTo({ top:0, behavior:'smooth' });
-}
-
-function skipTutorial() {
-  S.fromTutorial = false;
-  document.getElementById('ap-back-btn').setAttribute('onclick', "go('splash')");
-  go('add-players');
-  initPlayerRows();
-}
-
-function confirmQuit() {
-  const modal = document.getElementById('quit-modal');
-  modal.style.display = 'flex';
-}
-function closeQuitModal() {
-  document.getElementById('quit-modal').style.display = 'none';
-}
-function doQuit() {
-  closeQuitModal();
-  go('splash');
-}
-
-// ═══════════════════════════════════════════════════════
-//  TUTORIAL
-// ═══════════════════════════════════════════════════════
-
-const TOTAL_SLIDES = 4;
-
-function initTutorial() {
-  S.tutSlide = 0;
-  renderTutSlide();
-  go('tutorial');
-}
-
-function renderTutSlide() {
-  document.querySelectorAll('.tut-slide').forEach((el, i) => {
-    el.classList.toggle('active', i === S.tutSlide);
-  });
-  // Dots
-  const dots = document.getElementById('tut-dots');
-  dots.innerHTML = Array.from({length:TOTAL_SLIDES}).map((_,i) => {
-    const cls = i === S.tutSlide ? 'tut-dot on' : 'tut-dot';
-    return '<div class="' + cls + '"></div>';
-  }).join('');
-  // Prev button
-  const prev = document.getElementById('tut-prev');
-  prev.style.display = S.tutSlide === 0 ? 'none' : 'block';
-  // Next button
-  const next = document.getElementById('tut-next');
-  next.textContent = S.tutSlide === TOTAL_SLIDES - 1 ? 'Add Players →' : 'Next →';
-}
-
-function tutNav(dir) {
-  if (dir === 1 && S.tutSlide === TOTAL_SLIDES - 1) {
-    S.fromTutorial = true;
-    document.getElementById('ap-back-btn').setAttribute('onclick', "go('tutorial')");
-    go('add-players');
-    initPlayerRows();
-    return;
-  }
-  S.tutSlide = Math.max(0, Math.min(TOTAL_SLIDES - 1, S.tutSlide + dir));
-  renderTutSlide();
-}
-
-// ═══════════════════════════════════════════════════════
-//  ADD PLAYERS
-// ═══════════════════════════════════════════════════════
-
-function initPlayerRows() {
-  const list = document.getElementById('player-list');
-  if (list.children.length === 0) {
-    addPlayerRow();
-    addPlayerRow();
-  }
-}
-
-function addPlayerRow() {
-  const list = document.getElementById('player-list');
-  const idx = list.children.length;
-  const color = COLORS[idx % COLORS.length];
-  const row = document.createElement('div');
-  row.className = 'p-row';
-  row.innerHTML = `
-    <div class="p-dot" style="background:${color}"></div>
-    <input class="p-input" placeholder="Player ${idx+1} name" oninput="validatePlayers()" />
-    <button class="p-remove" onclick="removePlayerRow(this)">×</button>
-  `;
-  list.appendChild(row);
-  validatePlayers();
-  row.querySelector('input').focus();
-}
-
-function removePlayerRow(btn) {
-  const list = document.getElementById('player-list');
-  if (list.children.length <= 1) return;
-  btn.closest('.p-row').remove();
-  // Renumber + recolor dots
-  Array.from(list.children).forEach((row, i) => {
-    row.querySelector('.p-dot').style.background = COLORS[i % COLORS.length];
-    row.querySelector('input').placeholder = `Player ${i+1} name`;
-  });
-  document.getElementById('add-p-btn').style.display = 'flex';
-  validatePlayers();
-}
-
-function validatePlayers() {
-  const inputs = document.querySelectorAll('.p-input');
-  const filled = Array.from(inputs).filter(i => i.value.trim() !== '');
-  const startBtn = document.getElementById('start-btn');
-  const note = document.getElementById('ap-note');
-  if (filled.length > 0) {
-    startBtn.disabled = false;
-    startBtn.style.opacity = '1';
-    startBtn.style.cursor = 'pointer';
-    note.textContent = filled.length === 1 ? '1 player — solo mode' : `${filled.length} players — pass & play mode`;
-  } else {
-    startBtn.disabled = true;
-    startBtn.style.opacity = '.4';
-    startBtn.style.cursor = 'not-allowed';
-    note.textContent = 'Add at least 1 player to start';
-  }
-}
-
-function startGame() {
-  const inputs = document.querySelectorAll('.p-input');
-  S.players = [];
-  Array.from(inputs).forEach((input, i) => {
-    const name = input.value.trim();
-    if (name) {
-      S.players.push({
-        name,
-        color: COLORS[i % COLORS.length],
-        scores: { trust:0, proactivity:0, delegation:0, adaptability:0 },
-        choices: new Array(SCENARIOS.length).fill(null)
-      });
-    }
-  });
-  if (S.players.length === 0) return;
-  S.step = 0;
-  S.roundChoices = [];
-  S.pickerIdx = 0;
-  renderPickTurn(0);
-  go('game');
-}
-
-// ═══════════════════════════════════════════════════════
-//  GAME
-// ═══════════════════════════════════════════════════════
-
-const isSolo = () => S.players.length === 1;
-
-function renderPickTurn(playerIdx) {
-  const scenario = SCENARIOS[S.step];
-  const player = S.players[playerIdx];
-
-  // Update topbar
-  document.getElementById('gb-label').textContent = `Scenario ${S.step+1} of ${SCENARIOS.length}`;
-  document.getElementById('prog-fill').style.width = `${(S.step / SCENARIOS.length)*100}%`;
-
-  // Score pills (solo: show scores; multi: show current player)
-  const spRow = document.getElementById('sp-row');
-  if (isSolo()) {
-    const p = S.players[0];
-    spRow.innerHTML = DIMS.map(d => {
-      const cls = p.scores[d] > 0 ? 'sp lit' : 'sp';
-      return '<span class="' + cls + '">' + DIM_ICONS[d] + ' ' + p.scores[d] + '</span>';
-    }).join('');
-  } else {
-    spRow.innerHTML = '<span class="sp" style="color:' + player.color + ';border-color:' + player.color + '40;">\u25cf ' + player.name + '\u2019s turn</span>';
-  }
-
-  // Pick content
-  const pick = document.getElementById('game-pick');
-  pick.classList.remove('hidden');
-  document.getElementById('game-locked').classList.remove('vis');
-
-  const badgeHtml = isSolo() ? '' : `
-    <div class="player-badge" style="color:${player.color};border-color:${player.color}40;background:${player.color}12;">
-      <div class="player-badge-dot" style="background:${player.color}"></div>
-      ${player.name}'s turn
-    </div>
-  `;
-
-  pick.innerHTML = `
-    ${badgeHtml}
-    <div class="s-tag eyebrow">Scenario ${S.step+1} of ${SCENARIOS.length}</div>
-    <h2 class="s-heading">${scenario.title}</h2>
-    <div class="s-box">${scenario.situation}</div>
-    <div class="choices-label">What would you do?</div>
-    ${scenario.choices.map((c,i) => `
-      <button class="c-btn" onclick="pick(${i})">
-        <div class="c-alpha">${c.letter}</div>
-        <div class="c-text">${c.text}</div>
-      </button>
-    `).join('')}
-  `;
-}
-
-function pick(choiceIdx) {
-  const scenario = SCENARIOS[S.step];
-  const choice = scenario.choices[choiceIdx];
-  const player = S.players[S.pickerIdx];
-
-  // Visual feedback
-  document.querySelectorAll('.c-btn').forEach((el, i) => {
-    el.classList.add(i === choiceIdx ? 'sel' : 'dim');
-  });
-
-  // Record choice + apply scores
-  S.roundChoices.push({ playerIdx: S.pickerIdx, choiceIdx });
-  player.choices[S.step] = choiceIdx;
-  DIMS.forEach(d => {
-    player.scores[d] = (player.scores[d] || 0) + (choice.scores[d] || 0);
-  });
-
-  setTimeout(() => {
-    if (isSolo()) {
-      // Solo: skip locked & reveal, go straight to consequence
-      buildConsequenceScreen();
-      go('consequence');
-    } else {
-      showLocked(choiceIdx);
-    }
-  }, 280);
-}
-
-function showLocked(choiceIdx) {
-  const scenario = SCENARIOS[S.step];
-  const choice = scenario.choices[choiceIdx];
-  const player = S.players[S.pickerIdx];
-  const nextIdx = S.pickerIdx + 1;
-
-  document.getElementById('game-pick').classList.add('hidden');
-  document.getElementById('game-locked').classList.add('vis');
-
-  document.getElementById('locked-heading').textContent = `${player.name}'s choice is locked!`;
-  document.getElementById('locked-sub').textContent = `Choice ${choice.letter} recorded. Don't show the screen to the next player yet!`;
-
-  const isLast = nextIdx >= S.players.length;
-  const wrap = document.getElementById('next-player-badge-wrap');
-
-  if (!isLast) {
-    const next = S.players[nextIdx];
-    wrap.innerHTML = `
-      <div class="next-badge" style="color:${next.color};border-color:${next.color}60;">
-        <div class="next-badge-dot" style="background:${next.color}"></div>
-        Pass to ${next.name}
-      </div>
-    `;
-    document.getElementById('locked-cta').textContent = `Hand it to ${next.name} →`;
-  } else {
-    wrap.innerHTML = `<div class="next-badge" style="color:var(--gold);border-color:var(--gold-border);">✓ All players have chosen!</div>`;
-    document.getElementById('locked-cta').textContent = 'Reveal all choices →';
-  }
-}
-
-function lockedNext() {
-  const nextIdx = S.pickerIdx + 1;
-  if (nextIdx < S.players.length) {
-    S.pickerIdx = nextIdx;
-    renderPickTurn(nextIdx);
-    go('game');
-  } else {
-    buildRevealScreen();
-    go('reveal');
-  }
-}
-
-// ═══════════════════════════════════════════════════════
-//  REVEAL
-// ═══════════════════════════════════════════════════════
-
-function buildRevealScreen() {
-  const scenario = SCENARIOS[S.step];
-  document.getElementById('rv-topbar-title').textContent = `Scenario ${S.step+1}: ${scenario.title}`;
-  document.getElementById('rv-sub').textContent = `Here's what everyone chose for "${scenario.title}"`;
-
-  // Count choices
-  const choiceCounts = {};
-  S.roundChoices.forEach(rc => {
-    choiceCounts[rc.choiceIdx] = (choiceCounts[rc.choiceIdx] || 0) + 1;
-  });
-
-  const cards = document.getElementById('rv-cards');
-  cards.innerHTML = S.roundChoices.map((rc, idx) => {
-    const player = S.players[rc.playerIdx];
-    const choice = scenario.choices[rc.choiceIdx];
-    return '<div class="rv-card" style="animation-delay:' + (idx * 80) + 'ms;border-left:3px solid ' + player.color + ';">'
-      + '<div class="rv-letter" style="background:' + player.color + '18;color:' + player.color + ';">' + choice.letter + '</div>'
-      + '<div class="rv-player-info">'
-      + '<div class="rv-pname" style="color:' + player.color + '">' + player.name + '</div>'
-      + '<div class="rv-chose">chose option ' + choice.letter + '</div>'
-      + '<div class="rv-choice-text">' + choice.text + '</div>'
-      + '</div></div>';
-  }).join('');
-
-  // Agreement stat
-  const statWrap = document.getElementById('rv-stat-wrap');
-  const uniqueChoices = new Set(S.roundChoices.map(rc => rc.choiceIdx)).size;
-  if (S.players.length > 1) {
-    if (uniqueChoices === 1) {
-      statWrap.innerHTML = `<div class="rv-stat">🤝 Everyone picked the same answer!</div>`;
-    } else if (uniqueChoices === S.players.length) {
-      statWrap.innerHTML = `<div class="rv-stat">🔀 Everyone picked differently</div>`;
-    } else {
-      const maxCount = Math.max(...Object.values(choiceCounts));
-      const popular = parseInt(Object.entries(choiceCounts).find(([,v])=>v===maxCount)[0]);
-      const pLetter = scenario.choices[popular].letter;
-      statWrap.innerHTML = `<div class="rv-stat">🗳️ Most popular: Option ${pLetter} (${maxCount}/${S.players.length})</div>`;
-    }
-  } else {
-    statWrap.innerHTML = '';
-  }
-}
-
-// ═══════════════════════════════════════════════════════
-//  CONSEQUENCE
-// ═══════════════════════════════════════════════════════
-
-function showConsequence() {
-  buildConsequenceScreen();
-  go('consequence');
-}
-
-function buildConsequenceScreen() {
-  const scenario = SCENARIOS[S.step];
-  document.getElementById('cq-topbar-title').textContent = `${scenario.title} — Outcome`;
-
-  const body = document.getElementById('cq-body');
-  const ICONS = { trust:'🛡️', proactivity:'👁️', delegation:'🎯', adaptability:'🔄' };
-
-  // Group by choice
-  const choiceGroups = {};
-  if (isSolo()) {
-    const rc = S.roundChoices[0];
-    choiceGroups[rc.choiceIdx] = [0];
-  } else {
-    S.roundChoices.forEach(rc => {
-      if (!choiceGroups[rc.choiceIdx]) choiceGroups[rc.choiceIdx] = [];
-      choiceGroups[rc.choiceIdx].push(rc.playerIdx);
-    });
-  }
-
-  const choiceKeys = Object.keys(choiceGroups).sort((a,b) => parseInt(a)-parseInt(b));
-
-  let html = `
-    <div class="cq-tag eyebrow">What happened</div>
-    <h2 class="cq-heading">${scenario.title}</h2>
-  `;
-
-  choiceKeys.forEach((key, i) => {
-    const choice = scenario.choices[parseInt(key)];
-    const playerIdxs = choiceGroups[key];
-    const chips = DIMS.map(d => {
-      const v = choice.scores[d] || 0;
-      const cls = v > 0 ? 'pos' : 'zero';
-      const val = v > 0 ? ('+' + v) : '0';
-      return '<span class="cq-chip ' + cls + '">' + ICONS[d] + ' ' + DIM_LABELS[d] + ' ' + val + '</span>';
-    }).join('');
-
-    // Who picked this (multiplayer)
-    let whoHtml = '';
-    if (!isSolo() && S.players.length > 1) {
-      const chips2 = playerIdxs.map(pi => {
-        const p = S.players[pi];
-        return '<div class="cq-player-chip"><div class="cq-pdot" style="background:' + p.color + '"></div><span class="cq-pname">' + p.name + '</span></div>';
-      }).join('');
-      whoHtml = '<div class="cq-players-who">' + chips2 + '</div>';
-    }
-
-    const whoLabel = isSolo() ? 'Your choice' : (playerIdxs.length + ' player' + (playerIdxs.length > 1 ? 's' : ''));
-    const divider = (i < choiceKeys.length - 1) ? '<div class="cq-divider"></div>' : '';
-    html += '<div class="cq-outcome-block">'
-      + whoHtml
-      + '<div class="cq-choice-header">'
-      + '<div class="cq-choice-alpha" style="background:var(--gold-dim);color:var(--gold);">' + choice.letter + '</div>'
-      + '<span class="cq-who-picked">Option ' + choice.letter + ' \u2014 ' + whoLabel + '</span>'
-      + '</div>'
-      + '<div class="cq-choice-text">' + choice.text + '</div>'
-      + '<p class="cq-explanation">' + choice.outcome + '</p>'
-      + '<div class="cq-chips">' + chips + '</div>'
-      + '</div>'
-      + divider;
-  });
-
-  html += `<div style="height:24px"></div><button class="btn btn-gold" onclick="goToScoreboard()">See Scores →</button>`;
-  body.innerHTML = html;
-}
-
-function goToScoreboard() {
-  buildScoreboard();
-  go('scoreboard');
-}
-
-// ═══════════════════════════════════════════════════════
-//  SCOREBOARD
-// ═══════════════════════════════════════════════════════
-
-function pct(v, max) { return max===0 ? 0 : Math.round((v/max)*100); }
-function avg4(s) { return (pct(s.trust,MAX.trust)+pct(s.proactivity,MAX.proactivity)+pct(s.delegation,MAX.delegation)+pct(s.adaptability,MAX.adaptability))/4; }
-
-function buildScoreboard() {
-  const isLast = S.step >= SCENARIOS.length - 1;
-  document.getElementById('sb-topbar-title').textContent = 'Scoreboard';
-  document.getElementById('sb-eyebrow').textContent = `After Round ${S.step+1} of ${SCENARIOS.length}`;
-  const remaining = SCENARIOS.length - S.step - 1;
-  document.getElementById('sb-sub').textContent = isLast ? 'Final standings! See how everyone did.' : (remaining + ' scenario' + (remaining !== 1 ? 's' : '') + ' remaining.');
-  document.getElementById('sb-cta').textContent = isLast ? 'See Final Results →' : `Next Scenario →`;
-
-  // Sort players by average
-  const sorted = [...S.players].sort((a,b) => avg4(b.scores) - avg4(a.scores));
-  const medals = ['🥇','🥈','🥉'];
-  const ranks = sorted.map((_, i) => i < 3 ? medals[i] : String(i + 1));
-
-  const cards = document.getElementById('sb-cards');
-  cards.innerHTML = sorted.map((player, rank) => {
-    const totalAvg = Math.round(avg4(player.scores));
-    const bars = DIMS.map(d => {
-      const p = pct(player.scores[d], MAX[d]);
-      return `
-        <div class="sb-br">
-          <div class="sb-bl">
-            <span>${DIM_ICONS[d]} ${DIM_LABELS[d]}</span>
-            <span class="sb-bl-pct">${p}%</span>
-          </div>
-          <div class="sb-track"><div class="sb-fill" data-pct="${p}"></div></div>
-        </div>
-      `;
-    }).join('');
-
-    const cardCls = rank === 0 ? 'sb-card first' : 'sb-card';
-    const rankCls = rank === 0 ? 'sb-rank g' : 'sb-rank';
-    return '<div class="' + cardCls + '">'
-      + '<div class="sb-header">'
-      + '<div class="' + rankCls + '">' + ranks[rank] + '</div>'
-      + '<div class="sb-pname" style="color:' + player.color + '">' + player.name + '</div>'
-      + '<div class="sb-total">' + totalAvg + '% avg</div>'
-      + '</div>'
-      + '<div class="sb-bars">' + bars + '</div>'
-      + '</div>';
-  }).join('');
-
-  // Animate bars
-  setTimeout(() => {
-    document.querySelectorAll('.sb-fill[data-pct]').forEach(el => {
-      el.style.width = el.getAttribute('data-pct') + '%';
-    });
-  }, 100);
-}
-
-function scoreboardNext() {
-  const isLast = S.step >= SCENARIOS.length - 1;
-  if (isLast) {
-    buildFinal();
-    go('final');
-  } else {
-    S.step++;
-    S.roundChoices = [];
-    S.pickerIdx = 0;
-    renderPickTurn(0);
-    go('game');
-  }
-}
-
-// ═══════════════════════════════════════════════════════
-//  FINAL RESULTS
-// ═══════════════════════════════════════════════════════
-
-// For each dimension, which scenarios matter most (by scenario index)
-const DIM_KEY_SCENARIOS = {
-  trust:        [0, 3],   // The Pivot (max 3pts), The Change (max 3pts)
-  proactivity:  [1, 4],   // The Quiet One (max 3pts), Monday Morning (max 2pts)
-  delegation:   [2, 4],   // The Handover (max 3pts), Monday Morning (max 3pts)
-  adaptability: [3, 0],   // The Change (max 2pts), The Pivot (max 2pts)
-};
-
-// Personalised insight text per [dimension][scenarioIdx][choiceIdx]
-// insight = what happened + why it matters. action = concrete next step.
-const DIM_INSIGHTS = {
-  trust: {
-    0: [
-      { insight: "You called the team together immediately — before you had all the answers. That instinct is exactly what builds lasting trust. People don't need you to have it figured out; they need to know you won't disappear when things get uncertain.", action: "Keep this as a reflex: when news breaks, be the first voice in the room. Even 'I don't have the full picture yet, but let's talk' is worth more than silence." },
-      { insight: "You took a day to process the change before speaking up. Reasonable — but your team had already heard rumours by then, and the silence in between cost you trust faster than you'd expect.", action: "Try: send a short message within an hour of news breaking — 'I've seen this, I'm working on it, let's regroup at 3pm.' The gap between announcement and acknowledgement is where trust erodes." },
-      { insight: "Going upstream for more context was smart information management — but your team found out through the rumour mill before they heard from you. Good instinct, slow execution.", action: "Before you go to management, take 60 seconds to tell your team: 'I'm getting more clarity on this for you — I'll be back by end of day.' They need to feel included in the wait, not excluded from it." }
-    ],
-    3: [
-      { insight: "Keeping your doubts private to present a united front — your team sensed the gap between what you said and how you said it anyway. Authenticity builds more trust than polish does.", action: "Try: 'I have some questions about this myself — here's what I do know, and here's how we're going to make it work.' That framing invites people in rather than closing them out." },
-      { insight: "You admitted uncertainty while committing to forward motion. That's vulnerability-based trust in action — and it produced more genuine buy-in than any polished united front could have.", action: "Keep doing this. Your team learned something from watching you hold complexity — not just from the words you used." },
-      { insight: "You championed the change professionally while managing your doubts quietly. Trust-preserving — but your team missed a chance to see how you navigate real uncertainty, which is where the deepest trust is built.", action: "Next time: even a small 'I'm still working through some of this myself' opens a door that a polished front keeps closed." }
-    ]
-  },
-  proactivity: {
-    1: [
-      { insight: "You caught the early signal — someone going quiet, tasks slipping — and acted before it became a formal issue. That one 1:1 was the intervention, and it worked before anyone else noticed anything was wrong.", action: "Build this as a standing habit: one unscheduled check-in per week with whoever seems most 'off'. The cost is 20 minutes. The upside is catching things while they're still small enough to fix with a conversation." },
-      { insight: "You waited for more certainty before acting. Three weeks later, someone else flagged it to your manager. The window to help at low cost — one honest conversation — had already closed.", action: "Try this rule: if something feels off about someone for more than 3 days, that's your signal to act. A simple 'Hey, got 10 minutes this week?' is enough. You don't need a prepared reason." },
-      { insight: "A general 'is everyone okay?' felt safer than a direct conversation with Jake. But he needed you to notice him specifically — not a group question he could quietly disappear into.", action: "Practice the specific check-in: 'Hey Jake, I've noticed you seem a bit quieter lately — want to grab a coffee this week?' Direct, low-pressure, and unmistakably personal. That's what proactivity looks like at the people level." }
-    ],
-    4: [
-      { insight: "The client escalation went to the top of the pile. The team member who had been waiting since Friday for an HR conversation kept waiting. That kind of delay gets remembered — even when the reason is completely understandable.", action: "When triaging, ask: 'Who needs ME specifically, vs what can someone else handle?' A client escalation is often the latter. An HR conversation with a team member almost never is." },
-      { insight: "You delegated the external issue and handled the human one first. Under Monday morning pile-on pressure, that's clear and correct priority thinking — people over process.", action: "Keep this triage reflex. The next level: pre-delegate before crises happen. 'You're my first call if anything escalates with this client' is delegation that doesn't wait for a Monday morning." },
-      { insight: "You managed upward proactively before missing a deadline, handled the person who needed you, then delegated the rest. That's what proactive leadership under pressure actually looks like.", action: "Codify this pattern for your team: communicate early when something has to shift, handle people first, delegate boldly. You modelled it — now name it explicitly so others can follow it." }
-    ]
-  },
-  delegation: {
-    2: [
-      { insight: "Two weeks building a thorough document — and when real problems hit, they came back to you anyway. Documents capture steps, not instinct. The dependency on you stayed intact. A handover in name only.", action: "Before writing anything, sit with the person for an hour and ask: 'What do you think this process is actually trying to achieve?' Their answer shows you exactly what the 'why' conversation needs to cover." },
-      { insight: "You transferred the reasoning, not just the steps. That's the difference between offloading a task and genuinely delegating. They owned it — and they made the process better, which only happens when people have real ownership.", action: "Push this further: once someone owns the 'why', step back even more. Ask them to teach it to the next person. Delegation that replicates itself is the real goal." },
-      { insight: "Stepping back completely gave them real ownership — and it stuck. Some of your 'don'ts' turned out to be context-specific and they learned to tell the difference themselves.", action: "Good instinct, slightly rough execution. Next time: be explicit upfront — 'I'm stepping back. Here's when to pull me in.' Ownership without any access creates unnecessary chaos early on." }
-    ],
-    4: [
-      { insight: "Everything stayed with you — the client issue, the update prep, all of it. When nothing gets delegated, you become the bottleneck by default, even when that's not what you're trying to do.", action: "Ask yourself each morning: 'What's on my plate today that someone else could handle — and would benefit from handling?' Start with just one thing. Delegation is a muscle built in small daily reps." },
-      { insight: "You delegated the client escalation under real Monday morning pressure — and someone grew visibly from the experience. That's the multiplier effect of good delegation: not just offloading, but actively developing people.", action: "Track who you delegate to under pressure. Those are your future leaders. Make sure they know you noticed." },
-      { insight: "Strategic delegation under a messy morning, plus communicating upward before the deadline hit. Both the right calls — and in the right order.", action: "The next level: pre-delegate before crises arrive. 'You're my first call if anything escalates with this client this week' is delegation that doesn't wait for a Monday morning to trigger it." }
-    ]
-  },
-  adaptability: {
-    3: [
-      { insight: "You implemented the change while keeping your doubts private. That's adaptation — just invisible adaptation. Your team had nothing to follow, because they couldn't see how you were navigating it.", action: "Try naming your process once: 'I'm not fully sold on all of this — here's how I'm thinking about it.' That gives your team a model for handling their own ambivalence, which is far more useful than a polished front." },
-      { insight: "You named the uncertainty and moved anyway. That's the highest-signal adaptability behaviour — it shows your team that complexity is survivable and that you'll lead through it, not around it.", action: "Keep doing this under change pressure. The natural pull is towards certainty-signalling. Resist it when honesty would serve your team better than confidence would." },
-      { insight: "You adapted effectively and kept the team moving while managing your doubts professionally. Clean change leadership — and you built credibility upward at the same time.", action: "The next level: occasionally let your team see more of your internal process. Not always — but when they're struggling with the same ambiguity, your visible navigation is their map." }
-    ],
-    0: [
-      { insight: "You walked into the team conversation before the picture was clear. That takes real courage under change pressure — and it's exactly what leading through uncertainty looks like rather than waiting for it to resolve.", action: "Keep the instinct to act before you have full clarity. The alternative — waiting until you do — often means your team waits with you, and uncertainty expands to fill the silence." },
-      { insight: "You processed privately before acting. Thoughtful — but it looked like stillness to a team watching for direction. The issue isn't that you needed time; it's that they couldn't see you in motion.", action: "Try: while you're processing, narrate it briefly. 'I'm still working through this — here's where I am so far' keeps your team moving even when you're not fully there yet." },
-      { insight: "You moved to get more information before saying anything. Good information instinct — but it looked like inaction to a team that was waiting to see how you'd respond to the change.", action: "Try moving before you're ready: 'I don't know yet — but here's what we're doing today while I figure it out.' Motion in uncertainty is itself a form of leadership." }
-    ]
-  }
-};
-
-function getDimInsight(player, dim, excludeScenarios) {
-  excludeScenarios = excludeScenarios || [];
-  const keyScenarios = DIM_KEY_SCENARIOS[dim];
-
-  // First pass: find worst scenario not already used
-  let worstIdx = null;
-  let worstMissed = -1;
-  keyScenarios.forEach(sIdx => {
-    if (excludeScenarios.indexOf(sIdx) !== -1) return;
-    const choiceIdx = player.choices[sIdx];
-    if (choiceIdx === null) return;
-    const maxPts = Math.max(...SCENARIOS[sIdx].choices.map(c => c.scores[dim] || 0));
-    const got = SCENARIOS[sIdx].choices[choiceIdx].scores[dim] || 0;
-    if (maxPts - got > worstMissed) { worstMissed = maxPts - got; worstIdx = sIdx; }
-  });
-
-  // Fallback: ignore exclusion if no other option
-  if (worstIdx === null) {
-    worstMissed = -1;
-    keyScenarios.forEach(sIdx => {
-      const choiceIdx = player.choices[sIdx];
-      if (choiceIdx === null) return;
-      const maxPts = Math.max(...SCENARIOS[sIdx].choices.map(c => c.scores[dim] || 0));
-      const got = SCENARIOS[sIdx].choices[choiceIdx].scores[dim] || 0;
-      if (maxPts - got > worstMissed) { worstMissed = maxPts - got; worstIdx = sIdx; }
-    });
-  }
-
-  if (worstIdx === null) worstIdx = keyScenarios[0];
-  const choiceIdx = player.choices[worstIdx] !== null ? player.choices[worstIdx] : 0;
-  const ins = DIM_INSIGHTS[dim][worstIdx][choiceIdx];
-  return {
-    scenarioTitle: SCENARIOS[worstIdx].title,
-    choiceLetter: SCENARIOS[worstIdx].choices[choiceIdx].letter,
-    scenarioIdx: worstIdx,
-    insight: ins.insight,
-    action: ins.action
-  };
-}
-
-function getProfile(scores) {
-  return PROFILES.find(p => p.match(scores));
-}
-
-function buildFinal() {
-  document.getElementById('final-sub').textContent =
-    S.players.length === 1
-      ? "Here's what your choices revealed about your leadership."
-      : 'Here is what ' + S.players.length + ' different sets of choices revealed.';
-
-  const sorted = [...S.players].sort((a,b) => avg4(b.scores) - avg4(a.scores));
-
-  const cards = document.getElementById('final-cards');
-  cards.innerHTML = sorted.map(player => {
-    const profile = getProfile(player.scores);
-    const lowestDims = [...DIMS].sort((a,b) => pct(player.scores[a],MAX[a]) - pct(player.scores[b],MAX[b])).slice(0,3);
-
-    const bars = DIMS.map(d => {
-      const p = pct(player.scores[d], MAX[d]);
-      return '<div class="pr-br">'
-        + '<div class="pr-bl"><span class="pr-bl-name">' + DIM_ICONS[d] + ' ' + DIM_LABELS[d] + '</span><span class="pr-bl-pct">' + p + '%</span></div>'
-        + '<div class="pr-track"><div class="pr-fill" data-pct="' + p + '"></div></div>'
-        + '</div>';
-    }).join('');
-
-    const usedScenarios = [];
-    const insights = lowestDims.map(d => {
-      const ins = getDimInsight(player, d, usedScenarios);
-      usedScenarios.push(ins.scenarioIdx);
-      return '<div class="pr-insight">'
-        + '<div class="pr-insight-dim">' + DIM_ICONS[d] + ' ' + DIM_LABELS[d] + ' &nbsp;<span class="pr-insight-pct">' + pct(player.scores[d], MAX[d]) + '%</span></div>'
-        + '<div class="pr-insight-from">From &ldquo;' + ins.scenarioTitle + '&rdquo; &mdash; Choice ' + ins.choiceLetter + '</div>'
-        + '<p class="pr-insight-text">' + ins.insight + '</p>'
-        + '<div class="pr-insight-action"><span class="pr-insight-action-label">Try this</span>' + ins.action + '</div>'
-        + '</div>';
-    }).join('');
-
-    const cardId = 'pc-' + player.name.replace(/\s+/g, '-');
-    return '<div class="pr-card">'
-      + '<div class="pr-header">'
-      + '<div class="pr-dot" style="background:' + player.color + '"></div>'
-      + '<div class="pr-name" style="color:' + player.color + '">' + player.name + '</div>'
-      + '<div class="pr-emoji">' + profile.emoji + '</div>'
-      + '</div>'
-      + '<div class="pr-profile">' + profile.name + '</div>'
-      + '<p class="pr-desc">' + profile.desc + '</p>'
-      + '<div class="pr-bars">' + bars + '</div>'
-      + '<button class="pr-insights-toggle" onclick="toggleInsights(\'' + cardId + '\')">'
-      + '<span class="pr-insights-toggle-label">📈 Growth Insights &nbsp;(tap to expand)</span>'
-      + '<span class="pr-insights-arrow" id="arr-' + cardId + '">▼</span>'
-      + '</button>'
-      + '<div class="pr-insights-body" id="' + cardId + '">'
-      + insights
-      + '<button class="pr-insights-toggle" onclick="toggleInsights(\'' + cardId + '\')" style="margin-top:4px;">'
-      + '<span class="pr-insights-toggle-label">▲ &nbsp;Tap to close</span>'
-      + '<span></span>'
-      + '</button>'
-      + '</div>'
-      + '</div>';
-  }).join('');
-
-  // Animate bars
-  setTimeout(() => {
-    document.querySelectorAll('.pr-fill[data-pct]').forEach(el => {
-      el.style.width = el.getAttribute('data-pct') + '%';
-    });
-  }, 150);
-}
-
-function toggleInsights(cardId) {
-  const body = document.getElementById(cardId);
-  const arrow = document.getElementById('arr-' + cardId);
-  const isOpen = body.classList.contains('open');
-  body.classList.toggle('open', !isOpen);
-  arrow.classList.toggle('open', !isOpen);
-}
-
-// ── SHARE ──────────────────────────────────────────────
-
-function buildShareText() {
-  const sorted = [...S.players].sort((a,b) => avg4(b.scores) - avg4(a.scores));
-  let text = '🏆 Leadership Challenge Results\nHLE / Alaya · 2026\n';
-  text += '━━━━━━━━━━━━━━━━━━━━━━\n\n';
-  sorted.forEach((player, i) => {
-    const profile = getProfile(player.scores);
-    const medals = ['🥇','🥈','🥉'];
-    const rank = i < 3 ? medals[i] : (i + 1) + '.';
-    text += rank + ' ' + player.name.toUpperCase() + ' — ' + profile.name + ' ' + profile.emoji + '\n';
-    text += '🛡️ Trust: ' + pct(player.scores.trust, MAX.trust) + '%  ';
-    text += '👁️ Proactivity: ' + pct(player.scores.proactivity, MAX.proactivity) + '%  ';
-    text += '🎯 Delegation: ' + pct(player.scores.delegation, MAX.delegation) + '%  ';
-    text += '🔄 Adaptability: ' + pct(player.scores.adaptability, MAX.adaptability) + '%\n';
-    text += '\n' + profile.desc + '\n';
-    text += '\n📈 Growth Insights:\n';
-    const lowestDims = [...DIMS].sort((a,b) => pct(player.scores[a],MAX[a]) - pct(player.scores[b],MAX[b])).slice(0,3);
-    const usedSc = [];
-    lowestDims.forEach(d => {
-      const ins = getDimInsight(player, d, usedSc);
-      usedSc.push(ins.scenarioIdx);
-      text += '\n' + DIM_ICONS[d] + ' ' + DIM_LABELS[d] + ' (' + pct(player.scores[d], MAX[d]) + '%)';
-      text += ' — From "' + ins.scenarioTitle + '", Choice ' + ins.choiceLetter + '\n';
-      text += ins.insight + '\n';
-      text += '▶ Try this: ' + ins.action + '\n';
-    });
-    text += '\n━━━━━━━━━━━━━━━━━━━━━━\n\n';
-  });
-  text += 'Played at HLE/Alaya Leadership Challenge 2026';
-  return text;
-}
-
-function openShareModal() {
-  const n = S.players.length;
-  document.getElementById('share-modal-sub').textContent =
-    n === 1 ? 'Share your leadership profile.' : 'Share all ' + n + ' players\u2019 leadership profiles.';
-  document.getElementById('share-modal').classList.add('vis');
-}
-function closeShareModal() { document.getElementById('share-modal').classList.remove('vis'); }
-function handleShareOverlayClick(e) { if (e.target === document.getElementById('share-modal')) closeShareModal(); }
-
-function showToast(msg) {
-  const t = document.getElementById('share-toast');
-  t.textContent = msg;
-  t.style.opacity = '1';
-  setTimeout(() => { t.style.opacity = '0'; }, 2200);
-}
-
-function shareWhatsApp() {
-  const text = buildShareText();
-  window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
-  closeShareModal();
-}
-
-function shareEmail() {
-  const text = buildShareText();
-  const subject = 'Leadership Challenge Results — HLE/Alaya 2026';
-  window.open('mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(text), '_blank');
-  closeShareModal();
-}
-
-function copyShareText() {
-  const text = buildShareText();
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).then(() => { showToast('✓ Copied to clipboard!'); });
-  } else {
-    const ta = document.createElement('textarea');
-    ta.value = text;
-    ta.style.position = 'fixed'; ta.style.opacity = '0';
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    document.body.removeChild(ta);
-    showToast('✓ Copied to clipboard!');
-  }
-  closeShareModal();
-}
-
-function downloadWord() {
-  const sorted = [...S.players].sort((a,b) => avg4(b.scores) - avg4(a.scores));
-  const medals = ['🥇','🥈','🥉'];
-  let html = '<html><head><meta charset="UTF-8">'
-    + '<style>body{font-family:Calibri,sans-serif;color:#111;max-width:700px;margin:40px auto;padding:0 24px}'
-    + 'h1{color:#c47a00;font-size:26px;margin-bottom:4px}'
-    + 'h2{color:#333;font-size:18px;margin:28px 0 4px}'
-    + 'h3{color:#c47a00;font-size:13px;text-transform:uppercase;letter-spacing:1.5px;margin:18px 0 4px}'
-    + '.tag{display:inline-block;background:#fff3cc;color:#7a5000;padding:3px 10px;border-radius:4px;font-size:13px;font-weight:bold}'
-    + '.bar-row{display:flex;align-items:center;gap:10px;margin:5px 0}'
-    + '.bar-label{font-size:13px;width:110px;color:#555}'
-    + '.bar-track{flex:1;height:10px;background:#f0e8d0;border-radius:5px}'
-    + '.bar-fill{height:10px;background:#f5a623;border-radius:5px}'
-    + '.bar-pct{font-size:13px;color:#c47a00;font-weight:bold;width:36px;text-align:right}'
-    + '.insight{background:#fffbf0;border-left:3px solid #f5a623;padding:10px 14px;margin:8px 0;border-radius:0 6px 6px 0}'
-    + '.insight-from{font-size:11px;color:#999;margin-bottom:4px}'
-    + '.try-this{background:#fff3e0;padding:8px 12px;border-radius:4px;font-size:13px;margin-top:6px}'
-    + '.try-label{font-size:10px;font-weight:bold;text-transform:uppercase;letter-spacing:1.5px;color:#c47a00;display:block;margin-bottom:3px}'
-    + '.divider{border:none;border-top:1px solid #eee;margin:28px 0}'
-    + '</style></head><body>'
-    + '<h1>Leadership Challenge Results</h1>'
-    + '<p style="color:#888;font-size:13px">HLE / Alaya &middot; 2026</p><hr class="divider">';
-
-  sorted.forEach((player, i) => {
-    const profile = getProfile(player.scores);
-    const rank = i < 3 ? medals[i] : (i + 1) + '.';
-    const usedSc = [];
-    const lowestDims = [...DIMS].sort((a,b) => pct(player.scores[a],MAX[a]) - pct(player.scores[b],MAX[b]));
-    html += '<h2>' + rank + ' ' + player.name + '</h2>';
-    html += '<p><span class="tag">' + profile.name + ' ' + profile.emoji + '</span></p>';
-    html += '<p style="font-size:14px;color:#444;margin:8px 0 14px">' + profile.desc + '</p>';
-    DIMS.forEach(d => {
-      const p = pct(player.scores[d], MAX[d]);
-      html += '<div class="bar-row">'
-        + '<span class="bar-label">' + DIM_ICONS[d] + ' ' + DIM_LABELS[d] + '</span>'
-        + '<div class="bar-track"><div class="bar-fill" style="width:' + p + '%"></div></div>'
-        + '<span class="bar-pct">' + p + '%</span></div>';
-    });
-    html += '<h3 style="margin-top:20px">Growth Insights</h3>';
-    lowestDims.forEach(d => {
-      const ins = getDimInsight(player, d, usedSc);
-      usedSc.push(ins.scenarioIdx);
-      html += '<div class="insight">'
-        + '<div class="insight-from">From &ldquo;' + ins.scenarioTitle + '&rdquo; &mdash; Choice ' + ins.choiceLetter + ' &mdash; ' + DIM_ICONS[d] + ' ' + DIM_LABELS[d] + ' ' + pct(player.scores[d],MAX[d]) + '%</div>'
-        + '<p style="font-size:14px;margin:4px 0">' + ins.insight + '</p>'
-        + '<div class="try-this"><span class="try-label">Try this</span>' + ins.action + '</div>'
-        + '</div>';
-    });
-    if (i < sorted.length - 1) html += '<hr class="divider">';
-  });
-
-  html += '</body></html>';
-  const blob = new Blob([html], { type: 'application/msword' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'Leadership-Challenge-Results-2026.doc';
-  a.click();
-  closeShareModal();
-  showToast('✓ Word doc downloaded!');
-}
-
-function playAgain() {
-  S.players = [];
-  S.step = 0;
-  S.roundChoices = [];
-  S.pickerIdx = 0;
-  document.getElementById('player-list').innerHTML = '';
-  go('splash');
-}
-
-// ═══════════════════════════════════════════════════════
-//  BOOT
-// ═══════════════════════════════════════════════════════
-
-// Clicking "Start" on splash goes to tutorial which goes to add-players
-document.querySelector('#splash .btn-gold').onclick = () => {
-  initTutorial();
-};
-
-// Pre-init tutorial dots
-renderTutSlide();
-</script>
+<script src="data.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
