@@ -511,7 +511,9 @@ function buildConsequenceScreen() {
       + divider;
   });
 
-  html += `<div style="height:24px"></div><button class="btn btn-gold" onclick="goToScoreboard()">See Scores →</button>`;
+  html += '<div style="height:24px"></div>' +
+    '<button class="btn btn-ghost" style="width:100%;margin-bottom:10px;padding:13px" onclick="openOutcomeShareModal()">📤 Share this outcome</button>' +
+    '<button class="btn btn-gold" style="width:100%" onclick="goToScoreboard()">See Scores →</button>';
   body.innerHTML = html;
 }
 
@@ -742,6 +744,58 @@ function toggleInsights(cardId) {
 
 // ── SHARE ──────────────────────────────────────────────
 
+function buildOutcomeShareText() {
+  const scIdx = S.scenarioOrder.length ? S.scenarioOrder[S.step] : S.step;
+  const scenario = SCENARIOS[scIdx];
+  const totalRounds = S.scenarioOrder.length || SCENARIOS.length;
+  let text = '🎯 The Leadership Challenge — HLE/Alaya 2026\n';
+  text += 'Scenario ' + (S.step + 1) + ' of ' + totalRounds + ': ' + scenario.title + '\n';
+  text += '━━━━━━━━━━━━━━━━━━━━━━\n\n';
+  text += '📋 Situation:\n' + scenario.situation + '\n\n';
+  text += '━━━━━━━━━━━━━━━━━━━━━━\n\n';
+
+  const choiceGroups = {};
+  if (isSolo()) {
+    choiceGroups[S.roundChoices[0].choiceIdx] = [0];
+  } else {
+    S.roundChoices.forEach(rc => {
+      if (!choiceGroups[rc.choiceIdx]) choiceGroups[rc.choiceIdx] = [];
+      choiceGroups[rc.choiceIdx].push(rc.playerIdx);
+    });
+  }
+
+  Object.keys(choiceGroups).sort((a,b) => parseInt(a)-parseInt(b)).forEach(key => {
+    const choice = scenario.choices[parseInt(key)];
+    const playerIdxs = choiceGroups[key];
+    const playerNames = playerIdxs.map(pi => S.players[pi].name.toUpperCase()).join(', ');
+
+    text += isSolo()
+      ? '👤 You chose Option ' + choice.letter + '\n'
+      : '👤 ' + playerNames + ' — Option ' + choice.letter + '\n';
+    text += '"' + choice.text + '"\n\n';
+    text += 'What happened:\n' + choice.outcome + '\n\n';
+
+    const scores = DIMS.map(d => {
+      const v = choice.scores[d] || 0;
+      return DIM_ICONS[d] + ' ' + DIM_LABELS[d] + (v > 0 ? ' +' + v : ' 0');
+    }).join('  ');
+    text += scores + '\n';
+    text += '━━━━━━━━━━━━━━━━━━━━━━\n\n';
+  });
+
+  text += '💬 Discuss: ' + scenario.discussPrompt + '\n\n';
+  text += 'The Leadership Challenge — HLE/Alaya 2026';
+  return text;
+}
+
+function openOutcomeShareModal() {
+  const n = S.players.length;
+  document.getElementById('share-modal-sub').textContent =
+    n === 1 ? 'Share this scenario outcome.' : 'Share what everyone chose and what happened.';
+  document.getElementById('share-modal').setAttribute('data-mode', 'outcome');
+  document.getElementById('share-modal').classList.add('vis');
+}
+
 function buildShareText() {
   const sorted = [...S.players].sort((a,b) => avg4(b.scores, S.MAX) - avg4(a.scores, S.MAX));
   let text = '🏆 Leadership Challenge Results\nHLE / Alaya · 2026\n';
@@ -779,7 +833,7 @@ function openShareModal() {
     n === 1 ? 'Share your leadership profile.' : 'Share all ' + n + ' players\u2019 leadership profiles.';
   document.getElementById('share-modal').classList.add('vis');
 }
-function closeShareModal() { document.getElementById('share-modal').classList.remove('vis'); }
+function closeShareModal() { const m = document.getElementById('share-modal'); m.classList.remove('vis'); m.removeAttribute('data-mode'); }
 function handleShareOverlayClick(e) { if (e.target === document.getElementById('share-modal')) closeShareModal(); }
 
 function showToast(msg) {
@@ -790,7 +844,8 @@ function showToast(msg) {
 }
 
 function shareWhatsApp() {
-  const text = buildShareText();
+  const mode = document.getElementById('share-modal').getAttribute('data-mode');
+  const text = mode === 'outcome' ? buildOutcomeShareText() : buildShareText();
   window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
   closeShareModal();
 }
@@ -803,7 +858,8 @@ function shareEmail() {
 }
 
 function copyShareText() {
-  const text = buildShareText();
+  const mode = document.getElementById('share-modal').getAttribute('data-mode');
+  const text = mode === 'outcome' ? buildOutcomeShareText() : buildShareText();
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(text).then(() => { showToast('✓ Copied to clipboard!'); });
   } else {
