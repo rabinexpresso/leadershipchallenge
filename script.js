@@ -49,18 +49,13 @@ function renderTutSlide() {
   document.querySelectorAll('.tut-slide').forEach((el, i) => {
     el.classList.toggle('active', i === S.tutSlide);
   });
-  // Dots
-  const dots = document.getElementById('tut-dots');
-  dots.innerHTML = Array.from({length:TOTAL_SLIDES}).map((_,i) => {
-    const cls = i === S.tutSlide ? 'tut-dot on' : 'tut-dot';
-    return '<div class="' + cls + '"></div>';
-  }).join('');
-  // Prev button
+  // Prev button — always visible; slide 1 goes back to splash
   const prev = document.getElementById('tut-prev');
-  prev.style.display = 'block'; // Always show - on slide 1 it goes back to splash
-  // Next button
+  prev.textContent = '← Back';
+  // Next button — show slide position in label
   const next = document.getElementById('tut-next');
-  next.textContent = S.tutSlide === TOTAL_SLIDES - 1 ? 'Add Players →' : 'Next →';
+  const isLast = S.tutSlide === TOTAL_SLIDES - 1;
+  next.textContent = isLast ? 'Add Players →' : 'Next  ' + (S.tutSlide + 1) + ' / ' + TOTAL_SLIDES + ' →';
 }
 
 function tutNav(dir) {

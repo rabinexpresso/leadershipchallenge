@@ -122,11 +122,11 @@
   .ghost-num { font-family:'Bricolage Grotesque',sans-serif; font-size:80px; font-weight:800; color:rgba(245,166,35,.07); line-height:1; margin-bottom:-18px; user-select:none; }
   .tut-heading { font-family:'Bricolage Grotesque',sans-serif; font-size:26px; font-weight:700; line-height:1.15; margin-bottom:14px; }
   .tut-text { font-size:15px; color:var(--body); line-height:1.8; margin-bottom:20px; }
-  .tut-nav { display:flex; align-items:center; gap:10px; padding-top:20px; flex-shrink:0; }
+  .tut-nav { display:flex; align-items:center; gap:10px; padding:16px 0 0; flex-shrink:0; }
   .tut-dots { display:flex; gap:6px; flex:1; justify-content:center; }
   .tut-dot { width:6px; height:6px; border-radius:50%; background:var(--border2); transition:all .25s; }
   .tut-dot.on { background:var(--gold); width:20px; border-radius:3px; }
-  .t-prev { font-family:'Bricolage Grotesque',sans-serif; font-size:14px; font-weight:700; padding:12px 18px; border-radius:100px; background:var(--card); color:var(--body); border:1px solid var(--border2); cursor:pointer; transition:all .2s; flex-shrink:0; }
+  .t-prev { font-family:'Bricolage Grotesque',sans-serif; font-size:14px; font-weight:700; padding:12px 20px; border-radius:100px; background:var(--card2); color:var(--text); border:1px solid var(--border2); cursor:pointer; transition:all .2s; flex:1; }
   .t-prev:hover { color:var(--gold); border-color:var(--gold-border); }
   .t-next { font-family:'Bricolage Grotesque',sans-serif; font-size:14px; font-weight:700; padding:12px 20px; border-radius:100px; background:var(--gold); color:#07090d; border:none; cursor:pointer; transition:all .2s; flex:1; }
   .t-next:hover { transform:translateY(-1px); box-shadow:0 6px 20px rgba(245,166,35,.3); }
@@ -451,7 +451,6 @@
 
     <div class="tut-nav">
       <button class="t-prev" id="tut-prev" onclick="tutNav(-1)">← Back</button>
-      <div class="tut-dots" id="tut-dots"></div>
       <button class="t-next" id="tut-next" onclick="tutNav(1)">Next →</button>
     </div>
   </div>
