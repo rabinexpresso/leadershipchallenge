@@ -870,7 +870,78 @@ function copyShareText() {
   closeShareModal();
 }
 
+function downloadOutcomeWord() {
+  const scIdx = S.scenarioOrder.length ? S.scenarioOrder[S.step] : S.step;
+  const scenario = SCENARIOS[scIdx];
+  const totalRounds = S.scenarioOrder.length || SCENARIOS.length;
+
+  const choiceGroups = {};
+  if (isSolo()) {
+    choiceGroups[S.roundChoices[0].choiceIdx] = [0];
+  } else {
+    S.roundChoices.forEach(rc => {
+      if (!choiceGroups[rc.choiceIdx]) choiceGroups[rc.choiceIdx] = [];
+      choiceGroups[rc.choiceIdx].push(rc.playerIdx);
+    });
+  }
+
+  let html = '<html><head><meta charset="UTF-8">'
+    + '<style>body{font-family:Calibri,sans-serif;color:#111;max-width:700px;margin:40px auto;padding:0 24px}'
+    + 'h1{color:#c47a00;font-size:22px;margin-bottom:4px}'
+    + 'h2{color:#333;font-size:16px;margin:24px 0 4px}'
+    + '.eyebrow{font-size:11px;font-weight:bold;text-transform:uppercase;letter-spacing:2px;color:#c47a00;margin-bottom:6px}'
+    + '.situation{background:#fffbf0;border-left:3px solid #f5a623;padding:12px 16px;margin:12px 0;font-style:italic;font-size:14px;border-radius:0 6px 6px 0}'
+    + '.note{font-size:12px;color:#999;margin:4px 0 16px;font-style:italic}'
+    + '.player-block{border:1px solid #eee;border-radius:6px;padding:14px 18px;margin:14px 0}'
+    + '.player-name{font-weight:bold;font-size:14px;color:#c47a00;margin-bottom:4px}'
+    + '.choice-letter{display:inline-block;background:#c47a00;color:#fff;width:22px;height:22px;border-radius:4px;text-align:center;line-height:22px;font-weight:bold;font-size:13px;margin-right:6px;vertical-align:middle}'
+    + '.choice-text{font-style:italic;font-size:13px;color:#555;border-left:3px solid #eee;padding:6px 12px;margin:8px 0}'
+    + '.outcome{font-size:14px;color:#222;margin:8px 0}'
+    + '.chips{margin:10px 0}'
+    + '.chip{display:inline-block;background:#fff3cc;color:#7a5000;padding:3px 10px;border-radius:4px;font-size:12px;font-weight:bold;margin:2px 4px 2px 0}'
+    + '.discuss{background:#f9f9f9;border:1px solid #eee;border-radius:6px;padding:12px 16px;margin:20px 0;font-size:14px;color:#444}'
+    + '.divider{border:none;border-top:1px solid #eee;margin:20px 0}'
+    + '</style></head><body>'
+    + '<div class="eyebrow">Leadership Challenge &middot; HLE/Alaya 2026</div>'
+    + '<h1>Scenario ' + (S.step + 1) + ' of ' + totalRounds + ': ' + scenario.title + '</h1>'
+    + '<div class="situation">' + scenario.situation + '</div>'
+    + '<p class="note">&#128161; Different choices exercise different signals &mdash; a zero does not mean the choice was wrong.</p>'
+    + '<hr class="divider">';
+
+  Object.keys(choiceGroups).sort((a,b) => parseInt(a)-parseInt(b)).forEach(key => {
+    const choice = scenario.choices[parseInt(key)];
+    const playerIdxs = choiceGroups[key];
+    const playerNames = playerIdxs.map(pi => S.players[pi].name).join(', ');
+
+    html += '<div class="player-block">'
+      + '<div class="player-name">' + (isSolo() ? 'You' : playerNames) + '</div>'
+      + '<div style="margin:4px 0"><span class="choice-letter">' + choice.letter + '</span>'
+      + '<strong>Option ' + choice.letter + '</strong></div>'
+      + '<div class="choice-text">' + choice.text + '</div>'
+      + '<div class="outcome">' + choice.outcome + '</div>'
+      + '<div class="chips">'
+      + DIMS.map(d => {
+          const v = choice.scores[d] || 0;
+          return '<span class="chip">' + DIM_ICONS[d] + ' ' + DIM_LABELS[d] + (v > 0 ? ' +' + v : ' 0') + '</span>';
+        }).join('')
+      + '</div></div>';
+  });
+
+  html += '<div class="discuss"><strong>Discuss:</strong> ' + scenario.discussPrompt + '</div>'
+    + '</body></html>';
+
+  const blob = new Blob([html], { type: 'application/msword' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'Outcome-Scenario-' + (S.step + 1) + '-' + scenario.title.replace(/\s+/g,'-') + '.doc';
+  a.click();
+  closeShareModal();
+  showToast('\u2713 Outcome doc downloaded!');
+}
+
 function downloadWord() {
+  const mode = document.getElementById('share-modal').getAttribute('data-mode');
+  if (mode === 'outcome') { downloadOutcomeWord(); return; }
   const sorted = [...S.players].sort((a,b) => avg4(b.scores, S.MAX) - avg4(a.scores, S.MAX));
   const medals = ['🥇','🥈','🥉'];
   let html = '<html><head><meta charset="UTF-8">'
