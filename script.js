@@ -1291,42 +1291,46 @@ function validateJoin() {
 }
 
 function joinRoom() {
-  try {
-    showJoinError('⏳ Connecting...');
-    const code = document.getElementById('join-code-input').value.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
-    const name = document.getElementById('join-name-input').value.trim();
-    if (!code || !name) { showJoinError('Please enter the room code and your name.'); return; }
-    if (code.length < 4) { showJoinError('Room code looks too short. Check again.'); return; }
-    if (typeof db === 'undefined' || !db) { showJoinError('DEBUG: Firebase db not loaded'); return; }
-    const timeoutId = setTimeout(() => {
-      showJoinError('Timed out — check Firebase rules in console (must be .read:true, .write:true and Published)');
-    }, 8000);
-    db.ref('games/' + code).once('value').then(snap => {
-      clearTimeout(timeoutId);
-      if (!snap.exists()) { showJoinError('Room not found: ' + code); return; }
-      const game = snap.val();
-      if (game.status !== 'lobby') { showJoinError('This game has already started.'); return; }
-      const existingCount = game.players ? Object.keys(game.players).length : 0;
-      const color = COLORS[existingCount % COLORS.length];
-      const playerId = 'p' + Date.now().toString(36);
-      MP.playerId = playerId; MP.playerName = name;
-      MP.playerColor = color; MP.roomCode = code;
-      MP.isHost = false; MP.active = true;
-      MP.gameRef = db.ref('games/' + code);
-      localStorage.setItem('lc_mp_role', 'player');
-      localStorage.setItem('lc_mp_room', code);
-      localStorage.setItem('lc_mp_player_id', playerId);
-      localStorage.setItem('lc_mp_player_name', name);
-      MP.gameRef.child('players/' + playerId).set({
-        name, color, scores: { T:0, P:0, E:0, A:0 }, choices: {}, answered: false
-      }).then(() => {
-        showPlayerWait("You're in!", 'Waiting for the host to start...');
-        listenAsPlayer();
-      }).catch(err => showJoinError('Write failed: ' + (err && err.message ? err.message : err)));
-    }).catch(err => showJoinError('Read failed: ' + (err && err.message ? err.message : err)));
-  } catch (err) {
-    showJoinError('JS error: ' + (err && err.message ? err.message : err));
+  showJoinError('⏳ Connecting...');
+  const code = document.getElementById('join-code-input').value.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
+  const name = document.getElementById('join-name-input').value.trim();
+  if (!code || !name) { showJoinError('Please enter the room code and your name.'); return; }
+  if (code.length < 4) { showJoinError('Room code looks too short. Check again.'); return; }
+  const timeoutId = setTimeout(() => {
+    showJoinError('Connection timed out. Check your internet and try again.');
+  }, 8000);
+  db.ref('games/' + code).once('value').then(snap => {
+    clearTimeout(timeoutId);
+    if (!snap.exists()) { showJoinError('Room not found. Check the code.'); return; }
+    const game = snap.val();
+    if (game.status !== 'lobby') { showJoinError('This game has already started.'); return; }
+    const existingCount = game.players ? Object.keys(game.players).length : 0;
+    const color = COLORS[existingCount % COLORS.length];
+    const playerId = 'p' + Date.now().toString(36);
+    MP.playerId = playerId; MP.playerName = name;
+    MP.playerColor = color; MP.roomCode = code;
+    MP.isHost = false; MP.active = true;
+    MP.gameRef = db.ref('games/' + code);
+    localStorage.setItem('lc_mp_role', 'player');
+    localStorage.setItem('lc_mp_room', code);
+    localStorage.setItem('lc_mp_player_id', playerId);
+    localStorage.setItem('lc_mp_player_name', name);
+    MP.gameRef.child('players/' + playerId).set({
+      name, color, scores: { T:0, P:0, E:0, A:0 }, choices: {}, answered: false
+    }).then(() => {
+      showPlayerWait("You're in!", 'Waiting for the host to start...');
+      listenAsPlayer();
+    });
+  }).catch(() => { clearTimeout(timeoutId); showJoinError('Could not connect. Check your internet.'); });
+}
+
+function leaveGame() {
+  if (MP.gameRef && MP.playerId && !MP.isHost) {
+    MP.gameRef.child('players/' + MP.playerId).remove();
+    MP.gameRef.child('roundChoices/' + MP.playerId).remove();
   }
+  resetMP();
+  go('splash');
 }
 
 function showJoinError(msg) {
@@ -1426,10 +1430,10 @@ restoreGame();
   MP.roomCode = code; MP.isHost = false; MP.active = true;
   MP.gameRef = db.ref('games/' + code);
   MP.gameRef.once('value', snap => {
-    if (!snap.exists()) { resetMP(); return; }
+    if (!snap.exists()) { resetMP(); go('splash'); return; }
     const game = snap.val();
     const myPlayer = game.players && game.players[playerId];
-    if (!myPlayer) { resetMP(); return; }
+    if (!myPlayer) { resetMP(); go('splash'); return; }
     MP.playerColor = myPlayer.color;
     listenAsPlayer();
   });
