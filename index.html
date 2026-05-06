@@ -313,6 +313,23 @@
   .pr-track { height:5px; background:rgba(255,255,255,.06); border-radius:100px; overflow:hidden; }
   .pr-fill { height:100%; background:linear-gradient(90deg, var(--gold), var(--gold-l)); border-radius:100px; width:0%; transition:width 1s cubic-bezier(.4,0,.2,1); }
   .final-cta { text-align:center; padding-top:4px; }
+
+  /* ─── MULTIPLAYER ─── */
+  .mp-screen-inner { flex:1; display:flex; flex-direction:column; padding:28px 22px 52px; }
+  .mp-code-big { font-family:'Bricolage Grotesque',sans-serif; font-size:52px; font-weight:800; color:var(--gold); letter-spacing:6px; text-align:center; padding:20px; background:var(--gold-dim); border:2px solid var(--gold-border); border-radius:20px; margin:12px 0 16px; }
+  .mp-instr { font-size:14px; color:var(--body); line-height:1.65; text-align:center; margin-bottom:20px; }
+  .mp-player-chip { display:flex; align-items:center; gap:10px; padding:12px 16px; background:var(--card); border:1px solid var(--border); border-radius:12px; margin-bottom:8px; animation:slideIn .3s ease both; }
+  .mp-chip-name { font-family:'Bricolage Grotesque',sans-serif; font-size:15px; font-weight:700; }
+  .mp-chip-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+  .mp-join-input { width:100%; background:var(--card); border:1px solid var(--border2); color:var(--text); font-family:'Bricolage Grotesque',sans-serif; font-size:28px; font-weight:800; padding:16px; border-radius:12px; outline:none; transition:border-color .2s; text-align:center; letter-spacing:5px; text-transform:uppercase; margin-bottom:10px; }
+  .mp-join-input::placeholder { font-size:15px; letter-spacing:0; font-weight:400; font-family:'Plus Jakarta Sans',sans-serif; color:var(--sub); text-transform:none; }
+  .mp-join-input:focus { border-color:var(--gold-border); }
+  .mp-wait-center { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:40px 24px; gap:10px; }
+  .mp-wait-emoji { font-size:52px; margin-bottom:6px; }
+  .mp-wait-heading { font-family:'Bricolage Grotesque',sans-serif; font-size:26px; font-weight:700; }
+  .mp-wait-sub { font-size:15px; color:var(--body); line-height:1.65; max-width:260px; }
+  .mp-wait-code { font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:700; color:var(--gold); margin-top:16px; padding:8px 18px; background:var(--gold-dim); border:1px solid var(--gold-border); border-radius:100px; }
+  .splash-divider { width:100%; height:1px; background:var(--border); margin:4px 0; }
   </style>
 </head>
 <body>
@@ -334,6 +351,9 @@
   <div class="splash-actions">
     <button class="btn btn-gold" onclick="go('tutorial')">Start the Challenge →</button>
     <button class="btn btn-ghost" onclick="skipTutorial()">Skip Tutorial</button>
+    <div class="splash-divider"></div>
+    <button class="btn btn-ghost" onclick="goMultiplayer()" style="border-color:var(--gold-border);color:var(--gold);">🎮 Host Multiplayer</button>
+    <button class="btn btn-ghost" onclick="goJoin()">Join a Game →</button>
   </div>
   <p class="splash-meta">Choose your pace when you start · based on real leader insights</p>
 </div>
@@ -678,6 +698,77 @@
 <div id="share-toast" class="share-toast"></div>
 
 
+<!-- ══════════════════════════════════
+     HOST LOBBY
+══════════════════════════════════ -->
+<div id="host-lobby" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="cancelHostRoom()">← Cancel</button>
+    <div class="topbar-center">Host Game</div>
+    <div class="topbar-spacer"></div>
+  </div>
+  <div class="mp-screen-inner">
+    <div class="eyebrow" style="margin-bottom:4px">Room Code</div>
+    <div class="mp-code-big" id="hl-code">----</div>
+    <p class="mp-instr">Players: open the same website and tap <strong style="color:var(--text)">Join a Game</strong>, then enter this code.</p>
+    <div class="eyebrow" style="margin-bottom:10px">Players in room</div>
+    <div id="hl-player-list" style="margin-bottom:10px;min-height:40px"></div>
+    <p id="hl-waiting" style="font-size:14px;color:var(--sub);text-align:center;margin-bottom:24px">Waiting for players to join...</p>
+    <button class="btn btn-gold" id="hl-start-btn" onclick="startMultiplayerGame()" disabled style="opacity:.4;cursor:not-allowed">Start Game →</button>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     JOIN SCREEN
+══════════════════════════════════ -->
+<div id="join-screen" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="go('splash')">← Back</button>
+    <div class="topbar-center">Join Game</div>
+    <div class="topbar-spacer"></div>
+  </div>
+  <div class="mp-screen-inner">
+    <h2 class="ap-heading" style="margin-bottom:8px">Join a game</h2>
+    <p class="ap-sub">Ask the host for the room code, then enter your name.</p>
+    <div class="eyebrow" style="margin-bottom:8px">Room Code</div>
+    <input class="mp-join-input" id="join-code-input" placeholder="e.g. WOLF7" maxlength="6" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'');validateJoin()">
+    <div class="eyebrow" style="margin-bottom:8px;margin-top:6px">Your Name</div>
+    <input class="p-input" id="join-name-input" placeholder="Enter your name" style="margin-bottom:20px" oninput="validateJoin()">
+    <p id="join-error" style="font-size:13px;color:#f87171;margin-bottom:16px;display:none;text-align:center"></p>
+    <button class="btn btn-gold" id="join-btn" onclick="joinRoom()" disabled style="opacity:.4;cursor:not-allowed">Join Game →</button>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     PLAYER WAIT
+══════════════════════════════════ -->
+<div id="player-wait" class="screen">
+  <div class="mp-wait-center">
+    <div class="mp-wait-emoji" id="pw-emoji">⏳</div>
+    <h2 class="mp-wait-heading" id="pw-heading">Waiting...</h2>
+    <p class="mp-wait-sub" id="pw-sub">The host will start the game soon.</p>
+    <div class="mp-wait-code" id="pw-room-code"></div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     PLAYER GAME
+══════════════════════════════════ -->
+<div id="player-game" class="screen">
+  <div class="game-bar">
+    <div class="gb-top">
+      <span class="gb-label" id="pg-label">Scenario 1</span>
+      <span id="pg-player-name" style="font-family:'Bricolage Grotesque',sans-serif;font-size:12px;font-weight:700;padding:4px 12px;border-radius:100px;border:1px solid var(--gold-border);background:var(--gold-dim);color:var(--gold)"></span>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="pg-prog-fill" style="width:0%"></div></div>
+  </div>
+  <div class="game-body" id="player-game-body"></div>
+</div>
+
+
 <!-- QUIT MODAL -->
 <div id="quit-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);z-index:100;align-items:center;justify-content:center;padding:24px;">
   <div style="background:#0f1421;border:1px solid rgba(255,255,255,0.13);border-radius:20px;padding:28px 24px;max-width:320px;width:100%;text-align:center;">
@@ -692,6 +783,8 @@
 </div>
 
 
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 <script src="data.js"></script>
 <script src="script.js"></script>
 </body>

@@ -3,6 +3,49 @@
 // HLE / Alaya 2026
 // ============================================================
 
+// ═══════════════════════════════════════════════════════
+//  FIREBASE INIT
+// ═══════════════════════════════════════════════════════
+
+firebase.initializeApp({
+  apiKey: "AIzaSyAoQ32TvlOD3ge9uY2MMDmeypu1KyRHzdE",
+  authDomain: "leadershipchallenge-1bc16.firebaseapp.com",
+  databaseURL: "https://leadershipchallenge-1bc16-default-rtdb.firebaseio.com",
+  projectId: "leadershipchallenge-1bc16",
+  storageBucket: "leadershipchallenge-1bc16.firebasestorage.app",
+  messagingSenderId: "91568394313",
+  appId: "1:91568394313:web:807b922efcf63a3d96ef98"
+});
+const db = firebase.database();
+
+var MP = {
+  active: false, isHost: false, roomCode: null,
+  playerId: null, playerName: null, playerColor: null,
+  gameRef: null, step: 0, scenarioOrder: []
+};
+
+const ROOM_WORDS = ['LION','WOLF','BEAR','HAWK','DEER','JADE','PINE','SAGE','DUSK','DAWN','COVE','MESA','BOLT','FERN','GALE'];
+
+function fbArr(val) {
+  if (!val) return [];
+  return Array.isArray(val) ? val : Object.values(val);
+}
+
+function generateRoomCode() {
+  return ROOM_WORDS[Math.floor(Math.random() * ROOM_WORDS.length)] + (Math.floor(Math.random() * 9) + 1);
+}
+
+function mpSyncStatus(status) {
+  if (MP.active && MP.isHost && MP.gameRef) MP.gameRef.child('status').set(status);
+}
+
+function resetMP() {
+  if (MP.gameRef) MP.gameRef.off();
+  MP.active = false; MP.isHost = false; MP.roomCode = null;
+  MP.playerId = null; MP.playerName = null; MP.playerColor = null;
+  MP.gameRef = null; MP.step = 0; MP.scenarioOrder = [];
+  ['lc_mp_role','lc_mp_room','lc_mp_player_id','lc_mp_player_name'].forEach(k => localStorage.removeItem(k));
+}
 
 // ═══════════════════════════════════════════════════════
 //  NAVIGATION
@@ -31,6 +74,10 @@ function closeQuitModal() {
 }
 function doQuit() {
   clearState();
+  if (MP.active) {
+    if (MP.isHost && MP.gameRef) mpSyncStatus('ended');
+    resetMP();
+  }
   closeQuitModal();
   go('splash');
 }
@@ -189,6 +236,24 @@ function buildScenarioOrder(count) {
 }
 
 function startGameWithCount(count) {
+  if (MP.active && MP.isHost) {
+    MP.gameRef.child('players').once('value', snap => {
+      const fbPlayers = snap.val() || {};
+      S.players = Object.entries(fbPlayers).map(([id, p]) => ({
+        fbId: id, name: p.name, color: p.color,
+        scores: { T:0, P:0, E:0, A:0 }, choices: new Array(12).fill(null)
+      }));
+      if (S.players.length === 0) { alert('No players have joined yet!'); return; }
+      S.scenarioOrder = buildScenarioOrder(count);
+      S.step = 0; S.roundChoices = []; S.pickerIdx = 0;
+      S.MAX = getMaxForScenarios(S.scenarioOrder);
+      MP.gameRef.update({ status:'playing', step:0, scenarioOrder:S.scenarioOrder, mode:count, MAX:S.MAX });
+      renderPickTurn(0);
+      go('game');
+      listenHostAnswers();
+    });
+    return;
+  }
   const inputs = document.querySelectorAll('.p-input');
   S.players = [];
   Array.from(inputs).forEach((input, i) => {
@@ -228,9 +293,11 @@ function renderPickTurn(playerIdx) {
   document.getElementById('gb-label').textContent = `Scenario ${S.step+1} of ${totalRounds}`;
   document.getElementById('prog-fill').style.width = `${(S.step / totalRounds)*100}%`;
 
-  // Score pills (solo: show scores; multi: show current player)
+  // Score pills
   const spRow = document.getElementById('sp-row');
-  if (isSolo()) {
+  if (MP.active && MP.isHost) {
+    spRow.innerHTML = '<span class="sp" style="color:var(--gold);border-color:var(--gold-border);">\ud83c\udfae Host \u00b7 ' + S.players.length + ' players</span>';
+  } else if (isSolo()) {
     const p = S.players[0];
     spRow.innerHTML = DIMS.map(d => {
       const cls = p.scores[d] > 0 ? 'sp lit' : 'sp';
@@ -245,7 +312,24 @@ function renderPickTurn(playerIdx) {
   pick.classList.remove('hidden');
   document.getElementById('game-locked').classList.remove('vis');
 
-
+  if (MP.active && MP.isHost) {
+    pick.innerHTML =
+      '<h2 class="s-heading">' + scenario.title + '</h2>'
+      + '<div class="s-box">' + scenario.situation + '</div>'
+      + '<div class="choices-label">Options</div>'
+      + scenario.choices.map(c =>
+        '<div class="c-btn" style="pointer-events:none;opacity:0.5">'
+        + '<div class="c-alpha">' + c.letter + '</div>'
+        + '<div class="c-text">' + c.text + '</div>'
+        + '</div>'
+      ).join('')
+      + '<div style="margin-top:20px;padding:18px;background:var(--card);border:1px solid var(--border);border-radius:16px;text-align:center;margin-bottom:12px">'
+      + '<div style="font-family:\'Bricolage Grotesque\',sans-serif;font-size:11px;font-weight:700;color:var(--sub);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">Players answered</div>'
+      + '<div id="mp-answer-counter" style="font-family:\'Bricolage Grotesque\',sans-serif;font-size:40px;font-weight:800;color:var(--gold)">0 / ' + S.players.length + '</div>'
+      + '</div>'
+      + '<button id="mp-reveal-btn" class="btn btn-gold" onclick="hostReveal()" disabled style="opacity:.4;cursor:not-allowed">Waiting for players...</button>';
+    return;
+  }
 
   pick.innerHTML = `
     <h2 class="s-heading">${scenario.title}</h2>
@@ -385,6 +469,7 @@ function buildRevealScreen() {
 // ═══════════════════════════════════════════════════════
 
 function showDiscuss() {
+  if (MP.active && MP.isHost) mpSyncStatus('discussing');
   const scIdx = S.scenarioOrder.length ? S.scenarioOrder[S.step] : S.step;
   const scenario = SCENARIOS[scIdx];
 
@@ -440,6 +525,7 @@ function skipDiscuss() {
 }
 
 function showConsequence() {
+  if (MP.active && MP.isHost) mpSyncStatus('consequence');
   buildConsequenceScreen();
   go('consequence');
 }
@@ -515,6 +601,7 @@ function buildConsequenceScreen() {
 }
 
 function goToScoreboard() {
+  if (MP.active && MP.isHost) mpSyncStatus('scoreboard');
   buildScoreboard();
   go('scoreboard');
 }
@@ -580,14 +667,21 @@ function scoreboardNext() {
   const _total = S.scenarioOrder.length || SCENARIOS.length;
   const isLast = S.step >= _total - 1;
   if (isLast) {
+    if (MP.active && MP.isHost) mpSyncStatus('final');
     buildFinal();
     go('final');
   } else {
     S.step++;
     S.roundChoices = [];
     S.pickerIdx = 0;
+    if (MP.active && MP.isHost) {
+      mpClearRound();
+      MP.gameRef.child('step').set(S.step);
+      mpSyncStatus('playing');
+    }
     renderPickTurn(0);
     go('game');
+    if (MP.active && MP.isHost) listenHostAnswers();
   }
 }
 
@@ -1006,6 +1100,23 @@ function downloadWord() {
 
 function playAgain() {
   clearState();
+  if (MP.active && MP.isHost) {
+    MP.gameRef.update({ status:'lobby', step:null, scenarioOrder:null, mode:null, MAX:null, roundChoices:null });
+    MP.gameRef.child('players').once('value', snap => {
+      const updates = {};
+      Object.keys(snap.val() || {}).forEach(id => {
+        updates['players/' + id + '/scores'] = { T:0, P:0, E:0, A:0 };
+        updates['players/' + id + '/choices'] = {};
+        updates['players/' + id + '/answered'] = false;
+      });
+      MP.gameRef.update(updates);
+    });
+    S.players = []; S.step = 0; S.roundChoices = [];
+    document.getElementById('hl-code').textContent = MP.roomCode;
+    go('host-lobby');
+    return;
+  }
+  if (MP.active && !MP.isHost) resetMP();
   S.players = [];
   S.step = 0;
   S.roundChoices = [];
@@ -1022,6 +1133,7 @@ const STORAGE_KEY = 'lc_game_v1';
 const SAVE_SCREENS = new Set(['game','reveal','discuss','consequence','scoreboard','final']);
 
 function saveState(screen) {
+  if (MP.active) return;
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
       screen,
@@ -1040,6 +1152,7 @@ function clearState() {
 }
 
 function restoreGame() {
+  if (localStorage.getItem('lc_mp_role')) return false;
   const raw = localStorage.getItem(STORAGE_KEY);
   if (!raw) return false;
   try {
@@ -1068,6 +1181,226 @@ function restoreGame() {
 
 
 // ═══════════════════════════════════════════════════════
+//  MULTIPLAYER — HOST
+// ═══════════════════════════════════════════════════════
+
+function goMultiplayer() {
+  MP.active = true; MP.isHost = true;
+  MP.roomCode = generateRoomCode();
+  MP.gameRef = db.ref('games/' + MP.roomCode);
+  localStorage.setItem('lc_mp_role', 'host');
+  localStorage.setItem('lc_mp_room', MP.roomCode);
+  MP.gameRef.set({ status: 'lobby', createdAt: Date.now() });
+  document.getElementById('hl-code').textContent = MP.roomCode;
+  const btn = document.getElementById('hl-start-btn');
+  btn.disabled = true; btn.style.opacity = '.4'; btn.style.cursor = 'not-allowed';
+  document.getElementById('hl-waiting').textContent = 'Waiting for players to join...';
+  document.getElementById('hl-player-list').innerHTML = '';
+  MP.gameRef.child('players').on('value', snap => {
+    const arr = Object.entries(snap.val() || {});
+    document.getElementById('hl-player-list').innerHTML = arr.map(([, p]) =>
+      '<div class="mp-player-chip"><div class="mp-chip-dot" style="background:' + p.color + '"></div>'
+      + '<span class="mp-chip-name">' + p.name + '</span></div>'
+    ).join('');
+    const n = arr.length;
+    document.getElementById('hl-waiting').textContent = n === 0
+      ? 'Waiting for players to join...'
+      : n + ' player' + (n > 1 ? 's' : '') + ' in the room';
+    btn.disabled = n === 0;
+    btn.style.opacity = n > 0 ? '1' : '.4';
+    btn.style.cursor = n > 0 ? 'pointer' : 'not-allowed';
+  });
+  go('host-lobby');
+}
+
+function startMultiplayerGame() { go('mode-select'); }
+
+function cancelHostRoom() {
+  if (MP.gameRef) { MP.gameRef.off(); MP.gameRef.remove(); }
+  resetMP();
+  go('splash');
+}
+
+function listenHostAnswers() {
+  MP.gameRef.child('roundChoices').off();
+  MP.gameRef.child('roundChoices').on('value', snap => {
+    const answered = Object.keys(snap.val() || {}).length;
+    const total = S.players.length;
+    const counter = document.getElementById('mp-answer-counter');
+    if (counter) counter.textContent = answered + ' / ' + total;
+    const btn = document.getElementById('mp-reveal-btn');
+    if (btn) {
+      const canReveal = answered > 0;
+      btn.disabled = !canReveal;
+      btn.style.opacity = canReveal ? '1' : '.4';
+      btn.style.cursor = canReveal ? 'pointer' : 'not-allowed';
+      btn.textContent = answered >= total
+        ? 'Reveal all choices →'
+        : 'Reveal (' + answered + '/' + total + ' answered) →';
+    }
+  });
+}
+
+function hostReveal() {
+  MP.gameRef.child('roundChoices').once('value', rcSnap => {
+    MP.gameRef.child('players').once('value', playerSnap => {
+      const roundChoices = rcSnap.val() || {};
+      const fbPlayers = playerSnap.val() || {};
+      S.players.forEach(p => {
+        if (!p.fbId || !fbPlayers[p.fbId]) return;
+        const fp = fbPlayers[p.fbId];
+        if (fp.scores) p.scores = fp.scores;
+        if (fp.choices) Object.entries(fp.choices).forEach(([i, c]) => { p.choices[parseInt(i)] = c; });
+      });
+      S.roundChoices = Object.entries(roundChoices).map(([pid, choiceIdx]) => {
+        const playerIdx = S.players.findIndex(p => p.fbId === pid);
+        return playerIdx >= 0 ? { playerIdx, choiceIdx } : null;
+      }).filter(Boolean);
+      mpSyncStatus('revealing');
+      buildRevealScreen();
+      go('reveal');
+    });
+  });
+}
+
+function mpClearRound() {
+  if (!MP.active || !MP.isHost || !MP.gameRef) return;
+  MP.gameRef.child('roundChoices').remove();
+  MP.gameRef.child('players').once('value', snap => {
+    const updates = {};
+    Object.keys(snap.val() || {}).forEach(id => { updates['players/' + id + '/answered'] = false; });
+    MP.gameRef.update(updates);
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+//  MULTIPLAYER — PLAYER
+// ═══════════════════════════════════════════════════════
+
+function goJoin() {
+  document.getElementById('join-code-input').value = '';
+  document.getElementById('join-name-input').value = '';
+  document.getElementById('join-error').style.display = 'none';
+  const btn = document.getElementById('join-btn');
+  btn.disabled = true; btn.style.opacity = '.4'; btn.style.cursor = 'not-allowed';
+  go('join-screen');
+}
+
+function validateJoin() {
+  const code = document.getElementById('join-code-input').value.trim();
+  const name = document.getElementById('join-name-input').value.trim();
+  const ok = code.length >= 4 && name.length > 0;
+  const btn = document.getElementById('join-btn');
+  btn.disabled = !ok;
+  btn.style.opacity = ok ? '1' : '.4';
+  btn.style.cursor = ok ? 'pointer' : 'not-allowed';
+}
+
+function joinRoom() {
+  const code = document.getElementById('join-code-input').value.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
+  const name = document.getElementById('join-name-input').value.trim();
+  if (!code || !name) return;
+  db.ref('games/' + code).once('value').then(snap => {
+    if (!snap.exists()) { showJoinError('Room not found. Check the code.'); return; }
+    const game = snap.val();
+    if (game.status !== 'lobby') { showJoinError('This game has already started.'); return; }
+    const existingCount = game.players ? Object.keys(game.players).length : 0;
+    const color = COLORS[existingCount % COLORS.length];
+    const playerId = 'p' + Date.now().toString(36);
+    MP.playerId = playerId; MP.playerName = name;
+    MP.playerColor = color; MP.roomCode = code;
+    MP.isHost = false; MP.active = true;
+    MP.gameRef = db.ref('games/' + code);
+    localStorage.setItem('lc_mp_role', 'player');
+    localStorage.setItem('lc_mp_room', code);
+    localStorage.setItem('lc_mp_player_id', playerId);
+    localStorage.setItem('lc_mp_player_name', name);
+    MP.gameRef.child('players/' + playerId).set({
+      name, color, scores: { T:0, P:0, E:0, A:0 }, choices: {}, answered: false
+    }).then(() => {
+      showPlayerWait("You're in!", 'Waiting for the host to start...');
+      listenAsPlayer();
+    });
+  }).catch(() => showJoinError('Could not connect. Check your internet.'));
+}
+
+function showJoinError(msg) {
+  const el = document.getElementById('join-error');
+  el.textContent = msg; el.style.display = 'block';
+}
+
+function listenAsPlayer() {
+  MP.gameRef.on('value', snap => {
+    if (!snap.exists()) { showPlayerWait('Room ended', 'The host has ended the session.'); return; }
+    const game = snap.val();
+    const status = game.status;
+    MP.step = game.step || 0;
+    MP.scenarioOrder = fbArr(game.scenarioOrder);
+    if      (status === 'lobby')       { showPlayerWait('Waiting...', 'The host will start the game soon.'); }
+    else if (status === 'playing') {
+      const myPlayer = game.players && game.players[MP.playerId];
+      if (myPlayer && myPlayer.answered) { showPlayerWait('Locked in ✓', 'Waiting for others to answer...'); }
+      else { renderPlayerGameScreen(); }
+    }
+    else if (status === 'revealing')   { showPlayerWait('Results are in! 🎭', "The host is showing everyone's choices."); }
+    else if (status === 'discussing')  { showPlayerWait('Discussion time 💬', 'Talk through the scenario with your group.'); }
+    else if (status === 'consequence') { showPlayerWait('Outcome ⚡', 'The host is showing what happened.'); }
+    else if (status === 'scoreboard')  { showPlayerWait('Scoreboard 📊', 'Check the screen to see live standings.'); }
+    else if (status === 'final')       { showPlayerWait('Game complete! 🎉', 'Check the screen for your leadership profile.'); }
+    else if (status === 'ended')       { showPlayerWait('Session ended', 'The host has ended the game.'); resetMP(); }
+  });
+}
+
+function showPlayerWait(heading, sub) {
+  document.getElementById('pw-heading').textContent = heading;
+  document.getElementById('pw-sub').textContent = sub;
+  document.getElementById('pw-room-code').textContent = 'Room: ' + (MP.roomCode || '');
+  go('player-wait');
+}
+
+function renderPlayerGameScreen() {
+  const scIdx = MP.scenarioOrder[MP.step];
+  const scenario = SCENARIOS[scIdx];
+  const total = MP.scenarioOrder.length;
+  document.getElementById('pg-label').textContent = 'Scenario ' + (MP.step + 1) + ' of ' + total;
+  document.getElementById('pg-prog-fill').style.width = ((MP.step / total) * 100) + '%';
+  const badge = document.getElementById('pg-player-name');
+  badge.textContent = MP.playerName;
+  badge.style.color = MP.playerColor;
+  badge.style.borderColor = MP.playerColor + '60';
+  badge.style.background = MP.playerColor + '18';
+  document.getElementById('player-game-body').innerHTML =
+    '<h2 class="s-heading">' + scenario.title + '</h2>'
+    + '<div class="s-box">' + scenario.situation + '</div>'
+    + '<div class="choices-label">What would you do?</div>'
+    + scenario.choices.map((c, i) =>
+      '<button class="c-btn" onclick="submitPlayerAnswer(' + i + ')">'
+      + '<div class="c-alpha">' + c.letter + '</div>'
+      + '<div class="c-text">' + c.text + '</div>'
+      + '</button>'
+    ).join('');
+  go('player-game');
+}
+
+function submitPlayerAnswer(choiceIdx) {
+  const scIdx = MP.scenarioOrder[MP.step];
+  const choice = SCENARIOS[scIdx].choices[choiceIdx];
+  document.querySelectorAll('#player-game-body .c-btn').forEach((el, i) => {
+    el.classList.add(i === choiceIdx ? 'sel' : 'dim');
+  });
+  const playerRef = MP.gameRef.child('players/' + MP.playerId);
+  playerRef.once('value', snap => {
+    const p = snap.val() || {};
+    const scores = p.scores || { T:0, P:0, E:0, A:0 };
+    const choices = p.choices || {};
+    DIMS.forEach(d => { scores[d] = (scores[d] || 0) + (choice.scores[d] || 0); });
+    choices[scIdx] = choiceIdx;
+    playerRef.update({ scores, choices, answered: true });
+    MP.gameRef.child('roundChoices/' + MP.playerId).set(choiceIdx);
+  });
+}
+
+// ═══════════════════════════════════════════════════════
 //  BOOT
 // ═══════════════════════════════════════════════════════
 
@@ -1081,4 +1414,24 @@ renderTutSlide();
 
 // Auto-restore game on page load if a saved game exists
 restoreGame();
+
+// Reconnect player to multiplayer session on refresh
+(function() {
+  if (localStorage.getItem('lc_mp_role') !== 'player') return;
+  const code = localStorage.getItem('lc_mp_room');
+  const playerId = localStorage.getItem('lc_mp_player_id');
+  const name = localStorage.getItem('lc_mp_player_name');
+  if (!code || !playerId || !name) { localStorage.removeItem('lc_mp_role'); return; }
+  MP.playerId = playerId; MP.playerName = name;
+  MP.roomCode = code; MP.isHost = false; MP.active = true;
+  MP.gameRef = db.ref('games/' + code);
+  MP.gameRef.once('value', snap => {
+    if (!snap.exists()) { resetMP(); return; }
+    const game = snap.val();
+    const myPlayer = game.players && game.players[playerId];
+    if (!myPlayer) { resetMP(); return; }
+    MP.playerColor = myPlayer.color;
+    listenAsPlayer();
+  });
+})();
 
