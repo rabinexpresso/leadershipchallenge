@@ -1291,11 +1291,11 @@ function validateJoin() {
 }
 
 function joinRoom() {
-  showJoinError('⏳ Connecting...');
   const code = document.getElementById('join-code-input').value.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
   const name = document.getElementById('join-name-input').value.trim();
   if (!code || !name) { showJoinError('Please enter the room code and your name.'); return; }
   if (code.length < 4) { showJoinError('Room code looks too short. Check again.'); return; }
+  document.getElementById('join-error').style.display = 'none';
   const timeoutId = setTimeout(() => {
     showJoinError('Connection timed out. Check your internet and try again.');
   }, 8000);
