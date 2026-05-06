@@ -1,4 +1,4 @@
-# Project Notes — handoff between MacBook & Windows PC
+# Switching Between Computers — handoff between MacBook & Windows PC
 
 > Update this file at the **end of each session** before `git push`.
 > Read it at the **start of each session** on the other machine.
@@ -18,7 +18,7 @@ Update the "Last session" + "Next up" sections below first.
 ```bash
 git pull
 ```
-Then prime Claude Code with: *"Read NOTES.md and the latest git log, then I'll tell you what's next."*
+Then prime Claude Code with: *"Read SWITCHING_BETWEEN_COMPUTERS.md and the latest git log, then I'll tell you what's next."*
 
 ---
 
@@ -28,7 +28,7 @@ Then prime Claude Code with: *"Read NOTES.md and the latest git log, then I'll t
 - **Repo:** https://github.com/rabinexpresso/leadershipchallenge
 - **Hosting:** GitHub Pages (auto-deploys from `main`)
 - **Backend:** Firebase Realtime Database (project `leadershipchallenge-1bc16`)
-- **Files:** `index.html`, `data.js`, `script.js`, `README.md`, `NOTES.md`
+- **Files:** `index.html`, `data.js`, `script.js`, `README.md`, `SWITCHING_BETWEEN_COMPUTERS.md`
 - **Cache-bust version:** `?v=14` (bump this in `index.html` whenever script changes)
 
 ### Multiplayer architecture
