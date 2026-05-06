@@ -1242,10 +1242,14 @@ function goMultiplayer() {
   MP.gameRef = db.ref('games/' + MP.roomCode);
   localStorage.setItem('lc_mp_role', 'host');
   localStorage.setItem('lc_mp_room', MP.roomCode);
-  MP.gameRef.set({ status: 'lobby', createdAt: Date.now() });
   document.getElementById('hl-code').textContent = MP.roomCode;
-  attachHostLobbyListener();
+  document.getElementById('hl-player-list').innerHTML = '';
+  document.getElementById('hl-waiting').textContent = 'Creating room...';
   go('host-lobby');
+  // Wipe any stale room first (in case of code collision), then create fresh, then attach listener
+  MP.gameRef.remove()
+    .then(() => MP.gameRef.set({ status: 'lobby', createdAt: Date.now() }))
+    .then(() => attachHostLobbyListener());
 }
 
 function startMultiplayerGame() { go('mode-select'); }
