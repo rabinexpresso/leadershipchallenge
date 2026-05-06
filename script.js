@@ -1400,11 +1400,6 @@ function submitPlayerAnswer(choiceIdx) {
 //  BOOT
 // ═══════════════════════════════════════════════════════
 
-// Clicking "Start" on splash goes to tutorial which goes to add-players
-document.querySelector('#splash .btn-gold').onclick = () => {
-  initTutorial();
-};
-
 // Pre-init tutorial dots
 renderTutSlide();
 
