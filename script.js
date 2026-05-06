@@ -474,6 +474,7 @@ function showDiscuss() {
   document.getElementById('discuss-tag') && (document.getElementById('discuss-tag').textContent = `Scenario ${S.step+1} of ${S.scenarioOrder.length || SCENARIOS.length}`);
   document.getElementById('discuss-heading') && (document.getElementById('discuss-heading').textContent = scenario.title);
   document.getElementById('discuss-prompt') && (document.getElementById('discuss-prompt').textContent = scenario.discussPrompt || '');
+  document.getElementById('discuss-situation') && (document.getElementById('discuss-situation').textContent = scenario.situation || '');
 
   // Recap of each player's choice
   const recap = document.getElementById('discuss-recap');
@@ -488,6 +489,23 @@ function showDiscuss() {
         + '<div style="font-size:13px;color:var(--body);line-height:1.5">' + choice.text + '</div>'
         + '</div></div>';
     }).join('');
+  }
+
+  // Options nobody picked
+  const notChosen = document.getElementById('discuss-not-chosen');
+  if (notChosen) {
+    const chosenIdxs = new Set(S.roundChoices.map(rc => rc.choiceIdx));
+    const unchosen = scenario.choices.map((c, i) => ({ c, i })).filter(x => !chosenIdxs.has(x.i));
+    if (unchosen.length > 0) {
+      notChosen.innerHTML = '<div style="font-family:\'Bricolage Grotesque\',sans-serif;font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--sub);margin-bottom:8px">Nobody picked</div>'
+        + unchosen.map(({c}) =>
+          '<div style="display:flex;align-items:flex-start;gap:12px;background:transparent;border:1px dashed var(--border2);border-radius:10px;padding:10px 14px;margin-bottom:8px;opacity:.75">'
+          + '<div style="flex-shrink:0;width:28px;height:28px;border-radius:8px;background:var(--card2);color:var(--sub);font-family:\'Bricolage Grotesque\',sans-serif;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:14px">' + c.letter + '</div>'
+          + '<div style="flex:1;min-width:0;font-size:13px;color:var(--sub);line-height:1.5">' + c.text + '</div>'
+          + '</div>').join('');
+    } else {
+      notChosen.innerHTML = '';
+    }
   }
 
   // Companion question (always shown via HTML, no JS needed)
