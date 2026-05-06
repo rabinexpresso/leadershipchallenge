@@ -1,0 +1,2160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>The Leadership Challenge</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+  :root {
+    --bg: #080b12;
+    --card: #0f1421;
+    --card2: #161d2e;
+    --gold: #f5a623;
+    --gold-l: #fbbf24;
+    --gold-dim: rgba(245,166,35,0.13);
+    --gold-border: rgba(245,166,35,0.32);
+    --text: #eef1ff;
+    --body: #ced4e0;
+    --sub: #7a829a;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.13);
+  }
+
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html { scroll-behavior:smooth; }
+  body { background:var(--bg); color:var(--text); font-family:'Plus Jakarta Sans',sans-serif; min-height:100dvh; overflow-x:hidden; }
+
+  .screen { display:none; flex-direction:column; min-height:100dvh; }
+  /* Laptop: centre and constrain width */
+  /* ── Responsive layout ─────────────────────────────────── */
+  /* ── Responsive layout ─────────────────────────────────────
+     Padding stays minimal everywhere — max-width grows with screen
+     so more content is visible horizontally, not more whitespace.
+     < 600px    : full width (mobile)
+     600–960px  : 640px centred
+     960–1400px : 860px centred  (13–14" laptop)
+     1400–1920px: 1080px centred (15–17" / large)
+     > 1920px   : 1320px centred (27"+ monitor)
+  ──────────────────────────────────────────────────────────── */
+  @media (min-width: 600px) {
+    body   { display:flex; justify-content:center; background:var(--bg); }
+    .screen { width:100%; max-width:640px; min-height:100dvh; position:relative; box-shadow:0 0 80px rgba(0,0,0,.5); }
+  }
+  @media (min-width: 960px) {
+    .screen { max-width:860px; }
+  }
+  @media (min-width: 1400px) {
+    .screen { max-width:1080px; }
+    .s-box  { font-size:16px; }
+    .c-text { font-size:15px; }
+    .cq-outcome { font-size:16px; }
+  }
+  @media (min-width: 1920px) {
+    .screen { max-width:1320px; }
+    .s-box  { font-size:17px; }
+    .cq-outcome { font-size:17px; }
+    .tut-text { font-size:17px; }
+  }
+  .screen.active { display:flex; animation:fadeUp .35s cubic-bezier(.22,1,.36,1); }
+  @keyframes fadeUp   { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes popIn    { from{opacity:0;transform:scale(.85)} to{opacity:1;transform:scale(1)} }
+  @keyframes slideIn  { from{opacity:0;transform:translateX(-14px)} to{opacity:1;transform:translateX(0)} }
+
+  /* ─── TOPBAR ─── */
+  .topbar {
+    display:flex; align-items:center; gap:12px;
+    padding:12px 16px;
+    border-bottom:1px solid var(--border);
+    background:rgba(8,11,18,0.96);
+    backdrop-filter:blur(12px);
+    position:sticky; top:0; z-index:30;
+    flex-shrink:0;
+  }
+  .back-btn {
+    background:var(--card); border:1px solid var(--border2); color:var(--body);
+    font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:700;
+    padding:8px 14px; border-radius:100px; cursor:pointer;
+    display:flex; align-items:center; gap:5px; transition:all .2s; flex-shrink:0;
+  }
+  .back-btn:hover { border-color:var(--gold-border); color:var(--gold); }
+  .topbar-center { font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:700; color:var(--sub); flex:1; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .topbar-spacer { width:70px; flex-shrink:0; }
+  .quit-btn {
+    background:transparent; border:1px solid rgba(248,113,113,.2); color:#f87171;
+    font-family:'Bricolage Grotesque',sans-serif; font-size:12px; font-weight:700;
+    padding:7px 13px; border-radius:100px; cursor:pointer; transition:all .2s;
+  }
+  .quit-btn:hover { background:rgba(248,113,113,.1); }
+
+  /* ─── SHARED ─── */
+  .eyebrow { font-family:'Bricolage Grotesque',sans-serif; font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--gold); }
+  .page-inner { flex:1; padding:28px 22px 52px; display:flex; flex-direction:column; }
+
+  .btn { display:flex; align-items:center; justify-content:center; gap:8px; font-family:'Bricolage Grotesque',sans-serif; font-weight:700; font-size:15px; padding:16px 28px; border-radius:100px; border:none; cursor:pointer; width:100%; transition:all .2s cubic-bezier(.22,1,.36,1); letter-spacing:.2px; }
+  .btn:active { transform:scale(.97); }
+  .btn-gold { background:var(--gold); color:#07090d; position:relative; overflow:hidden; }
+  .btn-gold::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,.15) 0%,transparent 50%); pointer-events:none; }
+  .btn-gold:hover { transform:translateY(-2px); box-shadow:0 10px 32px rgba(245,166,35,.3); }
+  .btn-ghost { background:transparent; color:var(--body); border:1px solid var(--border2); }
+  .btn-ghost:hover { border-color:var(--gold-border); color:var(--gold); }
+
+  /* ─── SPLASH ─── */
+  #splash {
+    align-items:center; justify-content:center; text-align:center;
+    padding:52px 24px 48px; gap:0; position:relative; overflow:hidden;
+    background:radial-gradient(ellipse 80% 55% at 50% 15%, rgba(245,166,35,.07) 0%, transparent 70%), var(--bg);
+  }
+  .splash-grid { position:absolute; inset:0; background-image:linear-gradient(rgba(245,166,35,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(245,166,35,.035) 1px,transparent 1px); background-size:44px 44px; pointer-events:none; }
+  .splash-pill { display:inline-block; font-family:'Bricolage Grotesque',sans-serif; font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--gold); border:1px solid var(--gold-border); padding:7px 18px; border-radius:100px; margin-bottom:28px; background:var(--gold-dim); position:relative; }
+  .splash-title { font-family:'Bricolage Grotesque',sans-serif; font-size:clamp(42px,11vw,60px); font-weight:800; line-height:1.0; letter-spacing:-2px; margin-bottom:18px; }
+  .splash-title .hl { color:var(--gold); display:block; }
+  .splash-sub { font-size:16px; color:var(--body); line-height:1.65; max-width:280px; margin:0 auto 32px; }
+  .dim-tags { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:40px; }
+  .dim-tag { font-size:13px; font-weight:500; padding:7px 14px; border-radius:100px; background:var(--card); border:1px solid var(--border); color:var(--body); }
+  .splash-actions { display:flex; flex-direction:column; gap:10px; width:100%; max-width:280px; }
+  .splash-meta { margin-top:20px; font-size:13px; color:var(--sub); position:relative; }
+
+  /* ─── TUTORIAL ─── */
+  .tut-inner { flex:1; padding:24px 22px 32px; display:flex; flex-direction:column; overflow:hidden; }
+  .tut-slide { display:none; flex-direction:column; flex:1; overflow-y:auto; }
+  .tut-slide.active { display:flex; animation:fadeUp .3s ease; }
+  .ghost-num { font-family:'Bricolage Grotesque',sans-serif; font-size:80px; font-weight:800; color:rgba(245,166,35,.07); line-height:1; margin-bottom:-18px; user-select:none; }
+  .tut-heading { font-family:'Bricolage Grotesque',sans-serif; font-size:26px; font-weight:700; line-height:1.15; margin-bottom:14px; }
+  .tut-text { font-size:15px; color:var(--body); line-height:1.8; margin-bottom:20px; }
+  .tut-nav { display:flex; align-items:center; gap:10px; padding:16px 0 0; flex-shrink:0; }
+  .tut-dots { display:flex; gap:6px; flex:1; justify-content:center; }
+  .tut-dot { width:6px; height:6px; border-radius:50%; background:var(--border2); transition:all .25s; }
+  .tut-dot.on { background:var(--gold); width:20px; border-radius:3px; }
+  .t-prev { font-family:'Bricolage Grotesque',sans-serif; font-size:14px; font-weight:700; padding:12px 20px; border-radius:100px; background:var(--card2); color:var(--text); border:1px solid var(--border2); cursor:pointer; transition:all .2s; flex:1; }
+  .t-prev:hover { color:var(--gold); border-color:var(--gold-border); }
+  .t-next { font-family:'Bricolage Grotesque',sans-serif; font-size:14px; font-weight:700; padding:12px 20px; border-radius:100px; background:var(--gold); color:#07090d; border:none; cursor:pointer; transition:all .2s; flex:1; }
+  .t-next:hover { transform:translateY(-1px); box-shadow:0 6px 20px rgba(245,166,35,.3); }
+
+  .dim-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
+  .dim-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:15px 13px; }
+  .dim-icon-big { font-size:22px; margin-bottom:6px; }
+  .dim-title { font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:700; color:var(--text); margin-bottom:3px; }
+  .dim-desc-sm { font-size:14px; color:var(--body); line-height:1.55; }
+  .dim-source { font-size:12px; color:var(--sub); font-style:italic; margin-top:4px; }
+
+  .fw-item { display:flex; gap:12px; margin-bottom:16px; align-items:flex-start; }
+  .fw-ico { font-size:22px; flex-shrink:0; margin-top:2px; }
+  .fw-name { font-family:'Bricolage Grotesque',sans-serif; font-size:14px; font-weight:700; color:var(--text); margin-bottom:2px; }
+  .fw-desc { font-size:13px; color:var(--body); line-height:1.55; }
+  .fw-src { font-size:11.5px; color:var(--sub); font-style:italic; }
+
+  .info-box { background:var(--card); border:1px solid var(--border); border-left:3px solid var(--gold); border-radius:0 12px 12px 0; padding:14px 16px; margin-top:16px; }
+  .info-box p { font-size:13px; color:var(--body); line-height:1.65; }
+  .info-box strong { color:var(--text); }
+
+  /* ─── ADD PLAYERS ─── */
+  .ap-heading { font-family:'Bricolage Grotesque',sans-serif; font-size:26px; font-weight:700; margin-bottom:8px; }
+  .ap-sub { font-size:15px; color:var(--body); line-height:1.65; margin-bottom:28px; }
+  .player-list { display:flex; flex-direction:column; gap:10px; margin-bottom:16px; }
+  .p-row { display:flex; align-items:center; gap:10px; }
+  .p-dot { width:12px; height:12px; border-radius:50%; flex-shrink:0; }
+  .p-input { flex:1; background:var(--card); border:1px solid var(--border2); color:var(--text); font-family:'Plus Jakarta Sans',sans-serif; font-size:15px; padding:14px 16px; border-radius:12px; outline:none; transition:border-color .2s; }
+  .p-input::placeholder { color:var(--sub); }
+  .p-input:focus { border-color:var(--gold-border); }
+  .p-remove { background:none; border:none; color:var(--sub); font-size:20px; cursor:pointer; padding:6px; transition:color .2s; flex-shrink:0; line-height:1; }
+  .p-remove:hover { color:#f87171; }
+  .add-p-btn { display:flex; align-items:center; justify-content:center; gap:8px; background:transparent; border:1px dashed var(--border2); color:var(--sub); font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:700; padding:14px; border-radius:12px; cursor:pointer; transition:all .2s; width:100%; margin-bottom:24px; }
+  .add-p-btn:hover { border-color:var(--gold-border); color:var(--gold); }
+  .ap-note { font-size:13px; color:var(--sub); text-align:center; margin-bottom:20px; }
+
+  /* ─── GAME ─── */
+  .game-bar {
+    position:sticky; top:0; z-index:20;
+    background:rgba(8,11,18,.95); backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--border);
+    padding:10px 18px;
+    flex-shrink:0;
+  }
+  .gb-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+  .gb-label { font-family:'Bricolage Grotesque',sans-serif; font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--gold); }
+  .prog-track { height:3px; background:rgba(255,255,255,.07); border-radius:10px; overflow:hidden; margin-bottom:8px; }
+  .prog-fill { height:100%; background:linear-gradient(90deg, var(--gold), var(--gold-l)); border-radius:10px; transition:width .5s cubic-bezier(.4,0,.2,1); }
+  .sp-row { display:flex; gap:6px; flex-wrap:wrap; }
+  .sp { font-size:11px; font-weight:600; padding:4px 10px; border-radius:100px; background:var(--card); border:1px solid var(--border); color:var(--sub); transition:all .3s; }
+  .sp.lit { background:var(--gold-dim); border-color:var(--gold-border); color:var(--gold); }
+
+  /* Pick phase */
+  .game-body { padding:22px 22px 48px; }
+  .player-badge { display:inline-flex; align-items:center; gap:8px; padding:7px 15px; border-radius:100px; font-family:'Bricolage Grotesque',sans-serif; font-size:12px; font-weight:700; margin-bottom:18px; border:1px solid; }
+  .player-badge-dot { width:8px; height:8px; border-radius:50%; }
+  .s-tag { margin-bottom:10px; }
+  .s-heading { font-family:'Bricolage Grotesque',sans-serif; font-size:23px; font-weight:700; line-height:1.15; margin-bottom:14px; }
+  .s-box { font-size:15px; color:var(--body); line-height:1.8; background:var(--card); border:1px solid var(--border); border-left:3px solid var(--gold); border-radius:0 12px 12px 0; padding:16px 18px; margin-bottom:24px; }
+  .choices-label { font-family:'Bricolage Grotesque',sans-serif; font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--sub); margin-bottom:12px; }
+  .c-btn { width:100%; background:var(--card); border:1px solid var(--border); border-radius:16px; padding:15px 16px; text-align:left; cursor:pointer; margin-bottom:10px; transition:all .2s cubic-bezier(.22,1,.36,1); display:flex; gap:12px; align-items:flex-start; color:var(--text); font-family:'Plus Jakarta Sans',sans-serif; }
+  .c-btn:hover { border-color:var(--gold-border); background:var(--card2); transform:translateX(3px); }
+  .c-btn:active { transform:scale(.98); }
+  .c-btn.sel { border-color:var(--gold); background:var(--gold-dim); pointer-events:none; }
+  .c-btn.dim { opacity:.35; pointer-events:none; }
+  .c-alpha { font-family:'Bricolage Grotesque',sans-serif; font-size:12px; font-weight:800; color:var(--gold); background:var(--gold-dim); border:1px solid var(--gold-border); border-radius:8px; width:28px; height:28px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+  .c-text { font-size:14px; line-height:1.65; color:var(--body); }
+
+  /* Locked phase */
+  #game-locked { display:none; flex-direction:column; align-items:center; justify-content:center; flex:1; padding:40px 24px; text-align:center; }
+  #game-locked.vis { display:flex; }
+  #game-pick.hidden { display:none; }
+  .locked-check { font-size:60px; margin-bottom:20px; animation:popIn .4s cubic-bezier(.22,1,.36,1); }
+  .locked-h { font-family:'Bricolage Grotesque',sans-serif; font-size:26px; font-weight:700; margin-bottom:10px; }
+  .locked-sub { font-size:16px; color:var(--body); line-height:1.65; max-width:280px; margin:0 auto 32px; }
+  .next-badge { display:inline-flex; align-items:center; gap:8px; padding:10px 20px; border-radius:100px; font-family:'Bricolage Grotesque',sans-serif; font-size:14px; font-weight:700; margin-bottom:32px; border:2px solid; }
+  .next-badge-dot { width:9px; height:9px; border-radius:50%; }
+
+  /* ─── REVEAL ─── */
+  .rv-body { padding:22px 22px 52px; flex:1; }
+  .rv-heading { font-family:'Bricolage Grotesque',sans-serif; font-size:26px; font-weight:700; line-height:1.15; margin-bottom:6px; }
+  .rv-sub { font-size:15px; color:var(--body); margin-bottom:26px; line-height:1.65; }
+  .rv-cards { display:flex; flex-direction:column; gap:10px; margin-bottom:24px; }
+  .rv-card { display:flex; align-items:flex-start; gap:14px; background:var(--card); border:1px solid var(--border); border-radius:16px; padding:16px; animation:slideIn .3s ease both; }
+  .rv-player-info { flex:1; min-width:0; }
+  .rv-pname { font-family:'Bricolage Grotesque',sans-serif; font-size:14px; font-weight:700; margin-bottom:3px; }
+  .rv-chose { font-size:11px; color:var(--sub); font-family:'Bricolage Grotesque',sans-serif; letter-spacing:1px; text-transform:uppercase; margin-bottom:5px; }
+  .rv-choice-text { font-size:13.5px; color:var(--body); line-height:1.55; }
+  .rv-letter { font-family:'Bricolage Grotesque',sans-serif; font-size:14px; font-weight:800; width:32px; height:32px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .rv-stat { font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:700; padding:8px 16px; border-radius:100px; background:var(--gold-dim); border:1px solid var(--gold-border); color:var(--gold); margin-bottom:24px; display:inline-block; }
+
+  /* ─── CONSEQUENCE ─── */
+  .cq-body { padding:22px 22px 52px; flex:1; }
+  .cq-tag { margin-bottom:8px; }
+  .cq-heading { font-family:'Bricolage Grotesque',sans-serif; font-size:24px; font-weight:700; line-height:1.15; margin-bottom:20px; }
+  .cq-outcome-block { margin-bottom:22px; }
+  .cq-choice-header { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+  .cq-choice-alpha { font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:800; width:32px; height:32px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .cq-who-picked { font-family:'Bricolage Grotesque',sans-serif; font-size:12px; font-weight:700; color:var(--sub); }
+  .cq-choice-text { font-size:14px; font-style:italic; color:var(--body); border-left:2px solid var(--gold); padding-left:14px; line-height:1.65; margin-bottom:14px; }
+  .cq-explanation { font-size:15px; color:var(--body); line-height:1.8; margin-bottom:16px; }
+  .cq-chips { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:4px; }
+  .cq-chip { font-family:'Bricolage Grotesque',sans-serif; font-size:12px; font-weight:700; padding:5px 11px; border-radius:100px; }
+  .cq-chip.pos { background:var(--gold-dim); border:1px solid var(--gold-border); color:var(--gold); }
+  .cq-chip.zero { background:var(--card); border:1px solid var(--border); color:var(--sub); }
+  .cq-divider { height:1px; background:var(--border); margin:20px 0; }
+.cq-situation { font-size:14px; color:var(--body); line-height:1.7; background:var(--card); border:1px solid var(--border); border-left:3px solid var(--gold); border-radius:0 10px 10px 0; padding:13px 16px; margin-bottom:8px; font-style:italic; }
+.cq-scoring-note { font-size:12px; color:var(--sub); line-height:1.6; padding:8px 4px 16px; }
+  .cq-players-who { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:8px; }
+  .cq-player-chip { display:flex; align-items:center; gap:6px; padding:5px 12px; border-radius:100px; background:var(--card2); border:1px solid var(--border2); }
+  .cq-pdot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+  .cq-pname { font-family:'Bricolage Grotesque',sans-serif; font-size:12px; font-weight:700; color:var(--body); }
+
+  /* ─── SCOREBOARD ─── */
+  .sb-body { padding:22px 22px 52px; flex:1; overflow-y:auto; }
+  .sb-heading { font-family:'Bricolage Grotesque',sans-serif; font-size:26px; font-weight:700; margin-bottom:6px; }
+  .sb-sub { font-size:15px; color:var(--body); margin-bottom:26px; line-height:1.65; }
+  .sb-card { background:var(--card); border:1px solid var(--border); border-radius:18px; padding:20px; margin-bottom:12px; transition:border-color .3s; }
+  .sb-card.first { border-color:var(--gold-border); background:linear-gradient(135deg, rgba(245,166,35,.05) 0%, var(--card) 60%); }
+  .sb-header { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+  .sb-rank { font-family:'Bricolage Grotesque',sans-serif; font-size:20px; font-weight:800; color:var(--sub); width:28px; flex-shrink:0; }
+  .sb-rank.g { color:var(--gold); }
+  .sb-pname { font-family:'Bricolage Grotesque',sans-serif; font-size:16px; font-weight:700; flex:1; }
+  .sb-total { font-family:'Bricolage Grotesque',sans-serif; font-size:14px; font-weight:700; color:var(--gold); }
+  .sb-bars { display:flex; flex-direction:column; gap:8px; }
+  .sb-br { }
+  .sb-bl { display:flex; justify-content:space-between; font-size:12px; color:var(--sub); margin-bottom:4px; }
+  .sb-bl-pct { font-family:'Bricolage Grotesque',sans-serif; font-weight:700; }
+  .sb-track { height:6px; background:rgba(255,255,255,.06); border-radius:100px; overflow:hidden; }
+  .sb-fill { height:100%; background:linear-gradient(90deg, var(--gold), var(--gold-l)); border-radius:100px; width:0%; transition:width 1s cubic-bezier(.4,0,.2,1); }
+
+  /* ─── FINAL ─── */
+  .final-hero { background:radial-gradient(ellipse 90% 60% at 50% 0%, rgba(245,166,35,.1) 0%, transparent 60%), var(--bg); padding:40px 24px 28px; text-align:center; border-bottom:1px solid var(--border); flex-shrink:0; }
+  .final-title { font-family:'Bricolage Grotesque',sans-serif; font-size:clamp(28px,8vw,40px); font-weight:800; line-height:1.1; letter-spacing:-1px; margin-bottom:8px; }
+  .final-title span { color:var(--gold); }
+  .final-sub { font-size:15px; color:var(--body); margin:0 auto; line-height:1.65; }
+  .final-body { padding:22px 22px 52px; flex:1; }
+  .pr-card { background:var(--card); border:1px solid var(--border); border-radius:20px; padding:22px; margin-bottom:14px; }
+  .pr-header { display:flex; align-items:center; gap:12px; margin-bottom:14px; }
+  .pr-dot { width:14px; height:14px; border-radius:50%; flex-shrink:0; }
+  .pr-name { font-family:'Bricolage Grotesque',sans-serif; font-size:16px; font-weight:700; flex:1; }
+  .pr-emoji { font-size:28px; }
+  .pr-profile { font-family:'Bricolage Grotesque',sans-serif; font-size:20px; font-weight:800; margin-bottom:10px; }
+  .pr-desc { font-size:14px; color:var(--body); line-height:1.75; margin-bottom:18px; }
+  .pr-insight-label { font-family:'Bricolage Grotesque',sans-serif; font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--sub); margin-bottom:12px; }
+  .pr-insight { background:var(--card2); border:1px solid var(--border); border-radius:14px; padding:16px; margin-bottom:10px; }
+  .pr-insight-dim { font-family:'Bricolage Grotesque',sans-serif; font-size:11px; font-weight:800; color:var(--gold); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:5px; display:flex; align-items:center; gap:6px; }
+  .pr-insight-pct { font-size:11px; font-weight:700; color:var(--sub); }
+  .pr-insight-from { font-size:12px; color:var(--gold); font-family:'Bricolage Grotesque',sans-serif; font-weight:600; margin-bottom:10px; opacity:0.75; }
+  .pr-insight-text { font-size:14px; color:var(--body); line-height:1.75; margin-bottom:12px; }
+  .pr-insight-action { background:rgba(245,166,35,0.06); border:1px solid rgba(245,166,35,0.18); border-radius:10px; padding:12px 14px; font-size:13.5px; color:var(--body); line-height:1.7; }
+  .pr-insight-action-label { display:block; font-family:'Bricolage Grotesque',sans-serif; font-size:9px; font-weight:800; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold); margin-bottom:6px; }
+  .pr-bars { margin-bottom:16px; }
+  /* Accordion toggle */
+  .pr-insights-toggle { display:flex; align-items:center; justify-content:space-between; width:100%; background:var(--card2); border:1px solid var(--border2); border-radius:12px; padding:13px 16px; cursor:pointer; transition:all .2s; margin-top:4px; }
+  .pr-insights-toggle:hover { border-color:var(--gold-border); background:rgba(245,166,35,.05); }
+  .pr-insights-toggle-label { font-family:'Bricolage Grotesque',sans-serif; font-size:11px; font-weight:800; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold); display:flex; align-items:center; gap:8px; }
+  .pr-insights-arrow { font-size:16px; color:var(--gold); transition:transform .3s cubic-bezier(.22,1,.36,1); flex-shrink:0; }
+  .pr-insights-arrow.open { transform:rotate(180deg); }
+  .pr-insights-body { display:none; padding-top:14px; }
+  .pr-insights-body.open { display:block; animation:fadeUp .25s ease; }
+  /* Share button */
+  .share-btn { display:inline-flex; align-items:center; gap:8px; background:var(--card); border:1px solid var(--border2); color:var(--body); font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:700; padding:10px 20px; border-radius:100px; cursor:pointer; transition:all .2s; margin-top:16px; }
+  .share-btn:hover { border-color:var(--gold-border); color:var(--gold); }
+  /* Share modal */
+  .share-modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); backdrop-filter:blur(6px); z-index:100; align-items:flex-end; justify-content:center; padding:0; }
+  .share-modal-overlay.vis { display:flex; }
+  .share-modal-box { background:#111520; border:1px solid rgba(255,255,255,0.13); border-radius:24px 24px 0 0; padding:28px 22px 40px; width:100%; max-width:480px; animation:slideUp .3s cubic-bezier(.22,1,.36,1); }
+  @keyframes slideUp { from{transform:translateY(100%);opacity:0} to{transform:translateY(0);opacity:1} }
+  .share-modal-title { font-family:'Bricolage Grotesque',sans-serif; font-size:18px; font-weight:800; margin-bottom:6px; }
+  .share-modal-sub { font-size:14px; color:var(--body); margin-bottom:24px; }
+  .share-options { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
+  .share-option { display:flex; flex-direction:column; align-items:center; gap:8px; background:var(--card2); border:1px solid var(--border); border-radius:16px; padding:18px 12px; cursor:pointer; transition:all .2s; border:1px solid var(--border2); }
+  .share-option:hover { border-color:var(--gold-border); background:rgba(245,166,35,.05); }
+  .share-option-icon { font-size:28px; line-height:1; }
+  .share-option-label { font-family:'Bricolage Grotesque',sans-serif; font-size:12px; font-weight:700; color:var(--body); text-align:center; }
+  .share-close { width:100%; background:transparent; border:1px solid var(--border2); color:var(--sub); font-family:'Bricolage Grotesque',sans-serif; font-size:14px; font-weight:700; padding:14px; border-radius:100px; cursor:pointer; transition:all .2s; }
+  .share-close:hover { color:var(--text); border-color:var(--border2); }
+  .share-toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:var(--gold); color:#07090d; font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:700; padding:12px 22px; border-radius:100px; z-index:200; opacity:0; pointer-events:none; transition:opacity .3s; white-space:nowrap; }
+  .pr-br { margin-bottom:8px; }
+  .pr-bl { display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px; }
+  .pr-bl-name { color:var(--sub); }
+  .pr-bl-pct { color:var(--gold); font-weight:700; font-family:'Bricolage Grotesque',sans-serif; }
+  .pr-track { height:5px; background:rgba(255,255,255,.06); border-radius:100px; overflow:hidden; }
+  .pr-fill { height:100%; background:linear-gradient(90deg, var(--gold), var(--gold-l)); border-radius:100px; width:0%; transition:width 1s cubic-bezier(.4,0,.2,1); }
+  .final-cta { text-align:center; padding-top:4px; }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════
+     SPLASH
+══════════════════════════════════ -->
+<div id="splash" class="screen active">
+  <div class="splash-grid"></div>
+  <div class="splash-pill">HLE / Alaya · 2026</div>
+  <h1 class="splash-title">The<span class="hl">Leadership</span>Challenge</h1>
+  <p class="splash-sub">12 real leadership situations.<br>No perfect answers. Just yours.</p>
+  <div class="dim-tags">
+    <div class="dim-tag">🛡️ Trust</div>
+    <div class="dim-tag">👁️ Proactivity</div>
+    <div class="dim-tag">🎯 Empowerment</div>
+    <div class="dim-tag">🔄 Adaptability</div>
+  </div>
+  <div class="splash-actions">
+    <button class="btn btn-gold" onclick="go('tutorial')">Start the Challenge →</button>
+    <button class="btn btn-ghost" onclick="skipTutorial()">Skip Tutorial</button>
+  </div>
+  <p class="splash-meta">Choose your pace when you start · based on real leader insights</p>
+</div>
+
+
+<!-- ══════════════════════════════════
+     TUTORIAL
+══════════════════════════════════ -->
+<div id="tutorial" class="screen">
+  <div class="tut-inner">
+    <div id="tut-slides">
+
+      <!-- Slide 1 -->
+      <div class="tut-slide active">
+        <div class="ghost-num">01</div>
+        <h2 class="tut-heading">What is this challenge?</h2>
+        <p class="tut-text">You'll face <strong style="color:var(--text)">12 real leadership situations</strong> drawn directly from conversations with leaders at HLE/Alaya — the exact problems they described facing day-to-day. You choose how many to play when you start.</p>
+        <p class="tut-text">For each situation, you'll pick how you'd respond. After everyone picks, you'll see what actually happens as a result — and why.</p>
+        <p class="tut-text">At the end, you'll get a <strong style="color:var(--text)">Leadership Profile</strong> showing your strengths and where to grow next.</p>
+        <div class="info-box"><p>💡 <strong>In multiplayer mode:</strong> pass the device around so each person picks privately. After all players choose, you'll reveal your answers at the same time — which is where the real discussion starts.</p></div>
+      </div>
+
+      <!-- Slide 2 -->
+      <div class="tut-slide">
+        <div class="ghost-num">02</div>
+        <h2 class="tut-heading">The 4 Dimensions</h2>
+        <p class="tut-text" style="margin-bottom:16px;">Your choices are measured across four leadership dimensions. Each is based on real leadership research:</p>
+        <div class="dim-grid">
+          <div class="dim-card">
+            <div class="dim-icon-big">🛡️</div>
+            <div class="dim-title">Trust</div>
+            <div class="dim-desc-sm">Do people genuinely believe in you?</div>
+            <div class="dim-source">Lencioni · Brené Brown</div>
+          </div>
+          <div class="dim-card">
+            <div class="dim-icon-big">👁️</div>
+            <div class="dim-title">Proactivity</div>
+            <div class="dim-desc-sm">Do you catch problems before they escalate?</div>
+            <div class="dim-source">Covey · Goleman EQ</div>
+          </div>
+          <div class="dim-card">
+            <div class="dim-icon-big">🎯</div>
+            <div class="dim-title">Empowerment</div>
+            <div class="dim-desc-sm">Are you developing others or creating dependency?</div>
+            <div class="dim-source">Hersey &amp; Blanchard</div>
+          </div>
+          <div class="dim-card">
+            <div class="dim-icon-big">🔄</div>
+            <div class="dim-title">Adaptability</div>
+            <div class="dim-desc-sm">Do you lead change or get dragged by it?</div>
+            <div class="dim-source">Kotter · McKinsey</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3 -->
+      <div class="tut-slide">
+        <div class="ghost-num">03</div>
+        <h2 class="tut-heading">The Framework<br>Behind the Scores</h2>
+        <div class="fw-item">
+          <div class="fw-ico">🛡️</div>
+          <div>
+            <div class="fw-name">Trust — max 21 pts</div>
+            <div class="fw-desc">Based on Patrick Lencioni's <em>Five Dysfunctions of a Team</em> and Brené Brown's vulnerability-based trust research. The question: does your team feel safe enough to be honest with you?</div>
+          </div>
+        </div>
+        <div class="fw-item">
+          <div class="fw-ico">👁️</div>
+          <div>
+            <div class="fw-name">Proactivity — max 23 pts</div>
+            <div class="fw-desc">Covey's "Be Proactive" habit combined with Goleman's Emotional Intelligence research — specifically social awareness: noticing what's happening in your team before anyone says it out loud.</div>
+          </div>
+        </div>
+        <div class="fw-item">
+          <div class="fw-ico">🎯</div>
+          <div>
+            <div class="fw-name">Empowerment — max 19 pts</div>
+            <div class="fw-desc">Hersey & Blanchard's Situational Leadership model. Real delegation means transferring the <em>why</em>, not just the <em>what</em> — and trusting people to make it better than you would have.</div>
+          </div>
+        </div>
+        <div class="fw-item">
+          <div class="fw-ico">🔄</div>
+          <div>
+            <div class="fw-name">Adaptability — max 21 pts</div>
+            <div class="fw-desc">John Kotter's change leadership model and McKinsey's adaptive leadership research. The best leaders don't just survive change — they help their team move through it with momentum.</div>
+          </div>
+        </div>
+        <div class="info-box"><p>⚠️ <strong>No "perfect" score exists.</strong> Every scenario rewards different dimensions. Real leadership always involves tradeoffs — that's the point.</p></div>
+      </div>
+
+      <!-- Slide 4 -->
+      <div class="tut-slide">
+        <div class="ghost-num">04</div>
+        <h2 class="tut-heading">How to play together</h2>
+        <p class="tut-text">Once you add players, here's what happens for each round:</p>
+        <div class="fw-item">
+          <div class="fw-ico">👤</div>
+          <div><div class="fw-name">Step 1 — Each player picks privately</div><div class="fw-desc">The device is passed around. Each person reads the situation and picks their response without seeing what others chose.</div></div>
+        </div>
+        <div class="fw-item">
+          <div class="fw-ico">🎭</div>
+          <div><div class="fw-name">Step 2 — Reveal all at once</div><div class="fw-desc">After everyone picks, you hit Reveal together. Seeing where your instincts differ — or align — is the most interesting part.</div></div>
+        </div>
+        <div class="fw-item">
+          <div class="fw-ico">📖</div>
+          <div><div class="fw-name">Step 3 — Read the outcome</div><div class="fw-desc">Each choice has a real consequence explained in full. Don't skip this — it's where the learning happens.</div></div>
+        </div>
+        <div class="fw-item">
+          <div class="fw-ico">📊</div>
+          <div><div class="fw-name">Step 4 — Check the scoreboard</div><div class="fw-desc">After each round, see how everyone's dimensions are tracking. Then move to the next scenario.</div></div>
+        </div>
+      </div>
+
+    </div><!-- /tut-slides -->
+
+    <div class="tut-nav">
+      <button class="t-prev" id="tut-prev" onclick="tutNav(-1)">← Back</button>
+      <button class="t-next" id="tut-next" onclick="tutNav(1)">Next →</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     ADD PLAYERS
+══════════════════════════════════ -->
+<div id="add-players" class="screen">
+  <div class="topbar">
+    <button class="back-btn" id="ap-back-btn" onclick="go('tutorial')">← Back</button>
+    <div class="topbar-center">Players</div>
+    <div class="topbar-spacer"></div>
+  </div>
+  <div class="page-inner">
+    <h2 class="ap-heading">Who's playing?</h2>
+    <p class="ap-sub">Add as many players as you like. One device gets passed around — everyone picks privately before the group reveal.</p>
+    <div class="player-list" id="player-list"></div>
+    <button class="add-p-btn" id="add-p-btn" onclick="addPlayerRow()">+ Add player</button>
+    <p class="ap-note" id="ap-note">Add at least 1 player to start</p>
+    <button class="btn btn-gold" id="start-btn" onclick="startGame()" disabled style="opacity:.4;cursor:not-allowed;">Start Game →</button>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     GAME
+══════════════════════════════════ -->
+<div id="mode-select" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="go('add-players')">&#8592; Back</button>
+    <div class="topbar-center">Game Mode</div>
+    <div class="topbar-space"></div>
+  </div>
+  <div class="page-inner">
+    <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-size:26px;font-weight:700;margin-bottom:8px">How long do you have?</h2>
+    <p style="font-size:15px;color:var(--body);line-height:1.65;margin-bottom:24px">Choose a mode based on your session time. All modes use a different random selection of scenarios each game.</p>
+    <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px">
+      <div onclick="startGameWithCount(5)" style="background:var(--card);border:1px solid var(--border2);border-radius:18px;padding:20px;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--gold-border)'" onmouseout="this.style.borderColor='var(--border2)'">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+          <span style="font-size:24px">&#x26A1;</span>
+          <div><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:700">Quick Round</div><div style="font-size:13px;color:var(--gold)">5 scenarios &middot; ~20 min</div></div>
+        </div>
+        <div style="font-size:13px;color:var(--body);line-height:1.6">Good for a warmup, a short break, or playing for the first time.</div>
+      </div>
+      <div onclick="startGameWithCount(8)" style="background:var(--card);border:1px solid var(--gold-border);border-radius:18px;padding:20px;cursor:pointer;transition:all .2s;position:relative" onmouseover="this.style.background='var(--card2)'" onmouseout="this.style.background='var(--card)'">
+        <div style="position:absolute;top:-1px;right:16px;font-family:'Bricolage Grotesque',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--bg);background:var(--gold);padding:4px 10px;border-radius:0 0 8px 8px">RECOMMENDED</div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+          <span style="font-size:24px">&#x1F3AF;</span>
+          <div><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:700">Full Game</div><div style="font-size:13px;color:var(--gold)">8 scenarios &middot; ~35 min</div></div>
+        </div>
+        <div style="font-size:13px;color:var(--body);line-height:1.6">Good for a workshop session or team lunch. Covers all four signals thoroughly.</div>
+      </div>
+      <div onclick="startGameWithCount(12)" style="background:var(--card);border:1px solid var(--border2);border-radius:18px;padding:20px;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--gold-border)'" onmouseout="this.style.borderColor='var(--border2)'">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+          <span style="font-size:24px">&#x1F3C6;</span>
+          <div><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:700">Deep Dive</div><div style="font-size:13px;color:var(--gold)">12 scenarios &middot; ~55 min</div></div>
+        </div>
+        <div style="font-size:13px;color:var(--body);line-height:1.6">The full experience. For a dedicated leadership development session.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="game" class="screen">
+  <!-- sticky progress bar -->
+  <div class="game-bar">
+    <div class="gb-top">
+      <span class="gb-label" id="gb-label">Scenario 1 of 5</span>
+      <button class="quit-btn" onclick="confirmQuit()">✕ Quit</button>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    <div class="sp-row" id="sp-row"></div>
+  </div>
+
+  <!-- PICK PHASE -->
+  <div id="game-pick" class="game-body"></div>
+
+  <!-- LOCKED PHASE -->
+  <div id="game-locked">
+    <div class="locked-check">✅</div>
+    <h2 class="locked-h" id="locked-heading">Choice Locked!</h2>
+    <p class="locked-sub" id="locked-sub">Pass the device to the next player.</p>
+    <div id="next-player-badge-wrap"></div>
+    <button class="btn btn-gold" style="max-width:280px;" id="locked-cta" onclick="lockedNext()">Hand it over →</button>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     REVEAL
+══════════════════════════════════ -->
+<div id="reveal" class="screen">
+  <div class="topbar">
+    <div style="width:70px"></div>
+    <div class="topbar-center" id="rv-topbar-title">Reveal</div>
+    <div style="width:70px"></div>
+  </div>
+  <div class="rv-body">
+    <div class="eyebrow" style="margin-bottom:10px;">All choices are in</div>
+    <h2 class="rv-heading">Let's see what everyone picked</h2>
+    <p class="rv-sub" id="rv-sub"></p>
+    <div class="rv-cards" id="rv-cards"></div>
+    <div id="rv-stat-wrap"></div>
+    <button class="btn btn-gold" onclick="showDiscuss()">Discuss first →</button>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     CONSEQUENCE
+══════════════════════════════════ -->
+<div id="discuss" class="screen">
+  <div class="topbar">
+    <div style="width:70px"></div>
+    <div class="topbar-center" id="discuss-title">Discuss</div>
+    <div style="width:70px"></div>
+  </div>
+  <div style="padding:22px 22px 52px;flex:1;display:flex;flex-direction:column">
+    <div style="display:flex;justify-content:center;margin-bottom:20px;flex-shrink:0">
+      <div style="position:relative;width:80px;height:80px">
+        <svg width="80" height="80" viewBox="0 0 90 90" style="transform:rotate(-90deg)">
+          <circle cx="45" cy="45" r="40" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="5"/>
+          <circle id="timer-prog" cx="45" cy="45" r="40" fill="none" stroke="#f5a623" stroke-width="5" stroke-dasharray="283" stroke-dashoffset="0" stroke-linecap="round" style="transition:stroke-dashoffset .5s linear"/>
+        </svg>
+        <div id="timer-num" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:#f5a623">2:30</div>
+      </div>
+    </div>
+    <div class="eyebrow" id="discuss-tag" style="margin-bottom:10px"></div>
+    <h3 id="discuss-heading" style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:700;line-height:1.2;margin-bottom:16px"></h3>
+    <div style="background:var(--card);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:0 14px 14px 0;padding:16px 18px;margin-bottom:14px">
+      <p id="discuss-prompt" style="font-size:16px;color:var(--text);line-height:1.75;font-style:italic"></p>
+    </div>
+    <div style="background:var(--gold-dim);border:1px solid var(--gold-border);border-radius:12px;padding:14px 16px;margin-bottom:14px">
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:6px">Hand on heart</div>
+      <p style="font-size:14px;color:var(--body);line-height:1.65">Is this what you would actually do &#8212; or what you know you should do?</p>
+    </div>
+    <div id="discuss-split" style="display:none;background:var(--card2);border:1px solid var(--border2);border-radius:12px;padding:14px 16px;margin-bottom:20px">
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--sub);margin-bottom:6px">You did not all see it the same way</div>
+      <p id="discuss-split-text" style="font-size:13.5px;color:var(--body);line-height:1.65"></p>
+    </div>
+    <div style="display:flex;gap:10px;flex-shrink:0;margin-top:auto;padding-top:16px">
+      <button class="btn btn-ghost" style="flex:1;padding:14px 20px" onclick="skipDiscuss()">Skip &#8594;</button>
+      <button class="btn btn-gold" style="flex:2;padding:14px 20px" onclick="skipDiscuss()">See What Happened &#8594;</button>
+    </div>
+  </div>
+</div>
+
+<div id="consequence" class="screen">
+  <div class="topbar">
+    <div style="width:70px"></div>
+    <div class="topbar-center" id="cq-topbar-title">Outcome</div>
+    <div style="width:70px"></div>
+  </div>
+  <div class="cq-body" id="cq-body"></div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     SCOREBOARD
+══════════════════════════════════ -->
+<div id="scoreboard" class="screen">
+  <div class="topbar">
+    <div style="width:70px"></div>
+    <div class="topbar-center" id="sb-topbar-title">Scoreboard</div>
+    <div style="width:70px"></div>
+  </div>
+  <div class="sb-body">
+    <div class="eyebrow" style="margin-bottom:10px;" id="sb-eyebrow">After Round 1</div>
+    <h2 class="sb-heading">Live Standings</h2>
+    <p class="sb-sub" id="sb-sub">How everyone's leadership dimensions are tracking.</p>
+    <div id="sb-cards"></div>
+    <button class="btn btn-gold" id="sb-cta" onclick="scoreboardNext()">Next Scenario →</button>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     FINAL
+══════════════════════════════════ -->
+<div id="final" class="screen">
+  <div class="final-hero">
+    <div class="eyebrow" style="margin-bottom:10px;">Results</div>
+    <h2 class="final-title">Leadership<br><span>Profiles</span></h2>
+    <p class="final-sub" id="final-sub">Here's what your choices revealed about each player.</p>
+    <button class="share-btn" onclick="openShareModal()">📤 Share Results</button>
+  </div>
+  <div class="final-body">
+    <div id="final-cards"></div>
+    <div class="final-cta">
+      <button class="btn btn-ghost" onclick="playAgain()">↩ Play Again</button>
+    </div>
+  </div>
+</div>
+
+<!-- SHARE MODAL -->
+<div id="share-modal" class="share-modal-overlay" onclick="handleShareOverlayClick(event)">
+  <div class="share-modal-box">
+    <h3 class="share-modal-title">Share Results</h3>
+    <p class="share-modal-sub" id="share-modal-sub">Send everyone their leadership profiles.</p>
+    <div class="share-options">
+      <div class="share-option" onclick="shareWhatsApp()">
+        <div class="share-option-icon">💬</div>
+        <div class="share-option-label">WhatsApp</div>
+      </div>
+      <div class="share-option" onclick="shareEmail()">
+        <div class="share-option-icon">📧</div>
+        <div class="share-option-label">Email</div>
+      </div>
+      <div class="share-option" onclick="copyShareText()">
+        <div class="share-option-icon">📋</div>
+        <div class="share-option-label">Copy Text</div>
+      </div>
+      <div class="share-option" onclick="downloadWord()">
+        <div class="share-option-icon">📄</div>
+        <div class="share-option-label">Word Doc</div>
+      </div>
+    </div>
+    <button class="share-close" onclick="closeShareModal()">Close</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="share-toast" class="share-toast"></div>
+
+
+<!-- QUIT MODAL -->
+<div id="quit-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);z-index:100;align-items:center;justify-content:center;padding:24px;">
+  <div style="background:#0f1421;border:1px solid rgba(255,255,255,0.13);border-radius:20px;padding:28px 24px;max-width:320px;width:100%;text-align:center;">
+    <div style="font-size:36px;margin-bottom:14px;">⚠️</div>
+    <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:700;margin-bottom:10px;color:#eef1ff;">Quit the game?</h3>
+    <p style="font-size:14px;color:#ced4e0;line-height:1.65;margin-bottom:24px;">All progress and scores will be lost. This can't be undone.</p>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <button onclick="doQuit()" style="background:#f5a623;color:#07090d;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:15px;padding:14px;border-radius:100px;border:none;cursor:pointer;">Yes, quit</button>
+      <button onclick="closeQuitModal()" style="background:transparent;color:#9ca3af;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:14px;padding:12px;border-radius:100px;border:1px solid rgba(255,255,255,0.13);cursor:pointer;">Keep playing</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<script>
+// ============================================================
+// data.js — Leadership Challenge
+// HLE / Alaya 2026
+// ============================================================
+
+// ── SIGNAL MAXES ─────────────────────────────────────────────
+var MAX = { T:21, P:23, E:19, A:21 };
+
+// ── DIMENSIONS ───────────────────────────────────────────────
+var DIMS = ["T","P","E","A"];
+var DIM_ICONS  = { T:"🛡️", P:"👁️", E:"🎯", A:"🔄" };
+var DIM_LABELS = { T:"Trust", P:"Proactivity", E:"Empowerment", A:"Adaptability" };
+var DIM_KEY_SCENARIOS = { T:[0,3], P:[7,10], E:[2,4], A:[5,8] };
+
+// ── COLOURS ──────────────────────────────────────────────────
+var COLORS = ["#f5a623","#60a5fa","#10b981","#f472b6","#a78bfa","#fb923c","#34d399","#e879f9"];
+
+// ── SCENARIOS ────────────────────────────────────────────────
+var SCENARIOS = [
+  {
+    title: "The Pivot",
+    situation: "Management just announced a major new priority mid-week. Your team has been fully heads-down on a project for three weeks. The message came via Slack \u2014 minimal context, just \u201cwe\u2019re shifting gears.\u201d",
+    choices: [
+      { letter:"A", text:"Call an immediate team meeting. Share what you know, hear their concerns, and work through the pivot together \u2014 even with incomplete information.",
+        outcome:"Your team was frustrated with the announcement \u2014 but not with you. They felt heard at a moment when most leaders go quiet. Trust is not built when everything is fine \u2014 it is built when the information is incomplete and you show up anyway.",
+        scores:{ T:3, P:1, A:1 } },
+      { letter:"B", text:"Sit on it until you have more context. Brief one or two key team members quietly, then come to the full team with a clearer picture.",
+        outcome:"Your plan was solid. But by then the team had already heard fragments through the rumour mill and wondered why their leader had gone quiet. A small but real trust gap opened \u2014 not because your intent was wrong, but because silence in uncertainty reads as exclusion even when it is care.",
+        scores:{ T:1, P:1, E:1, A:2 } },
+      { letter:"C", text:"Go to management first. Get real answers before saying anything \u2014 your team deserves more than half a story.",
+        outcome:"You brought back better information. But your team found out through informal channels before they heard from you, and that sequence matters. The order in which people receive news tells them something about their position in your thinking.",
+        scores:{ T:0, A:1 } }
+    ],
+    discussPrompt: "When you made your choice \u2014 were you thinking about what the team needed to hear, or what you needed to know before you spoke?",
+    splitPrompt: "What did the people who chose differently see in that situation that you did not?"
+  },
+  {
+    title: "The Mirror",
+    situation: "Your manager pulls you aside after a team meeting. They tell you, directly but kindly, that several team members find it hard to bring problems to you \u2014 that you can come across as dismissive when things do not go to plan. You were not expecting this.",
+    choices: [
+      { letter:"A", text:"Ask your manager for specific names and go directly to those team members this week to hear more about what they experienced.",
+        outcome:"You moved immediately and directly \u2014 the right instinct. But going to find out who said it can feel like an investigation rather than a reflection. The directness of your response may reinforce rather than disprove the original observation.",
+        scores:{ T:0, P:2, A:1 } },
+      { letter:"B", text:"Take it seriously immediately. Go back to your team within the week \u2014 not to defend yourself, but to openly ask what you could do differently.",
+        outcome:"This was the harder move and you made it. Going back to your team to genuinely ask what you could do differently requires vulnerability that most leaders avoid. What it produced was disproportionate to the effort \u2014 your team felt heard, respected, and the feedback became the beginning of a conversation rather than a verdict.",
+        scores:{ T:2, P:2, A:2 } },
+      { letter:"C", text:"Acknowledge the feedback professionally. You are not fully convinced, but you will be more conscious of your tone going forward.",
+        outcome:"You acknowledged without dismissing \u2014 better than defensiveness. But acknowledgement without visible action is hard for a team to distinguish from polite dismissal. If your behaviour shifts, it mattered. If it does not, the acknowledgement was a management move rather than a leadership one.",
+        scores:{ T:0, A:1 } }
+    ],
+    discussPrompt: "When you received feedback about how you come across \u2014 what was your first instinct: to understand it, or to test whether it was accurate?",
+    splitPrompt: "What did the people who chose differently see in that situation that you did not?"
+  },
+  {
+    title: "The Handover",
+    situation: "You have been asked to hand over one of your core processes to a new team lead. It took you 18 months to build. You know every edge case and workaround. They are smart \u2014 but completely new to this.",
+    choices: [
+      { letter:"A", text:"Spend time creating a thorough document covering everything \u2014 steps, exceptions, common mistakes \u2014 then walk them through it together.",
+        outcome:"The document was detailed and your care was evident. But when real problems arrived \u2014 judgment calls that required context your words could not carry \u2014 they came back to you. The dependency stayed intact. What looked like a handover was a task transfer: you moved the work but not the ownership.",
+        scores:{ T:1, P:1 } },
+      { letter:"B", text:"Walk them through the why behind the process before you explain the how. Let them ask questions, own the gaps, and evolve it themselves.",
+        outcome:"Messier at first. But within a month they were solving problems you had not anticipated \u2014 in ways you would not have thought of yourself. The real handover happened. This is what separates leaders who develop people from leaders who manage them.",
+        scores:{ T:2, P:1, E:3 } },
+      { letter:"C", text:"Give them the top ten mistakes to avoid, then step back completely and let them run.",
+        outcome:"Bold. The ownership transferred because you made it total rather than gradual. Some of your don\u2019ts turned out to be context-specific and they learned to tell the difference themselves.",
+        scores:{ P:1, E:2, A:2 } }
+    ],
+    discussPrompt: "If the person you handed to made the process better than you had \u2014 how would that feel?",
+    splitPrompt: "What did the people who chose differently see in that situation that you did not?"
+  },
+  {
+    title: "The Change You Did Not Choose",
+    situation: "A structural change is being rolled out company-wide. Your team did not ask for it and is not excited. Honestly \u2014 you have some private doubts yourself about whether it is the right call.",
+    choices: [
+      { letter:"A", text:"Implement it as directed and keep your doubts to yourself. Leaders should present a united front.",
+        outcome:"Your team sensed the gap between what you said and how you said it. Authenticity is read through energy and pace as much as through words. The change landed around your team rather than with them.",
+        scores:{ A:1 } },
+      { letter:"B", text:"Be honest with your team: I have questions too \u2014 but here is how we are going to make this work together. Invite them to shape how the change lands.",
+        outcome:"Your transparency about your own questions made your team feel less alone in theirs \u2014 and that shared uncertainty became the foundation for genuine collaboration rather than managed compliance.",
+        scores:{ T:2, P:1, E:1, A:2 } },
+      { letter:"C", text:"Champion the change fully to your team. Take your questions privately to your manager.",
+        outcome:"Your team got behind it and your concerns stayed professional. You built credibility upward while maintaining stability downward. The gap: your team never got to see how you hold private disagreement with a decision while still leading its implementation.",
+        scores:{ T:1, P:1, A:2 } }
+    ],
+    discussPrompt: "Is there a version of presenting a united front that is honest \u2014 or does performing confidence you do not feel always cost something?",
+    splitPrompt: "What did the people who chose differently see in that situation that you did not?"
+  },
+  {
+    title: "Monday Morning",
+    situation: "It is 8:45am Monday. Three things are waiting: a team member needs an urgent HR conversation, a client escalation needs your sign-off, and your manager wants a project update in 90 minutes.",
+    choices: [
+      { letter:"A", text:"Tackle the client escalation first. It will be quick, external pressure is real, and then you can give the HR conversation proper attention.",
+        outcome:"The client issue resolved quickly. But the HR conversation was pushed to the afternoon. The team member had been carrying something since Friday. When the pattern repeats, your team begins to understand that clients rank above them in your triage hierarchy.",
+        scores:{} },
+      { letter:"B", text:"Delegate the client escalation to a capable team member. Handle the HR conversation first, then prepare the update.",
+        outcome:"The team member got your full attention when they needed it. The person you delegated to handled the client issue well and grew from the responsibility under pressure. This is what triage leadership looks like: identifying what requires you specifically and what is a development opportunity.",
+        scores:{ T:2, P:1, E:3, A:1 } },
+      { letter:"C", text:"Message your manager asking for a 30-minute extension. Handle the HR conversation first, then delegate the client escalation.",
+        outcome:"Your manager respected the transparency. The HR matter got proper attention. The delegation worked. Managing upward proactively \u2014 asking for more time before you miss a deadline \u2014 earns credibility upward rather than burning it.",
+        scores:{ T:2, P:2, E:2, A:1 } }
+    ],
+    discussPrompt: "If your manager had been watching every choice you made this morning \u2014 would you have triaged in the same order?",
+    splitPrompt: "What did the people who chose differently see in that situation that you did not?"
+  },
+  {
+    title: "The 70% Decision",
+    situation: "You have been watching a pattern in your team\u2019s workflow for three weeks. Your gut says there is a structural problem quietly costing productivity. You have a strong instinct about the fix \u2014 but no hard data yet. Your manager asks for your recommendation in tomorrow\u2019s meeting.",
+    choices: [
+      { letter:"A", text:"Present your instinct as a working hypothesis. Be transparent that you do not have the data yet, explain your reasoning, and say you are ready to test it immediately.",
+        outcome:"You were honest about what you knew and what you did not \u2014 which earned credibility before the recommendation was tested. Framing your instinct as a hypothesis gave your manager something to engage with rather than just approve.",
+        scores:{ T:1, P:2, A:1 } },
+      { letter:"B", text:"Back your instinct fully. Present the recommendation clearly and own it. If you are wrong you will adjust \u2014 but you have been watching this long enough to trust your read.",
+        outcome:"You committed. You presented a clear recommendation, put your name on it, and accepted that if you were wrong you would adjust. That is decision velocity \u2014 acting at 70% conviction rather than waiting for 95%.",
+        scores:{ P:2, A:3 } },
+      { letter:"C", text:"Ask your manager for more time. You want to come with something solid rather than a hunch \u2014 one more week and you will have actual data.",
+        outcome:"You bought another week of certainty and your organisation got another week of a problem you already had enough information to address. Three weeks of watching a pattern is typically enough.",
+        scores:{ A:1 } }
+    ],
+    discussPrompt: "When you are 70% sure \u2014 is the other 30% genuinely missing information, or is it permission you are waiting for someone else to give you?",
+    splitPrompt: "What did the people who chose differently see in that situation that you did not?"
+  },
+  {
+    title: "The Walkout Risk",
+    situation: "Your strongest team member asks to talk. They have been headhunted. The offer is 20% more than what they earn now. They are not threatening \u2014 they are telling you because they respect you. You have no budget authority. You have ten minutes before your next meeting.",
+    choices: [
+      { letter:"A", text:"Tell them directly you cannot match it and will not pretend otherwise. Then ask what would actually make them want to stay \u2014 and find out what you can do about it.",
+        outcome:"You were direct about the constraint \u2014 which was right. Moving immediately to find out what would actually make staying worthwhile is the most proactive response available.",
+        scores:{ T:1, P:2 } },
+      { letter:"B", text:"Ask them to give you 48 hours. Tell them you are going to go to bat for them internally, even if you do not know yet what is possible.",
+        outcome:"You bought time with a credible commitment rather than a stall. Whether you retained them depends on what was available. What you controlled \u2014 and got right \u2014 was demonstrating that you fight for your people within your constraints.",
+        scores:{ T:2, P:2, A:1 } },
+      { letter:"C", text:"Thank them for telling you. Acknowledge the offer is strong. Tell them you understand if they take it and will support whatever they decide.",
+        outcome:"Gracious, respectful, and a quiet give-up dressed in the language of care. Telling someone you support whatever they decide when you have not tried to find out whether anything could change communicates \u2014 below the surface \u2014 that you do not believe anything can change.",
+        scores:{ T:1 } }
+    ],
+    discussPrompt: "When you made your choice \u2014 were you trying to keep them, or trying to make sure you could live with however it ended?",
+    splitPrompt: "What did the people who chose differently see in that situation that you did not?"
+  },
+  {
+    title: "The Difficult Conversation",
+    situation: "A team member has missed three consecutive deadlines. Others have noticed and are quietly frustrated. You have been finding reasons to delay the conversation \u2014 they have had a tough few months and you genuinely like them. This week another team member comes to you directly and says it is affecting their workload.",
+    choices: [
+      { letter:"A", text:"Address it directly in your next interaction. Do not wait for a scheduled 1:1. Bring specific examples, name what needs to change and by when.",
+        outcome:"You moved fast and were specific \u2014 both of which matter enormously in a performance conversation. Specific feedback tied to observable behaviour is much harder to argue with and much easier to act on.",
+        scores:{ T:0, P:3, A:1 } },
+      { letter:"B", text:"Raise it gently in your next 1:1, framing it as a welfare check-in rather than a performance conversation.",
+        outcome:"Your care was evident and genuine. But reframing a performance conversation as a welfare check-in delays the feedback they most need. The hardest truth: the kindest thing you can do for someone who is underperforming is to tell them clearly, specifically, and early.",
+        scores:{ T:1, E:1 } },
+      { letter:"C", text:"Open with what they need to get back on track before anything else \u2014 ask first, then share what you have observed.",
+        outcome:"Opening with what the person needs rather than what you need from them is a genuine reversal of the typical performance dynamic. The gap: asking what they need is the right opening, but the conversation still needs the clear specific feedback.",
+        scores:{ T:1, E:2, A:1 } }
+    ],
+    discussPrompt: "At what point does giving someone time and space become protection for you rather than care for them?",
+    splitPrompt: "What did the people who chose differently see in that situation that you did not?"
+  },
+  {
+    title: "The Approval Loop",
+    situation: "Your team has been blocked on a decision for six days waiting for sign-off from your manager who is travelling and largely unreachable. The decision is technically above your authority level \u2014 but it is straightforward, the delay is visibly hurting morale, and you know what the right answer is.",
+    choices: [
+      { letter:"A", text:"Make the call. Document your reasoning clearly, send your manager a short note explaining what you decided and why, and own the outcome fully.",
+        outcome:"You acted. Six days of blocked progress ended in one decision. You documented and communicated \u2014 which distinguishes responsible autonomous action from reckless overreach.",
+        scores:{ T:1, P:1, A:3 } },
+      { letter:"B", text:"Send your manager a concise one-paragraph summary and flag that you will need to move by end of tomorrow without a response.",
+        outcome:"You created a forcing function rather than an open-ended request. That specificity is what made this effective: you respected your manager\u2019s authority while refusing to let the situation drift indefinitely.",
+        scores:{ T:1, P:2, A:1 } },
+      { letter:"C", text:"Brief your most senior team member on the full context and give them the authority to make the call.",
+        outcome:"Six days of waiting ended with someone on your team making the call \u2014 someone who needed exactly this kind of responsibility. The decision was made, the team moved, and a team member grew from real authority in a real situation.",
+        scores:{ P:1, E:3 } }
+    ],
+    discussPrompt: "If your manager came back and said you made the wrong call \u2014 would you defend the decision, or apologise for making it?",
+    splitPrompt: "What did the people who chose differently see in that situation that you did not?"
+  },
+  {
+    title: "The Rebuild",
+    situation: "Two team members have resigned in the same week. Your remaining four people are already stretched and morale is low. You have a major deliverable due in three weeks. The resignations were not a surprise \u2014 it has been a tough few months \u2014 but the timing is brutal.",
+    choices: [
+      { letter:"A", text:"Bring the team together today. Acknowledge honestly that it is a hard moment. Ask them what they need. Then redesign the workload together.",
+        outcome:"You acknowledged what was real rather than managing the team\u2019s perception of it. Involving your team in figuring out how to move through it converted a destabilising event into an act of collective leadership.",
+        scores:{ T:2, P:1, E:2, A:1 } },
+      { letter:"B", text:"Triage immediately. Identify the critical path and strip everything else. Get the team to the finish line first, then deal with morale and workload after.",
+        outcome:"You made hard fast decisions and gave your team clarity when clarity was what they needed most. When morale is low and workload is heavy, a clear path to a finish line is often more restorative than a conversation about feelings.",
+        scores:{ P:2, E:3, A:1 } },
+      { letter:"C", text:"Go to your manager before doing anything else. Push for a deadline extension or temporary resource support.",
+        outcome:"You were right not to make promises before you knew what was available. The gap is in the sequence: your team is in crisis and going upward first means they are waiting without a signal from you.",
+        scores:{ T:1, P:2, A:2 } }
+    ],
+    discussPrompt: "When two people resign in the same week \u2014 is your first responsibility to the deliverable, to the people who stayed, or to understanding why they left?",
+    splitPrompt: "What did the people who chose differently see in that situation that you did not?"
+  },
+  {
+    title: "The Feedback You Did Not Give",
+    situation: "Three weeks ago, a team member interrupted a client and dismissed their concern in a way that was clearly noticed. You did not address it at the time \u2014 the moment passed. Since then two other things came up. They have a client call tomorrow. You are still thinking about it.",
+    choices: [
+      { letter:"A", text:"Bring it up today, even though it is late. Be specific about what happened and why it matters before tomorrow\u2019s call.",
+        outcome:"You broke the delay. Three weeks late is not ideal \u2014 but late specific feedback is worth more than timely vague feedback. Feedback has a half-life but it does not expire.",
+        scores:{ T:0, P:3, E:1 } },
+      { letter:"B", text:"Let the specific incident go \u2014 it has been too long. Watch tomorrow\u2019s call closely and give feedback immediately from that one if needed.",
+        outcome:"You avoided an ambush \u2014 which was considerate. But in doing so you gave up the most directly relevant piece of feedback available before the call.",
+        scores:{ T:0, A:1 } },
+      { letter:"C", text:"Have a broader coaching conversation about client communication today \u2014 without referencing the specific incident.",
+        outcome:"You found a way to give them something useful without the awkwardness of the specific timing. The gap is in what they did not get: the grounded specific example that makes abstract principles concrete and actionable.",
+        scores:{ T:1, P:1, E:2, A:1 } }
+    ],
+    discussPrompt: "When you delayed the feedback \u2014 were you protecting them from an awkward conversation, or protecting yourself from having to initiate one?",
+    splitPrompt: "What did the people who chose differently see in that situation that you did not?"
+  },
+  {
+    title: "The Credit Question",
+    situation: "Your team just delivered an excellent result on a high-visibility project. In the debrief with senior leadership, your manager attributes most of the success to strategic decisions made above your team level. Your team members are in the room. They notice. After the meeting, two of them pull you aside.",
+    choices: [
+      { letter:"A", text:"Address it before the meeting ends. Name your team\u2019s specific contributions clearly and publicly \u2014 even if it means gently correcting the narrative.",
+        outcome:"You made the move most leaders calculate and then decide against. What it produced for your team was immediate and unambiguous: they saw their leader go to bat for them, publicly, in the room, when it mattered most.",
+        scores:{ T:1, P:2, A:1 } },
+      { letter:"B", text:"Let the meeting finish. Afterwards, go directly to your manager and tell them what you observed and why it matters.",
+        outcome:"You chose the moment when you had your manager alone \u2014 without social pressure \u2014 to have the most important part of the conversation. Following up with your team directly about their contributions closes the gap.",
+        scores:{ T:2, P:2, E:1 } },
+      { letter:"C", text:"Do not escalate upward. Make sure every team member knows from you directly exactly how you saw their contribution.",
+        outcome:"Your team heard directly from you that their contribution was real and that you saw it. The gap: your manager\u2019s narrative did not change, and in the next high-visibility moment the same pattern may repeat.",
+        scores:{ T:1, E:1, A:1 } }
+    ],
+    discussPrompt: "What would need to be true about your relationship with your manager for you to have made a different choice in that room?",
+    splitPrompt: "What did the people who chose differently see in that situation that you did not?"
+  }
+];
+
+// ── CASCADE HELPERS ───────────────────────────────────────────
+function _topArr(s, mx) {
+  return ["T","P","E","A"]
+    .map(d => ({ d, p: pct(s[d]||0, mx[d]) }))
+    .sort((a,b) => b.p - a.p);
+}
+function _avg4(s, mx) {
+  return (pct(s.T||0,mx.T)+pct(s.P||0,mx.P)+pct(s.E||0,mx.E)+pct(s.A||0,mx.A))/4;
+}
+function _isDualSpike(s, mx) {
+  const [d1,d2,d3,d4] = _topArr(s,mx);
+  return (d1.p+d2.p)/2 - (d3.p+d4.p)/2 >= 25 && d1.p>=55 && d2.p>=55 && d4.p<=50;
+}
+function _isSingleSpike(s, mx) {
+  const [d1,d2,d3,d4] = _topArr(s,mx);
+  const avgOthers = (d2.p+d3.p+d4.p)/3;
+  return d1.p>=56 && (d1.p-avgOthers)>=18 && avgOthers<=64;
+}
+function _isSteadyHand(s, mx) {
+  const arr = _topArr(s,mx);
+  const top3 = (arr[0].p+arr[1].p+arr[2].p)/3;
+  return !_isDualSpike(s,mx) && !_isSingleSpike(s,mx) && !(top3>=68 && _avg4(s,mx)>=60) && _avg4(s,mx)>44;
+}
+
+// ── PROFILES ─────────────────────────────────────────────────
+var PROFILES = [
+  { id:"visionary", name:"The Visionary", emoji:"\uD83C\uDF1F",
+    desc:"You have built something genuinely rare. Your team trusts you enough to tell you the hard things. You notice problems before they escalate. You develop people rather than depending on them. When conditions shift, you lead through the change rather than managing around it. The risk at this level: leaders who are strong everywhere sometimes stop growing anywhere.",
+    actions:{ T:"Your team feels safe with you. The next level is using that safety to have the conversations that are genuinely difficult. Once a month, initiate a conversation with a team member about something you have been avoiding.", P:"In your next team meeting, name something you are watching \u2014 not a problem yet, just a signal \u2014 and ask your team what they see. You are teaching the habit by modelling it out loud.", E:"You develop people well. The next level is developing people who develop people. Identify one team member ready to start coaching others. Give them a specific person to develop and a specific outcome to aim for.", A:"When change lands, narrate your first 24 hours: here is what I know, here is what I do not know, and here is what I am doing about it." },
+    match(s,mx){ mx=mx||MAX; const t=pct(s.T||0,mx.T),p=pct(s.P||0,mx.P),e=pct(s.E||0,mx.E),a=pct(s.A||0,mx.A); return t>=65&&p>=65&&e>=65&&a>=65; } },
+
+  { id:"rising", name:"The Rising Leader", emoji:"\uD83C\uDF31",
+    desc:"You are close. Across most of what leadership demands \u2014 building trust, catching things early, developing others, moving through change \u2014 you are performing genuinely well. The gap between where you are and where the best leaders operate is smaller than it has ever been. One or two dimensions are still running slightly behind the others.",
+    actions:{ T:"The growth edge is consistency under pressure. Before your next difficult week, make one commitment to your team: no matter what is happening, I will check in with each of you at least once. Then keep it.", P:"The gap is typically in acting before you are certain. This week, identify one thing that feels slightly off and act on it today. Act before you are sure.", E:"The stretch is delegating something that makes you genuinely uncomfortable to let go of. Hand it over with: the outcome is yours \u2014 come to me only if you hit a wall you cannot move.", A:"Next time something shifts unexpectedly, communicate to your team within two hours, even if all you can say is that you have heard this and are working on what it means." },
+    match(s,mx){ mx=mx||MAX; const arr=_topArr(s,mx); const top3=(arr[0].p+arr[1].p+arr[2].p)/3; return top3>=68&&_avg4(s,mx)>=60&&arr[3].p>=40&&!_isDualSpike(s,mx)&&!_isSingleSpike(s,mx); } },
+
+  { id:"firefighter", name:"The Firefighter", emoji:"\uD83D\uDD25",
+    desc:"You are in reactive mode \u2014 not because you are a poor leader, but because conditions have created a pattern of responding rather than leading. Something is always on fire. By the time you notice a problem it has already grown. Do not try to fix all four dimensions at once. Pick one signal. Build one habit. Give it 60 days before you touch anything else.",
+    actions:{ T:"Every Monday morning, send each team member a single message: how are you doing this week \u2014 anything I should know about? The act of asking, consistently, is what builds the safety. Start this Monday.", P:"Block 15 minutes every Monday before anything else. One question only: what could go wrong this week that I could prevent right now? Act on the first answer before 10am.", E:"Identify one task you have been carrying for more than a week that someone else could own. Today, hand it to someone with: this is yours now. Here is the outcome I need. Come to me if you hit something you cannot solve.", A:"When change lands, give your team 60 seconds of honest thinking: here is what just happened, here is what I think it means for us, and here is what we are doing today." },
+    match(s,mx){ mx=mx||MAX; return _avg4(s,mx)<=44; } },
+
+  { id:"protector", name:"The Protector", emoji:"\uD83D\uDEE1\uFE0F",
+    desc:"Your team trusts you \u2014 because of how you show up, not because of a title. You are consistent when the environment is not. You show up for people before they have to ask. The gap is that your reliability has quietly created a dependency. When everything flows through you, your presence becomes load-bearing. That is not a trust problem \u2014 it is an empowerment problem, and it is the next frontier.",
+    actions:{ T:"The growth edge is using that trust to have the harder conversations. This week, tell one team member directly: I think you are operating below what you are capable of. I want to talk about what is holding that back.", P:"The next time something feels slightly wrong, act on it the same day before it becomes a confirmed problem. Early and light beats late and heavy every time.", E:"The next time someone brings you a problem, before you respond with a solution, ask them: what do you think you should do? Wait for the full answer. Then ask: what would you need to actually do that?", A:"Within two hours of receiving news, send your team a message \u2014 even if it only says that you have heard this and are getting clarity and will talk this afternoon." },
+    match(s,mx){ mx=mx||MAX; return _topArr(s,mx)[0].d==="T" && _isSingleSpike(s,mx) && !(_topArr(s,mx)[1].d==="A" && (pct(s.A||0,mx.A)-pct(s.P||0,mx.P))>=15); } },
+
+  { id:"cornerstone", name:"The Cornerstone", emoji:"\uD83E\uDDF1",
+    desc:"Your team trusts you \u2014 and they rely on you especially when things are uncertain. When change lands, when the plan falls apart \u2014 people look at you. And you hold steady. That combination of relational trust and situational steadiness is what makes you the person the team orients around when everything else is moving. The gap: because you hold things together so reliably, the team has not had to develop the same steadiness themselves.",
+    actions:{ T:"The next time you navigate something uncertain, narrate your thinking out loud to at least one team member: here is what I am feeling, here is how I am thinking about it, here is what I am doing. Your calm is a skill they can learn.", P:"Once a week, ask yourself: what is building up in my team right now that has not surfaced yet? Then act on the first thing that comes to mind while it is still small enough for a conversation to resolve it.", E:"Choose one area where you are currently the point of stability and ask: who on my team could own this? Then explicitly transfer that ownership: when things get uncertain in this area, I want you to be the one who holds it steady \u2014 not me.", A:"The next time a change requires you to shift your approach, make the shift visible: I was planning to do X \u2014 because of this change I am now doing Y, and here is why." },
+    match(s,mx){ mx=mx||MAX; const arr=_topArr(s,mx); const isTA=[arr[0].d,arr[1].d].sort().join("")==="AT"; return (isTA&&_isDualSpike(s,mx))||(arr[0].d==="T"&&arr[1].d==="A"&&_isSingleSpike(s,mx)&&(pct(s.A||0,mx.A)-pct(s.P||0,mx.P))>=15); } },
+
+  { id:"lookout", name:"The Lookout", emoji:"\uD83D\uDC41\uFE0F",
+    desc:"You see things before other people do. You notice when someone goes quiet, when a process is quietly failing, when a decision is being delayed for the wrong reasons. The gap is in what happens after you notice. You tend to move fast \u2014 sometimes faster than your team\u2019s trust in your intentions can carry. When you act on something before others have seen it, your action can feel like surveillance rather than care.",
+    actions:{ T:"The next time you notice something about a team member, before you act on it, name it to them and explain why: I have noticed you seem quieter this week. I am asking because I pay attention to my team and I want to make sure you are okay \u2014 not because there is a performance concern.", P:"This is your signature strength. The growth edge is making it a team capability. In your next team meeting, name something early that you are watching and ask: does anyone else see this?", E:"When you spot a problem, bring the person closest to it into the diagnosis: I have been watching this and something feels off \u2014 what are you seeing?", A:"The next time you change course, slow down the communication by one step: before you announce the new direction, spend 60 seconds explaining what changed and why." },
+    match(s,mx){ mx=mx||MAX; return _topArr(s,mx)[0].d==="P" && _isSingleSpike(s,mx); } },
+
+  { id:"catalyst", name:"The Catalyst", emoji:"\u26A1",
+    desc:"You see problems coming and your team trusts you enough to come to you before those problems escalate. That combination \u2014 early warning instinct and genuine relational safety \u2014 makes you one of the most valuable leaders a team can have. Things do not fester on your watch. The gap is in what happens with what you see and hear. You tend to carry the response yourself. Over time this creates a subtle dependency.",
+    actions:{ T:"The growth edge is using that trust to deliver harder messages. The next time you have feedback that would genuinely help someone but feels risky to give, give it. Your trust account is high enough to absorb the discomfort.", P:"The next time you act on something early, tell your team what you saw and why you moved: I noticed X three days ago and it told me Y was coming \u2014 so here is what I did.", E:"The next time someone brings you a problem you could solve in five minutes, do not solve it. Instead say: what do you think the right move is? Wait. Then: what would you need to make that happen?", A:"Your growth edge is being honest about uncertainty without transmitting anxiety. Try: I do not have the full picture yet \u2014 but here is what I know, here is what I am doing, and here is what you should focus on in the meantime." },
+    match(s,mx){ mx=mx||MAX; const arr=_topArr(s,mx); return [arr[0].d,arr[1].d].sort().join("")==="PT"&&_isDualSpike(s,mx); } },
+
+  { id:"builder", name:"The Builder", emoji:"\uD83C\uDFAF",
+    desc:"You grow people. You know how to hand things over in a way that genuinely develops capability \u2014 not just transfers a task. You know the difference between delegating the what and delegating the why. The people who have worked with you are more capable than when they arrived. The gap is in the relationship infrastructure around that development \u2014 who is struggling emotionally, who is quietly disengaged.",
+    actions:{ T:"Once a week, have a five-minute conversation with a team member that has nothing to do with work or development. Just genuine curiosity about them as a person.", P:"Start scanning for a different signal: who seems less energised than usual? Who has gone quieter? Act on one this week \u2014 not with a development conversation, but with a genuine check-in.", E:"This is your signature strength. Identify one team lead and explicitly coach them on how you hand things over. Walk them through a real handover in real time: watch what I do here and then we will debrief.", A:"When things change, communicate the why before you restructure. Next time you restructure in response to change, spend five minutes with the team explaining the shift before you announce the new plan." },
+    match(s,mx){ mx=mx||MAX; return _topArr(s,mx)[0].d==="E" && _isSingleSpike(s,mx); } },
+
+  { id:"compass", name:"The Compass", emoji:"\uD83E\uDDED",
+    desc:"You move through change better than almost anyone in the room. When things shift you pivot cleanly. You do not get destabilised by uncertainty. You make decisions with incomplete information, adjust as new information arrives, and keep moving. The gap is that your fluidity with change can outpace your team\u2019s ability to follow.",
+    actions:{ T:"Create the second kind of trust by actively inviting pushback: before we move \u2014 what am I missing? What would you do differently? When someone pushes back well, thank them specifically for it.", P:"Once a week, ask yourself: what is likely to shift in the next 30 days that I am not yet preparing for?", E:"The next time a change requires a pivot, walk your team through how you are thinking about it: here is what changed, here is how I assessed the options, here is why I chose this direction.", A:"This is your signature strength. When you hand something to a team member during or after a change, spend five minutes checking they have genuinely landed in the new reality." },
+    match(s,mx){ mx=mx||MAX; return _topArr(s,mx)[0].d==="A" && _isSingleSpike(s,mx); } },
+
+  { id:"enabler", name:"The Enabler", emoji:"\uD83D\uDD11",
+    desc:"You build deep relationships and you genuinely develop the people around you. Your team trusts you and they grow because of you. You know how to hand things over with the why intact. The gap is in peripheral awareness: the team member who is struggling but has not come to you, the process that is quietly breaking down.",
+    actions:{ T:"Make a list of the people you have had the fewest meaningful conversations with in the last month. Reach out to one of them this week. The goal: every person on your team feels equally known.", P:"Once a week, scan your team from the outside: who seems different this week? Act on one observation before it becomes something you are asked about.", E:"The next time you have a successful handover, debrief it with the person: what did I do in that process that made it possible for you to own this?", A:"When change lands, ask: what does this change require of my team, and how do I develop them for that? Frame every change as a development opportunity first." },
+    match(s,mx){ mx=mx||MAX; return [_topArr(s,mx)[0].d,_topArr(s,mx)[1].d].sort().join("")==="ET"&&_isDualSpike(s,mx); } },
+
+  { id:"driver", name:"The Driver", emoji:"\uD83D\uDE80",
+    desc:"You catch things early and you build people\u2019s capacity to handle what you catch. You are not the bottleneck \u2014 you actively move problems to the people best placed to own them. The gap is in the relational foundation underneath all that energy and capability. Your team experiences your investment in their capability more than your investment in them as people.",
+    actions:{ T:"Once a week, have one conversation that is entirely about how someone is doing, not what they are working on. No coaching. No feedback. Just: how are you \u2014 really?", P:"When you act on an early signal, tell your team what you saw and why you moved. You are showing them that acting before certainty is a legitimate and valuable leadership behaviour.", E:"This is a genuine strength. Before you explain what you need in a handover, ask: what do you already know about this area? Build the handover around the gaps in their knowledge.", A:"When change lands, before you move, take 60 seconds to acknowledge the change out loud: this is a significant shift \u2014 here is how I am thinking about it." },
+    match(s,mx){ mx=mx||MAX; return [_topArr(s,mx)[0].d,_topArr(s,mx)[1].d].sort().join("")==="EP"&&_isDualSpike(s,mx); } },
+
+  { id:"pathfinder", name:"The Pathfinder", emoji:"\uD83C\uDF0A",
+    desc:"You read situations faster than almost anyone and you pivot cleanly when they change. Your early-warning instinct combines with genuine adaptability to make you one of the most situationally effective leaders in the room. The gap is in the depth of the relationships and development that sit underneath all that movement.",
+    actions:{ T:"The next time you make a significant decision, tell one or two team members your thinking and explicitly ask: what am I missing? When someone pushes back well, acknowledge it publicly.", P:"In your next team meeting, share one early signal you are watching and ask: what is everyone else seeing?", E:"Before you hand something over, slow down by one step: I am giving you this because I believe you are ready for it. Here is the outcome I need and here is why it matters. Tell me how you are thinking about it.", A:"This is your signature strength. The next time you pivot, narrate it: here is what changed, here is how I assessed it, here is why I moved this way rather than another." },
+    match(s,mx){ mx=mx||MAX; return [_topArr(s,mx)[0].d,_topArr(s,mx)[1].d].sort().join("")==="AP"&&_isDualSpike(s,mx); } },
+
+  { id:"architect", name:"The Architect", emoji:"\uD83C\uDFDB\uFE0F",
+    desc:"You build capability and you move with change. You know how to develop people and you know how to pivot when the environment shifts. Those two qualities together mean your team is both more capable and more resilient than most. The gap is in the early-warning and relational layers that make those capabilities feel safe rather than efficient.",
+    actions:{ T:"Once a week: before a 1:1, the first five minutes are only about how the person is doing as a human, not about any work topic.", P:"Once a week, scan your team for personal rather than systemic signals: who seems different this week? Act on one observation before it becomes something you are asked to deal with.", E:"Identify one team lead who is ready for this. Walk them through a real handover \u2014 let them watch you do it, then debrief: what did I do in that process and why?", A:"When change requires a pivot, add one step: before you announce the restructure, acknowledge the human dimension \u2014 I know this is a significant shift and it will feel disruptive for a while." },
+    match(s,mx){ mx=mx||MAX; return [_topArr(s,mx)[0].d,_topArr(s,mx)[1].d].sort().join("")==="AE"&&_isDualSpike(s,mx); } },
+
+  { id:"steady-T", name:"The Steady Hand", emoji:"\uD83E\uDD1D",
+    desc:"You are consistent, reliable, and thoughtful \u2014 and Trust is your strongest instinct. When things are uncertain, your team finds someone steady when they look to you. The work now is going deeper on Trust \u2014 turning a natural instinct into a deliberate, developed strength.",
+    actions:{ T:"Try one bold trust-building move this week: be genuinely vulnerable about something you are finding difficult. Not a polished admission \u2014 a real one.", P:"This week, act on the first thing that feels slightly off \u2014 without waiting for confirmation. Acting early and being slightly wrong occasionally is better than acting late and being right.", E:"The growth edge is handing over something that genuinely makes you uncomfortable to let go of. The discomfort you feel is the signal that the development is real.", A:"Next time something shifts, narrate your thinking out loud to at least one team member before you have it fully worked out." },
+    match(s,mx){ mx=mx||MAX; return _topArr(s,mx)[0].d==="T" && _isSteadyHand(s,mx); } },
+
+  { id:"steady-P", name:"The Steady Hand", emoji:"\uD83E\uDD1D",
+    desc:"You are consistent and thoughtful \u2014 and your sharpest instinct is noticing things early. That awareness is a genuine asset. It has not yet become a dominant signal \u2014 the habit is there, but not yet fully built into how you lead.",
+    actions:{ T:"The next time you notice something about a team member, name it to them directly: I noticed you seem different this week. Is everything okay?", P:"This is your strongest instinct \u2014 develop it into a habit. Block 15 minutes every Monday: what could go wrong this week that I could prevent right now? Act on the first answer before 10am.", E:"The next time you notice something, bring the relevant team member into the observation: I have been watching this and something feels off \u2014 what are you seeing?", A:"Next time change lands, be the first voice: here is what I think this means for us and here is what I think we should do this week." },
+    match(s,mx){ mx=mx||MAX; return _topArr(s,mx)[0].d==="P" && _isSteadyHand(s,mx); } },
+
+  { id:"steady-E", name:"The Steady Hand", emoji:"\uD83E\uDD1D",
+    desc:"You are consistent and thoughtful \u2014 and your natural instinct leans toward developing the people around you. That instinct is the foundation of genuine empowerment \u2014 it just has not yet been built into a strong consistent signal.",
+    actions:{ T:"Once a week, have one conversation with a team member that has nothing to do with their development or their work \u2014 just check in on them as a person.", P:"Once a week, scan your team for personal signals rather than performance signals: who seems different? Who is quieter than usual?", E:"This is your strongest instinct \u2014 build it into a consistent method. The next five times you hand something over: explain the why before the what, ask what they would do first, then step back completely.", A:"The next time something shifts, your first communication to your team should include: what new capabilities will this require of each of you?" },
+    match(s,mx){ mx=mx||MAX; return _topArr(s,mx)[0].d==="E" && _isSteadyHand(s,mx); } },
+
+  { id:"steady-A", name:"The Steady Hand", emoji:"\uD83E\uDD1D",
+    desc:"You are consistent and thoughtful \u2014 and when things change, you tend to handle it better than most. You do not get destabilised by uncertainty. The work is building the other signals to match your adaptability.",
+    actions:{ T:"Once a week, do something that signals reliability \u2014 follow up on something you committed to, keep a promise that would have been easy to let slide.", P:"Once a week ask yourself: what is likely to shift in the next 30 days? Then take one action today that gets ahead of it.", E:"The next time you restructure, involve the team in the design: given what has changed, how do you think we should redistribute this work?", A:"This is your strongest instinct \u2014 make it deliberate and visible. The next time you adapt successfully, debrief it explicitly: here is what changed, here is how I assessed the options, here is why I chose this direction." },
+    match(s,mx){ mx=mx||MAX; return _topArr(s,mx)[0].d==="A" && _isSteadyHand(s,mx); } }
+];
+
+// ── GROWTH INSIGHTS ───────────────────────────────────────────
+// Named DIM_INSIGHTS to match existing script.js
+// Format: DIM_INSIGHTS[dimension][scenario_index][choice_index]
+var DIM_INSIGHTS = {
+  T: {
+    0: [
+      { insight:"Even though you called your team together immediately, Trust is still showing as a growth area. The instinct to show up in uncertainty is there \u2014 but it may not yet be consistent across all the situations that require it. Trust is built through a pattern, not a single moment.",
+        action:"Before your next 1:1 this week, ask yourself whether there is something you have been meaning to raise but have been waiting for the right moment. Say: there is something I want to bring up \u2014 not because it is urgent, but because I think it matters to you." },
+      { insight:"You took time to process before communicating \u2014 a reasonable instinct. But the gap between when you heard the news and when your team heard it created a real trust cost. Your team\u2019s question during that gap was not what is happening \u2014 it was why has our leader gone quiet?",
+        action:"The next time you receive news that will affect your team, send a holding message within 60 minutes: I have just heard about this. I am getting clarity on what it means for us and will come back to you by [specific time]." },
+      { insight:"Going to management for more context was reasonable. But while you were gathering it, your team heard fragments through informal channels. The sequence in which people receive news tells them something about where they sit in your thinking. You protected the message but lost the moment.",
+        action:"Before you escalate for information, take 90 seconds to message your team: I have seen the announcement. I am speaking to [manager] to get more clarity for us \u2014 I will come back by [time]." }
+    ],
+    3: [
+      { insight:"You kept your doubts private to present a united front \u2014 a professional instinct. But your team sensed the gap between what you said and how you said it. Authenticity is read through register, pace, and energy as much as through words. The change landed around your team rather than with them.",
+        action:"The next time you are asked to lead a change you have private questions about, find one sentence that is both honest and forward-moving: I have some questions about this that I am still working through \u2014 and here is what I am confident about." },
+      { insight:"You made the harder choice and it produced more than a polished united front would have. Your transparency about your own questions made your team feel less alone in theirs. Trust is still showing as a growth area overall, which means this behaviour is not yet consistent.",
+        action:"Once a month, share something with your team that is genuinely unresolved \u2014 a decision you are still working through. Say: I want to think through something with you \u2014 I do not have a clear answer yet." },
+      { insight:"Your team got behind the change and your concerns stayed professional. The cost is in what your team missed: seeing how you hold private disagreement with a decision while still leading its implementation. The deeper trust that would have come from the more honest version is still available to you.",
+        action:"Find a lower-stakes version of this scenario in your current work and try the more honest approach: I have some questions I am still working through about this direction. Here is what I do believe \u2014 and here is how I am thinking about making it work for us." }
+    ]
+  },
+  P: {
+    7: [
+      { insight:"You moved on the performance issue without delay and without softening the specificity. Proactivity is still showing as a growth area overall \u2014 the instinct is there but may not yet be consistent. The hardest proactivity is not in the moments that force action \u2014 it is in the moments where nothing has yet forced it.",
+        action:"This week, identify one team member or situation where something feels slightly off \u2014 not a confirmed problem. Act on it today with a direct specific observation: I have noticed [specific thing] and I wanted to check in before it became something we needed to deal with." },
+      { insight:"You reframed the performance conversation as a welfare check-in \u2014 which feels kind and is kind. But it delayed the feedback the person most needed. The hardest truth about difficult conversations: the kindest thing you can do for someone who is underperforming is to tell them clearly, specifically, and early.",
+        action:"Before your next difficult conversation, prepare one specific example and write it down: the exact situation, the exact behaviour you observed, and the exact change you need to see. Then open the conversation with that example directly: I want to talk about [specific situation]. Here is what I observed and here is why it matters to me." },
+      { insight:"Opening with what the person needs is a genuinely empowering instinct. The gap is that it came at the cost of the direct proactive feedback the situation required. Asking what do you need is the right opening, but the conversation still needs the clear specific feedback.",
+        action:"Practice a two-step opening for difficult conversations. Step one: I have noticed [X]. Step two: I want to understand what is happening for you \u2014 what do you need? The order matters. Step one signals you are not avoiding the issue. Step two signals you are not just issuing a directive." }
+    ],
+    10: [
+      { insight:"You broke the delay and gave the feedback directly before a high-stakes client call \u2014 even though three weeks had passed. Proactivity is still showing as a growth area overall, which tells us the capacity is there but the habit is not yet consistent.",
+        action:"After your next team meeting or client interaction, identify one thing you observed that would be useful for someone to hear. Give it to them the same day \u2014 just a direct specific observation: I noticed [thing] in that meeting. I wanted to mention it because [reason it matters]." },
+      { insight:"You let the specific incident go and planned to give feedback from tomorrow\u2019s call if needed. That is avoidance framed as strategy. The person goes into tomorrow\u2019s client call without the single most relevant piece of feedback available to them.",
+        action:"Feedback has a half-life but it does not expire. The next time you have delayed feedback that still matters, give it with this framing: I have been meaning to raise something and I realise I have waited \u2014 I want to give it to you now because it is still relevant." },
+      { insight:"You found a way to give the person something useful without the awkwardness of referencing the specific incident. The gap is in what they did not get: the grounded specific example that makes abstract principles concrete and actionable.",
+        action:"The next time you find yourself coaching on a principle that is directly connected to a specific observation, make the connection explicit: I want to talk about client communication \u2014 and I want to be direct that there is a specific situation I have in mind. Then reference the incident before moving to the principle." }
+    ]
+  },
+  E: {
+    2: [
+      { insight:"You prepared carefully and your care was evident. The gap is that a document transfers information but not capability. When real problems arrived \u2014 judgment calls that required context your words could not carry \u2014 they came back to you. What looked like a handover was a task transfer: you moved the work but not the ownership.",
+        action:"Before your next handover, have one conversation the document cannot replace. Ask the person: in your own words, what is this process trying to achieve? What problem does it solve? Then walk them through your reasoning: here is why we do it this way rather than another way." },
+      { insight:"You transferred the reasoning before the steps and then stepped back and let them own it. Within a month they were solving problems you had not anticipated. Empowerment is still showing as a growth area overall, which means this capability exists but is not yet deployed consistently.",
+        action:"This week, find one smaller version of the handover moment in your day-to-day work \u2014 a task you are planning to do yourself that someone else could handle with a ten-minute explanation of the why. If yes \u2014 take the ten minutes." },
+      { insight:"You made the ownership total rather than gradual \u2014 and that totality prevented the slow re-dependency that often follows gentler handovers. The gap is in the absence of the why: they know what not to do but not always why those were the most important mistakes to avoid.",
+        action:"Before your next step-back delegation, add one conversation: before I give you the list of things to watch for, I want to tell you the reasoning behind the top three. Five minutes on the why behind the most important restrictions converts your step-back delegation from supervised ownership to genuine capability transfer." }
+    ],
+    4: [
+      { insight:"You handled the client escalation yourself and the HR conversation waited. The client escalation was something a capable team member could have handled and grown from. The HR conversation was something only you could provide. That choice made an implicit decision about what requires you specifically \u2014 and got it wrong in both directions.",
+        action:"Build a triage habit for your busiest mornings. Before you act on anything, spend two minutes asking: what on this list requires me specifically \u2014 my authority, my relationship, my judgment? And what would a capable team member benefit from owning?" },
+      { insight:"You identified what required you specifically and what could be owned by someone else \u2014 and acted on that assessment under real Monday morning pressure. The person you delegated to handled the client escalation well and grew from the responsibility. Empowerment is still showing as a growth area overall.",
+        action:"Before each week, identify one task or decision you are currently planning to handle yourself that a team member could own \u2014 not because you are too busy, but because owning it would develop them. Hand it over with this framing: I am giving you this because I think you are ready for it \u2014 not because I do not have time for it." },
+      { insight:"You got the sequencing right and the delegation worked. You identified what required you directly, what could be owned by someone else, and managed all three directions simultaneously. The Empowerment score is slightly lower because the act of messaging your manager first introduced a small delay before the delegation decision.",
+        action:"The growth edge is pre-emptive delegation \u2014 building the empowerment habit before Monday mornings create the urgency. Identify one recurring task or decision that regularly lands on your desk. This week, explicitly transfer it: going forward, this is yours. Here is what good looks like, here is when to involve me, and here is what I trust you to handle independently." }
+    ]
+  },
+  A: {
+    5: [
+      { insight:"You presented your instinct honestly and framed it as a hypothesis. The gap is that framing an instinct as a hypothesis when you already have enough information introduces unnecessary uncertainty. You had three weeks of observation \u2014 that is enough to make a recommendation. The adaptability gap is the distance between what you know and what you are prepared to commit to.",
+        action:"Before your next recommendation, ask yourself: do I actually have enough information to make a clear call? If you have enough \u2014 say the recommendation clearly and own it: based on what I have been watching for three weeks, my recommendation is X. I am ready to test it this week and adjust if I am wrong." },
+      { insight:"You committed. You put your name on a recommendation made with incomplete data, accepted that you might be wrong, and moved anyway. Adaptability is still showing as a growth area overall, which means this decisiveness is not yet consistent across the full range of situations where it is available.",
+        action:"This week, identify one decision you have been waiting to make until you have more information. Ask yourself: what specifically would additional data change about my recommendation? If the answer is unclear \u2014 you already have enough. Make the call today, document your reasoning, and communicate it." },
+      { insight:"You asked for another week to gather data. The problem is that you had been watching the pattern for three weeks. That is not thin information \u2014 that is a well-developed instinct waiting for permission to act. The week of delay has a real cost that is invisible because it does not show up as an event.",
+        action:"Before your next request for more time, ask yourself one question: what specifically would I do differently with more data? If you cannot answer that concretely, you already have what you need. When more data would only make you feel more certain about a recommendation you already have \u2014 give the recommendation you have." }
+    ],
+    8: [
+      { insight:"You acted. Six days of blocked progress ended in one decision. You documented and communicated \u2014 which distinguishes responsible autonomous action from reckless overreach. Adaptability is still showing as a growth area overall, which means this quality of decisive action under ambiguity is not yet consistent.",
+        action:"The next time you are waiting for a decision that is technically above your authority, ask yourself: could I make a defensible version of this call, document my reasoning, and inform my manager? If yes \u2014 and if the cost of waiting is real \u2014 make the call. The key is always the documentation and the communication." },
+      { insight:"You created a forcing function rather than an open-ended request \u2014 flagging a specific deadline gave your manager something actionable. The gap is in the six days that preceded that message: the team was blocked, morale was declining. The proactive version is sending the forcing-function message on day two \u2014 not day six.",
+        action:"Build a personal rule for approval loops: if a decision has been waiting more than 48 hours and the cost of the delay is visible, escalate with a forcing function \u2014 I need a decision on X by [specific time], or I will proceed with [specific default approach]." },
+      { insight:"You gave a team member real authority to make the call \u2014 a powerful empowerment move. The gap is that in doing so, you removed yourself from the adaptive decision entirely. By passing the ownership fully to a team member, you converted an adaptability challenge into an empowerment opportunity \u2014 the adaptive learning went to them rather than to you.",
+        action:"The next time you are tempted to fully delegate a decision made under genuine ambiguity, pause and ask: is this primarily a development opportunity for them, or is this primarily a test of my own adaptive judgment? When it is both \u2014 stay in it yourself, make the call, then debrief with them afterwards." }
+    ]
+  }
+};
+
+// ── DISCUSS COMPANION QUESTION ────────────────────────────────
+var COMPANION_QUESTION = "Is this what you would actually do \u2014 or what you know you should do?";
+
+// ── STATE ─────────────────────────────────────────────────────
+var S = {
+  players: [],
+  step: 0,
+  scenarioOrder: [],
+  roundChoices: [],
+  pickerIdx: 0,
+  tutSlide: 0,
+  fromTutorial: true,
+  timerInterval: null,
+  timerRemaining: 150
+};
+
+</script>
+<script>
+// ============================================================
+// script.js — Leadership Challenge game logic
+// HLE / Alaya 2026
+// ============================================================
+
+
+// ═══════════════════════════════════════════════════════
+//  NAVIGATION
+// ═══════════════════════════════════════════════════════
+
+function go(id) {
+  document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+function skipTutorial() {
+  S.fromTutorial = false;
+  document.getElementById('ap-back-btn').setAttribute('onclick', "go('splash')");
+  go('add-players');
+  initPlayerRows();
+}
+
+function confirmQuit() {
+  const modal = document.getElementById('quit-modal');
+  modal.style.display = 'flex';
+}
+function closeQuitModal() {
+  document.getElementById('quit-modal').style.display = 'none';
+}
+function doQuit() {
+  closeQuitModal();
+  go('splash');
+}
+
+// ═══════════════════════════════════════════════════════
+//  TUTORIAL
+// ═══════════════════════════════════════════════════════
+
+const TOTAL_SLIDES = 4;
+
+function initTutorial() {
+  S.tutSlide = 0;
+  renderTutSlide();
+  go('tutorial');
+}
+
+function renderTutSlide() {
+  document.querySelectorAll('.tut-slide').forEach((el, i) => {
+    el.classList.toggle('active', i === S.tutSlide);
+  });
+  // Prev button — always visible; slide 1 goes back to splash
+  const prev = document.getElementById('tut-prev');
+  prev.textContent = '← Back';
+  // Next button — show slide position in label
+  const next = document.getElementById('tut-next');
+  const isLast = S.tutSlide === TOTAL_SLIDES - 1;
+  next.textContent = isLast ? 'Add Players →' : 'Next  ' + (S.tutSlide + 1) + ' / ' + TOTAL_SLIDES + ' →';
+}
+
+function tutNav(dir) {
+  if (dir === 1 && S.tutSlide === TOTAL_SLIDES - 1) {
+    // Last slide Next → go to add players
+    S.fromTutorial = true;
+    document.getElementById('ap-back-btn').setAttribute('onclick', "go('tutorial')");
+    go('add-players');
+    initPlayerRows();
+    return;
+  }
+  if (dir === -1 && S.tutSlide === 0) {
+    // First slide Back → go to splash
+    go('splash');
+    return;
+  }
+  S.tutSlide = Math.max(0, Math.min(TOTAL_SLIDES - 1, S.tutSlide + dir));
+  renderTutSlide();
+}
+
+// ═══════════════════════════════════════════════════════
+//  ADD PLAYERS
+// ═══════════════════════════════════════════════════════
+
+function initPlayerRows() {
+  const list = document.getElementById('player-list');
+  if (list.children.length === 0) {
+    addPlayerRow();
+    addPlayerRow();
+  }
+}
+
+function addPlayerRow() {
+  const list = document.getElementById('player-list');
+  const idx = list.children.length;
+  const color = COLORS[idx % COLORS.length];
+  const row = document.createElement('div');
+  row.className = 'p-row';
+  row.innerHTML = `
+    <div class="p-dot" style="background:${color}"></div>
+    <input class="p-input" placeholder="Player ${idx+1} name" oninput="validatePlayers()" />
+    <button class="p-remove" onclick="removePlayerRow(this)">×</button>
+  `;
+  list.appendChild(row);
+  validatePlayers();
+  row.querySelector('input').focus();
+}
+
+function removePlayerRow(btn) {
+  const list = document.getElementById('player-list');
+  if (list.children.length <= 1) return;
+  btn.closest('.p-row').remove();
+  // Renumber + recolor dots
+  Array.from(list.children).forEach((row, i) => {
+    row.querySelector('.p-dot').style.background = COLORS[i % COLORS.length];
+    row.querySelector('input').placeholder = `Player ${i+1} name`;
+  });
+  document.getElementById('add-p-btn').style.display = 'flex';
+  validatePlayers();
+}
+
+function validatePlayers() {
+  const inputs = document.querySelectorAll('.p-input');
+  const filled = Array.from(inputs).filter(i => i.value.trim() !== '');
+  const startBtn = document.getElementById('start-btn');
+  const note = document.getElementById('ap-note');
+  if (filled.length > 0) {
+    startBtn.disabled = false;
+    startBtn.style.opacity = '1';
+    startBtn.style.cursor = 'pointer';
+    note.textContent = filled.length === 1 ? '1 player — solo mode' : `${filled.length} players — pass & play mode`;
+  } else {
+    startBtn.disabled = true;
+    startBtn.style.opacity = '.4';
+    startBtn.style.cursor = 'not-allowed';
+    note.textContent = 'Add at least 1 player to start';
+  }
+}
+
+function startGame() {
+  // Go to mode select — count is chosen there
+  go('mode-select');
+}
+
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function getMaxForScenarios(indices) {
+  const m = { T:0, P:0, E:0, A:0 };
+  indices.forEach(idx => {
+    const scenario = SCENARIOS[idx];
+    DIMS.forEach(d => {
+      const best = Math.max(...scenario.choices.map(c => c.scores[d] || 0));
+      m[d] += best;
+    });
+  });
+  return m;
+}
+
+function buildScenarioOrder(count) {
+  // Signal coverage guarantee:
+  // T key scenarios: [0,3]   P key: [7,10]   E key: [2,4]   A key: [5,8]
+  // Best single per signal:  T=0, P=7, E=2, A=5
+  // Quick: [0,7,2,5,9] fixed  |  Full: [0,3,7,10,2,4,5,8] fixed  |  Deep: all 12 shuffled
+
+  if (count === 12) {
+    // Deep Dive: all 12 shuffled — full variety
+    return shuffle([0,1,2,3,4,5,6,7,8,9,10,11]);
+  }
+  if (count === 8) {
+    // Full Game: both key scenarios per signal (8 total), shuffled
+    // Every signal is covered twice — profile is reliable
+    return shuffle([0,3,7,10,2,4,5,8]);
+  }
+  if (count === 5) {
+    // Quick Round: fixed 5 scenarios [0,7,2,5,9] — shuffled order only
+    // Max scores perfectly balanced: T=9, P=9, E=9, A=9 every game
+    // Scenario 9 (The Rebuild) is the only non-key scenario covering all 4 signals
+    return shuffle([0, 7, 2, 5, 9]);
+  }
+  // Fallback
+  return shuffle([0,1,2,3,4,5,6,7,8,9,10,11]).slice(0, count);
+}
+
+function startGameWithCount(count) {
+  const inputs = document.querySelectorAll('.p-input');
+  S.players = [];
+  Array.from(inputs).forEach((input, i) => {
+    const name = input.value.trim();
+    if (name) {
+      S.players.push({
+        name,
+        color: COLORS[i % COLORS.length],
+        scores: { T:0, P:0, E:0, A:0 },
+        choices: new Array(12).fill(null)
+      });
+    }
+  });
+  if (S.players.length === 0) return;
+  S.scenarioOrder = buildScenarioOrder(count);
+  S.step = 0;
+  S.roundChoices = [];
+  S.pickerIdx = 0;
+  S.MAX = getMaxForScenarios(S.scenarioOrder);
+  renderPickTurn(0);
+  go('game');
+}
+
+// ═══════════════════════════════════════════════════════
+//  GAME
+// ═══════════════════════════════════════════════════════
+
+const isSolo = () => S.players.length === 1;
+
+function renderPickTurn(playerIdx) {
+  const scIdx = S.scenarioOrder.length ? S.scenarioOrder[S.step] : S.step;
+  const scenario = SCENARIOS[scIdx];
+  const player = S.players[playerIdx];
+  const totalRounds = S.scenarioOrder.length || SCENARIOS.length;
+
+  // Update topbar
+  document.getElementById('gb-label').textContent = `Scenario ${S.step+1} of ${totalRounds}`;
+  document.getElementById('prog-fill').style.width = `${(S.step / totalRounds)*100}%`;
+
+  // Score pills (solo: show scores; multi: show current player)
+  const spRow = document.getElementById('sp-row');
+  if (isSolo()) {
+    const p = S.players[0];
+    spRow.innerHTML = DIMS.map(d => {
+      const cls = p.scores[d] > 0 ? 'sp lit' : 'sp';
+      return '<span class="' + cls + '">' + DIM_ICONS[d] + ' ' + p.scores[d] + '</span>';
+    }).join('');
+  } else {
+    spRow.innerHTML = '<span class="sp" style="color:' + player.color + ';border-color:' + player.color + '40;">\u25cf ' + player.name + '\u2019s turn</span>';
+  }
+
+  // Pick content
+  const pick = document.getElementById('game-pick');
+  pick.classList.remove('hidden');
+  document.getElementById('game-locked').classList.remove('vis');
+
+
+
+  pick.innerHTML = `
+    <h2 class="s-heading">${scenario.title}</h2>
+    <div class="s-box">${scenario.situation}</div>
+    <div class="choices-label">What would you do?</div>
+    ${scenario.choices.map((c,i) => `
+      <button class="c-btn" onclick="pick(${i})">
+        <div class="c-alpha">${c.letter}</div>
+        <div class="c-text">${c.text}</div>
+      </button>
+    `).join('')}
+  `;
+}
+
+function pick(choiceIdx) {
+  const scIdx = S.scenarioOrder.length ? S.scenarioOrder[S.step] : S.step;
+  const scenario = SCENARIOS[scIdx];
+  const choice = scenario.choices[choiceIdx];
+  const player = S.players[S.pickerIdx];
+
+  // Visual feedback
+  document.querySelectorAll('.c-btn').forEach((el, i) => {
+    el.classList.add(i === choiceIdx ? 'sel' : 'dim');
+  });
+
+  // Record choice + apply scores
+  S.roundChoices.push({ playerIdx: S.pickerIdx, choiceIdx });
+  player.choices[scIdx] = choiceIdx;
+  DIMS.forEach(d => {
+    player.scores[d] = (player.scores[d] || 0) + (choice.scores[d] || 0);
+  });
+
+  setTimeout(() => {
+    if (isSolo()) {
+      // Solo: skip locked, go to reveal then discuss
+      buildRevealScreen();
+      go('reveal');
+    } else {
+      showLocked(choiceIdx);
+    }
+  }, 280);
+}
+
+function showLocked(choiceIdx) {
+  const scIdx = S.scenarioOrder.length ? S.scenarioOrder[S.step] : S.step;
+  const scenario = SCENARIOS[scIdx];
+  const choice = scenario.choices[choiceIdx];
+  const player = S.players[S.pickerIdx];
+  const nextIdx = S.pickerIdx + 1;
+
+  document.getElementById('game-pick').classList.add('hidden');
+  document.getElementById('game-locked').classList.add('vis');
+
+  document.getElementById('locked-heading').textContent = `${player.name}'s choice is locked!`;
+  document.getElementById('locked-sub').textContent = `Choice ${choice.letter} recorded. Don't show the screen to the next player yet!`;
+
+  const isLast = nextIdx >= S.players.length;
+  const wrap = document.getElementById('next-player-badge-wrap');
+
+  if (!isLast) {
+    const next = S.players[nextIdx];
+    wrap.innerHTML = `
+      <div class="next-badge" style="color:${next.color};border-color:${next.color}60;">
+        <div class="next-badge-dot" style="background:${next.color}"></div>
+        Pass to ${next.name}
+      </div>
+    `;
+    document.getElementById('locked-cta').textContent = `Hand it to ${next.name} →`;
+  } else {
+    wrap.innerHTML = `<div class="next-badge" style="color:var(--gold);border-color:var(--gold-border);">✓ All players have chosen!</div>`;
+    document.getElementById('locked-cta').textContent = 'Reveal all choices →';
+  }
+}
+
+function lockedNext() {
+  const nextIdx = S.pickerIdx + 1;
+  if (nextIdx < S.players.length) {
+    S.pickerIdx = nextIdx;
+    renderPickTurn(nextIdx);
+    go('game');
+  } else {
+    buildRevealScreen();
+    go('reveal');
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+//  REVEAL
+// ═══════════════════════════════════════════════════════
+
+function buildRevealScreen() {
+  const scIdx = S.scenarioOrder.length ? S.scenarioOrder[S.step] : S.step;
+  const scenario = SCENARIOS[scIdx];
+  document.getElementById('rv-topbar-title').textContent = `Scenario ${S.step+1}: ${scenario.title}`;
+  document.getElementById('rv-sub').textContent = `Here's what everyone chose for "${scenario.title}"`;
+
+  // Count choices
+  const choiceCounts = {};
+  S.roundChoices.forEach(rc => {
+    choiceCounts[rc.choiceIdx] = (choiceCounts[rc.choiceIdx] || 0) + 1;
+  });
+
+  const cards = document.getElementById('rv-cards');
+  cards.innerHTML = S.roundChoices.map((rc, idx) => {
+    const player = S.players[rc.playerIdx];
+    const choice = scenario.choices[rc.choiceIdx];
+    return '<div class="rv-card" style="animation-delay:' + (idx * 80) + 'ms;border-left:3px solid ' + player.color + ';">'
+      + '<div class="rv-letter" style="background:' + player.color + '18;color:' + player.color + ';">' + choice.letter + '</div>'
+      + '<div class="rv-player-info">'
+      + '<div class="rv-pname" style="color:' + player.color + '">' + player.name + '</div>'
+      + '<div class="rv-chose">chose option ' + choice.letter + '</div>'
+      + '<div class="rv-choice-text">' + choice.text + '</div>'
+      + '</div></div>';
+  }).join('');
+
+  // Agreement stat
+  const statWrap = document.getElementById('rv-stat-wrap');
+  const uniqueChoices = new Set(S.roundChoices.map(rc => rc.choiceIdx)).size;
+  if (S.players.length > 1) {
+    if (uniqueChoices === 1) {
+      statWrap.innerHTML = `<div class="rv-stat">🤝 Everyone picked the same answer!</div>`;
+    } else if (uniqueChoices === S.players.length) {
+      statWrap.innerHTML = `<div class="rv-stat">🔀 Everyone picked differently</div>`;
+    } else {
+      const maxCount = Math.max(...Object.values(choiceCounts));
+      const popular = parseInt(Object.entries(choiceCounts).find(([,v])=>v===maxCount)[0]);
+      const pLetter = scenario.choices[popular].letter;
+      statWrap.innerHTML = `<div class="rv-stat">🗳️ Most popular: Option ${pLetter} (${maxCount}/${S.players.length})</div>`;
+    }
+  } else {
+    statWrap.innerHTML = '';
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+//  CONSEQUENCE
+// ═══════════════════════════════════════════════════════
+
+function showDiscuss() {
+  const scIdx = S.scenarioOrder.length ? S.scenarioOrder[S.step] : S.step;
+  const scenario = SCENARIOS[scIdx];
+
+  // Populate discuss screen
+  document.getElementById('discuss-title') && (document.getElementById('discuss-title').textContent = scenario.title);
+  document.getElementById('discuss-tag') && (document.getElementById('discuss-tag').textContent = `Scenario ${S.step+1} of ${S.scenarioOrder.length || SCENARIOS.length}`);
+  document.getElementById('discuss-heading') && (document.getElementById('discuss-heading').textContent = scenario.title);
+  document.getElementById('discuss-prompt') && (document.getElementById('discuss-prompt').textContent = scenario.discussPrompt || '');
+
+  // Companion question (always shown via HTML, no JS needed)
+
+  // Split prompt — show only if choices diverged
+  const splitEl = document.getElementById('discuss-split');
+  if (splitEl) {
+    const uniqueChoices = new Set(S.roundChoices.map(rc => rc.choiceIdx)).size;
+    if (S.players.length > 1 && uniqueChoices >= 2) {
+      splitEl.style.display = 'block';
+      const splitText = document.getElementById('discuss-split-text');
+      if (splitText) splitText.textContent = scenario.splitPrompt || 'What did the people who chose differently see that you did not?';
+    } else {
+      splitEl.style.display = 'none';
+    }
+  }
+
+  // Start 2:30 timer
+  S.timerRemaining = 150;
+  clearInterval(S.timerInterval);
+  updateTimerDisplay();
+  S.timerInterval = setInterval(() => {
+    S.timerRemaining--;
+    updateTimerDisplay();
+    if (S.timerRemaining <= 0) {
+      clearInterval(S.timerInterval);
+      showConsequence();
+    }
+  }, 1000);
+
+  go('discuss');
+}
+
+function updateTimerDisplay() {
+  const m   = Math.floor(S.timerRemaining / 60);
+  const sec = S.timerRemaining % 60;
+  const numEl  = document.getElementById('timer-num');
+  const progEl = document.getElementById('timer-prog');
+  if (numEl)  numEl.textContent = `${m}:${sec < 10 ? '0' : ''}${sec}`;
+  if (progEl) progEl.style.strokeDashoffset = Math.round(((150 - S.timerRemaining) / 150) * 283);
+}
+
+function skipDiscuss() {
+  clearInterval(S.timerInterval);
+  showConsequence();
+}
+
+function showConsequence() {
+  buildConsequenceScreen();
+  go('consequence');
+}
+
+function buildConsequenceScreen() {
+  const scIdx = S.scenarioOrder.length ? S.scenarioOrder[S.step] : S.step;
+  const scenario = SCENARIOS[scIdx];
+  document.getElementById('cq-topbar-title').textContent = `${scenario.title} — Outcome`;
+
+  const body = document.getElementById('cq-body');
+  const ICONS = DIM_ICONS;
+
+  // Group by choice
+  const choiceGroups = {};
+  if (isSolo()) {
+    const rc = S.roundChoices[0];
+    choiceGroups[rc.choiceIdx] = [0];
+  } else {
+    S.roundChoices.forEach(rc => {
+      if (!choiceGroups[rc.choiceIdx]) choiceGroups[rc.choiceIdx] = [];
+      choiceGroups[rc.choiceIdx].push(rc.playerIdx);
+    });
+  }
+
+  const choiceKeys = Object.keys(choiceGroups).sort((a,b) => parseInt(a)-parseInt(b));
+
+  let html = `
+    <div class="cq-tag eyebrow">What happened</div>
+    <h2 class="cq-heading">${scenario.title}</h2>
+    <div class="cq-situation">${scenario.situation}</div>
+    <div class="cq-scoring-note">💡 Different choices exercise different signals — a zero on one signal does not mean the choice was wrong. Each option reflects a genuine leadership approach; the signals show <em>which</em> leadership quality it demonstrates most.</div>
+  `;
+
+  choiceKeys.forEach((key, i) => {
+    const choice = scenario.choices[parseInt(key)];
+    const playerIdxs = choiceGroups[key];
+    const chips = DIMS.map(d => {
+      const v = choice.scores[d] || 0;
+      const cls = v > 0 ? 'pos' : 'zero';
+      const val = v > 0 ? ('+' + v) : '0';
+      return '<span class="cq-chip ' + cls + '">' + ICONS[d] + ' ' + DIM_LABELS[d] + ' ' + val + '</span>';
+    }).join('');
+
+    // Who picked this (multiplayer)
+    let whoHtml = '';
+    if (!isSolo() && S.players.length > 1) {
+      const chips2 = playerIdxs.map(pi => {
+        const p = S.players[pi];
+        return '<div class="cq-player-chip"><div class="cq-pdot" style="background:' + p.color + '"></div><span class="cq-pname">' + p.name + '</span></div>';
+      }).join('');
+      whoHtml = '<div class="cq-players-who">' + chips2 + '</div>';
+    }
+
+    const whoLabel = isSolo() ? 'Your choice' : (playerIdxs.length + ' player' + (playerIdxs.length > 1 ? 's' : ''));
+    const divider = (i < choiceKeys.length - 1) ? '<div class="cq-divider"></div>' : '';
+    html += '<div class="cq-outcome-block">'
+      + whoHtml
+      + '<div class="cq-choice-header">'
+      + '<div class="cq-choice-alpha" style="background:var(--gold-dim);color:var(--gold);">' + choice.letter + '</div>'
+      + '<span class="cq-who-picked">Option ' + choice.letter + ' \u2014 ' + whoLabel + '</span>'
+      + '</div>'
+      + '<div class="cq-choice-text">' + choice.text + '</div>'
+      + '<p class="cq-explanation">' + choice.outcome + '</p>'
+      + '<div class="cq-chips">' + chips + '</div>'
+      + '</div>'
+      + divider;
+  });
+
+  html += '<div style="height:24px"></div>' +
+    '<button class="btn btn-ghost" style="width:100%;margin-bottom:10px;padding:13px" onclick="openOutcomeShareModal()">📤 Share this outcome</button>' +
+    '<button class="btn btn-gold" style="width:100%" onclick="goToScoreboard()">See Scores →</button>';
+  body.innerHTML = html;
+}
+
+function goToScoreboard() {
+  buildScoreboard();
+  go('scoreboard');
+}
+
+// ═══════════════════════════════════════════════════════
+//  SCOREBOARD
+// ═══════════════════════════════════════════════════════
+
+function pct(v, max) { return max===0 ? 0 : Math.round((v/max)*100); }
+function avg4(s, mx) { mx=mx||MAX; return (pct(s.T||0,mx.T)+pct(s.P||0,mx.P)+pct(s.E||0,mx.E)+pct(s.A||0,mx.A))/4; }
+
+function buildScoreboard() {
+  const _total = S.scenarioOrder.length || SCENARIOS.length;
+  const isLast = S.step >= _total - 1;
+  document.getElementById('sb-topbar-title').textContent = 'Scoreboard';
+  document.getElementById('sb-eyebrow').textContent = `After Round ${S.step+1} of ${_total}`;
+  const remaining = _total - S.step - 1;
+  document.getElementById('sb-sub').textContent = isLast ? 'Final standings! See how everyone did.' : (remaining + ' scenario' + (remaining !== 1 ? 's' : '') + ' remaining.');
+  document.getElementById('sb-cta').textContent = isLast ? 'See Final Results →' : `Next Scenario →`;
+
+  // Sort players by average
+  const sorted = [...S.players].sort((a,b) => avg4(b.scores, S.MAX) - avg4(a.scores, S.MAX));
+  const medals = ['🥇','🥈','🥉'];
+  const ranks = sorted.map((_, i) => i < 3 ? medals[i] : String(i + 1));
+
+  const cards = document.getElementById('sb-cards');
+  cards.innerHTML = sorted.map((player, rank) => {
+    const totalAvg = Math.round(avg4(player.scores, S.MAX));
+    const bars = DIMS.map(d => {
+      const p = pct(player.scores[d], S.MAX[d]);
+      return `
+        <div class="sb-br">
+          <div class="sb-bl">
+            <span>${DIM_ICONS[d]} ${DIM_LABELS[d]}</span>
+            <span class="sb-bl-pct">${p}%</span>
+          </div>
+          <div class="sb-track"><div class="sb-fill" data-pct="${p}"></div></div>
+        </div>
+      `;
+    }).join('');
+
+    const cardCls = rank === 0 ? 'sb-card first' : 'sb-card';
+    const rankCls = rank === 0 ? 'sb-rank g' : 'sb-rank';
+    return '<div class="' + cardCls + '">'
+      + '<div class="sb-header">'
+      + '<div class="' + rankCls + '">' + ranks[rank] + '</div>'
+      + '<div class="sb-pname" style="color:' + player.color + '">' + player.name + '</div>'
+      + '<div class="sb-total">' + totalAvg + '% avg</div>'
+      + '</div>'
+      + '<div class="sb-bars">' + bars + '</div>'
+      + '</div>';
+  }).join('');
+
+  // Animate bars
+  setTimeout(() => {
+    document.querySelectorAll('.sb-fill[data-pct]').forEach(el => {
+      el.style.width = el.getAttribute('data-pct') + '%';
+    });
+  }, 100);
+}
+
+function scoreboardNext() {
+  const _total = S.scenarioOrder.length || SCENARIOS.length;
+  const isLast = S.step >= _total - 1;
+  if (isLast) {
+    buildFinal();
+    go('final');
+  } else {
+    S.step++;
+    S.roundChoices = [];
+    S.pickerIdx = 0;
+    renderPickTurn(0);
+    go('game');
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+//  FINAL RESULTS
+// ═══════════════════════════════════════════════════════
+
+
+
+function getDimInsight(player, dim, excludeScenarios) {
+  excludeScenarios = excludeScenarios || [];
+  const keyScenarios = DIM_KEY_SCENARIOS[dim];
+
+  // First pass: find worst scenario not already used
+  let worstIdx = null;
+  let worstMissed = -1;
+  keyScenarios.forEach(sIdx => {
+    if (excludeScenarios.indexOf(sIdx) !== -1) return;
+    const choiceIdx = player.choices[sIdx];
+    if (choiceIdx === null) return;
+    const maxPts = Math.max(...SCENARIOS[sIdx].choices.map(c => c.scores[dim] || 0));
+    const got = SCENARIOS[sIdx].choices[choiceIdx].scores[dim] || 0;
+    if (maxPts - got > worstMissed) { worstMissed = maxPts - got; worstIdx = sIdx; }
+  });
+
+  // Fallback: ignore exclusion if no other option
+  if (worstIdx === null) {
+    worstMissed = -1;
+    keyScenarios.forEach(sIdx => {
+      const choiceIdx = player.choices[sIdx];
+      if (choiceIdx === null) return;
+      const maxPts = Math.max(...SCENARIOS[sIdx].choices.map(c => c.scores[dim] || 0));
+      const got = SCENARIOS[sIdx].choices[choiceIdx].scores[dim] || 0;
+      if (maxPts - got > worstMissed) { worstMissed = maxPts - got; worstIdx = sIdx; }
+    });
+  }
+
+  if (worstIdx === null) worstIdx = keyScenarios[0];
+  const choiceIdx = player.choices[worstIdx] !== null ? player.choices[worstIdx] : 0;
+  const ins = DIM_INSIGHTS[dim][worstIdx][choiceIdx];
+  return {
+    scenarioTitle: SCENARIOS[worstIdx].title,
+    choiceLetter: SCENARIOS[worstIdx].choices[choiceIdx].letter,
+    scenarioIdx: worstIdx,
+    insight: ins.insight,
+    action: ins.action
+  };
+}
+
+function getProfile(s, mx) {
+  mx = mx || MAX;
+  // Run profiles in cascade order - first match wins
+  const cascadeOrder = [
+    "visionary",
+    "cornerstone","catalyst","enabler","driver","pathfinder","architect",
+    "protector","lookout","builder","compass",
+    "rising",
+    "firefighter",
+    "steady-T","steady-P","steady-E","steady-A"
+  ];
+  for (const id of cascadeOrder) {
+    const profile = PROFILES.find(p => p.id === id);
+    if (profile && profile.match(s, mx)) return profile;
+  }
+  return PROFILES.find(p => p.id === "steady-T");
+}
+
+function profileDisplayName(profile) {
+  // For Steady Hand variants, show the leaning signal
+  const leaningMap = {
+    'steady-T': 'The Steady Hand — Trust',
+    'steady-P': 'The Steady Hand — Proactivity',
+    'steady-E': 'The Steady Hand — Empowerment',
+    'steady-A': 'The Steady Hand — Adaptability'
+  };
+  return leaningMap[profile.id] || profile.name;
+}
+
+function buildFinal() {
+  document.getElementById('final-sub').textContent =
+    S.players.length === 1
+      ? "Here's what your choices revealed about your leadership."
+      : 'Here is what ' + S.players.length + ' different sets of choices revealed.';
+
+  const sorted = [...S.players].sort((a,b) => avg4(b.scores, S.MAX) - avg4(a.scores, S.MAX));
+
+  const cards = document.getElementById('final-cards');
+  cards.innerHTML = sorted.map(player => {
+    const profile = getProfile(player.scores, S.MAX);
+    const lowestDims = [...DIMS].sort((a,b) => pct(player.scores[a],S.MAX[a]) - pct(player.scores[b],S.MAX[b])).slice(0,3);
+
+    const bars = DIMS.map(d => {
+      const p = pct(player.scores[d], S.MAX[d]);
+      return '<div class="pr-br">'
+        + '<div class="pr-bl"><span class="pr-bl-name">' + DIM_ICONS[d] + ' ' + DIM_LABELS[d] + '</span><span class="pr-bl-pct">' + p + '%</span></div>'
+        + '<div class="pr-track"><div class="pr-fill" data-pct="' + p + '"></div></div>'
+        + '</div>';
+    }).join('');
+
+    const usedScenarios = [];
+    const insights = lowestDims.map(d => {
+      const ins = getDimInsight(player, d, usedScenarios);
+      usedScenarios.push(ins.scenarioIdx);
+      return '<div class="pr-insight">'
+        + '<div class="pr-insight-dim">' + DIM_ICONS[d] + ' ' + DIM_LABELS[d] + ' &nbsp;<span class="pr-insight-pct">' + pct(player.scores[d], S.MAX[d]) + '%</span></div>'
+        + '<div class="pr-insight-from">From &ldquo;' + ins.scenarioTitle + '&rdquo; &mdash; Choice ' + ins.choiceLetter + '</div>'
+        + '<p class="pr-insight-text">' + ins.insight + '</p>'
+        + '<div class="pr-insight-action"><span class="pr-insight-action-label">Try this</span>' + ins.action + '</div>'
+        + '</div>';
+    }).join('');
+
+    const cardId = 'pc-' + player.name.replace(/\s+/g, '-');
+    return '<div class="pr-card">'
+      + '<div class="pr-header">'
+      + '<div class="pr-dot" style="background:' + player.color + '"></div>'
+      + '<div class="pr-name" style="color:' + player.color + '">' + player.name + '</div>'
+      + '<div class="pr-emoji">' + profile.emoji + '</div>'
+      + '</div>'
+      + '<div class="pr-profile">' + profileDisplayName(profile) + '</div>'
+      + '<p class="pr-desc">' + profile.desc + '</p>'
+      + '<div class="pr-bars">' + bars + '</div>'
+      + '<button class="pr-insights-toggle" onclick="toggleInsights(\'' + cardId + '\')">'
+      + '<span class="pr-insights-toggle-label">📈 Growth Insights &nbsp;(tap to expand)</span>'
+      + '<span class="pr-insights-arrow" id="arr-' + cardId + '">▼</span>'
+      + '</button>'
+      + '<div class="pr-insights-body" id="' + cardId + '">'
+      + insights
+      + '<button class="pr-insights-toggle" onclick="toggleInsights(\'' + cardId + '\')" style="margin-top:4px;">'
+      + '<span class="pr-insights-toggle-label">▲ &nbsp;Tap to close</span>'
+      + '<span></span>'
+      + '</button>'
+      + '</div>'
+      + '</div>';
+  }).join('');
+
+  // Animate bars
+  setTimeout(() => {
+    document.querySelectorAll('.pr-fill[data-pct]').forEach(el => {
+      el.style.width = el.getAttribute('data-pct') + '%';
+    });
+  }, 150);
+}
+
+function toggleInsights(cardId) {
+  const body = document.getElementById(cardId);
+  const arrow = document.getElementById('arr-' + cardId);
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  arrow.classList.toggle('open', !isOpen);
+}
+
+// ── SHARE ──────────────────────────────────────────────
+
+function buildOutcomeShareText() {
+  const scIdx = S.scenarioOrder.length ? S.scenarioOrder[S.step] : S.step;
+  const scenario = SCENARIOS[scIdx];
+  const totalRounds = S.scenarioOrder.length || SCENARIOS.length;
+  let text = '🎯 The Leadership Challenge — HLE/Alaya 2026\n';
+  text += 'Scenario ' + (S.step + 1) + ' of ' + totalRounds + ': ' + scenario.title + '\n';
+  text += '━━━━━━━━━━━━━━━━━━━━━━\n\n';
+  text += '📋 Situation:\n' + scenario.situation + '\n\n';
+  text += '━━━━━━━━━━━━━━━━━━━━━━\n\n';
+
+  const choiceGroups = {};
+  if (isSolo()) {
+    choiceGroups[S.roundChoices[0].choiceIdx] = [0];
+  } else {
+    S.roundChoices.forEach(rc => {
+      if (!choiceGroups[rc.choiceIdx]) choiceGroups[rc.choiceIdx] = [];
+      choiceGroups[rc.choiceIdx].push(rc.playerIdx);
+    });
+  }
+
+  Object.keys(choiceGroups).sort((a,b) => parseInt(a)-parseInt(b)).forEach(key => {
+    const choice = scenario.choices[parseInt(key)];
+    const playerIdxs = choiceGroups[key];
+    const playerNames = playerIdxs.map(pi => S.players[pi].name.toUpperCase()).join(', ');
+
+    text += isSolo()
+      ? '👤 You chose Option ' + choice.letter + '\n'
+      : '👤 ' + playerNames + ' — Option ' + choice.letter + '\n';
+    text += '"' + choice.text + '"\n\n';
+    text += 'What happened:\n' + choice.outcome + '\n\n';
+
+    const scores = DIMS.map(d => {
+      const v = choice.scores[d] || 0;
+      return DIM_ICONS[d] + ' ' + DIM_LABELS[d] + (v > 0 ? ' +' + v : ' 0');
+    }).join('  ');
+    text += scores + '\n';
+    text += '━━━━━━━━━━━━━━━━━━━━━━\n\n';
+  });
+
+  text += '💬 Discuss: ' + scenario.discussPrompt + '\n\n';
+  text += 'The Leadership Challenge — HLE/Alaya 2026';
+  return text;
+}
+
+function openOutcomeShareModal() {
+  const n = S.players.length;
+  document.getElementById('share-modal-sub').textContent =
+    n === 1 ? 'Share this scenario outcome.' : 'Share what everyone chose and what happened.';
+  document.getElementById('share-modal').setAttribute('data-mode', 'outcome');
+  document.getElementById('share-modal').classList.add('vis');
+}
+
+function buildShareText() {
+  const sorted = [...S.players].sort((a,b) => avg4(b.scores, S.MAX) - avg4(a.scores, S.MAX));
+  let text = '🏆 Leadership Challenge Results\nHLE / Alaya · 2026\n';
+  text += '━━━━━━━━━━━━━━━━━━━━━━\n\n';
+  sorted.forEach((player, i) => {
+    const profile = getProfile(player.scores, S.MAX);
+    const medals = ['🥇','🥈','🥉'];
+    const rank = i < 3 ? medals[i] : (i + 1) + '.';
+    text += rank + ' ' + player.name.toUpperCase() + ' — ' + profileDisplayName(profile) + ' ' + profile.emoji + '\n';
+    text += '🛡️ Trust: ' + pct(player.scores.T, S.MAX.T) + '%  ';
+    text += '👁️ Proactivity: ' + pct(player.scores.P, S.MAX.P) + '%  ';
+    text += '🎯 Delegation: ' + pct(player.scores.E, S.MAX.E) + '%  ';
+    text += '🔄 Adaptability: ' + pct(player.scores.A, S.MAX.A) + '%\n';
+    text += '\n' + profile.desc + '\n';
+    text += '\n📈 Growth Insights:\n';
+    const lowestDims = [...DIMS].sort((a,b) => pct(player.scores[a],S.MAX[a]) - pct(player.scores[b],S.MAX[b])).slice(0,3);
+    const usedSc = [];
+    lowestDims.forEach(d => {
+      const ins = getDimInsight(player, d, usedSc);
+      usedSc.push(ins.scenarioIdx);
+      text += '\n' + DIM_ICONS[d] + ' ' + DIM_LABELS[d] + ' (' + pct(player.scores[d], S.MAX[d]) + '%)';
+      text += ' — From "' + ins.scenarioTitle + '", Choice ' + ins.choiceLetter + '\n';
+      text += ins.insight + '\n';
+      text += '▶ Try this: ' + ins.action + '\n';
+    });
+    text += '\n━━━━━━━━━━━━━━━━━━━━━━\n\n';
+  });
+  text += 'Played at HLE/Alaya Leadership Challenge 2026';
+  return text;
+}
+
+function openShareModal() {
+  const n = S.players.length;
+  document.getElementById('share-modal-sub').textContent =
+    n === 1 ? 'Share your leadership profile.' : 'Share all ' + n + ' players\u2019 leadership profiles.';
+  document.getElementById('share-modal').classList.add('vis');
+}
+function closeShareModal() { const m = document.getElementById('share-modal'); m.classList.remove('vis'); m.removeAttribute('data-mode'); }
+function handleShareOverlayClick(e) { if (e.target === document.getElementById('share-modal')) closeShareModal(); }
+
+function showToast(msg) {
+  const t = document.getElementById('share-toast');
+  t.textContent = msg;
+  t.style.opacity = '1';
+  setTimeout(() => { t.style.opacity = '0'; }, 2200);
+}
+
+function shareWhatsApp() {
+  const mode = document.getElementById('share-modal').getAttribute('data-mode');
+  const text = mode === 'outcome' ? buildOutcomeShareText() : buildShareText();
+  window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+  closeShareModal();
+}
+
+function shareEmail() {
+  const text = buildShareText();
+  const subject = 'Leadership Challenge Results — HLE/Alaya 2026';
+  window.open('mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(text), '_blank');
+  closeShareModal();
+}
+
+function copyShareText() {
+  const mode = document.getElementById('share-modal').getAttribute('data-mode');
+  const text = mode === 'outcome' ? buildOutcomeShareText() : buildShareText();
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => { showToast('✓ Copied to clipboard!'); });
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('✓ Copied to clipboard!');
+  }
+  closeShareModal();
+}
+
+function downloadOutcomeWord() {
+  const scIdx = S.scenarioOrder.length ? S.scenarioOrder[S.step] : S.step;
+  const scenario = SCENARIOS[scIdx];
+  const totalRounds = S.scenarioOrder.length || SCENARIOS.length;
+
+  const choiceGroups = {};
+  if (isSolo()) {
+    choiceGroups[S.roundChoices[0].choiceIdx] = [0];
+  } else {
+    S.roundChoices.forEach(rc => {
+      if (!choiceGroups[rc.choiceIdx]) choiceGroups[rc.choiceIdx] = [];
+      choiceGroups[rc.choiceIdx].push(rc.playerIdx);
+    });
+  }
+
+  let html = '<html><head><meta charset="UTF-8">'
+    + '<style>body{font-family:Calibri,sans-serif;color:#111;max-width:700px;margin:40px auto;padding:0 24px}'
+    + 'h1{color:#c47a00;font-size:22px;margin-bottom:4px}'
+    + 'h2{color:#333;font-size:16px;margin:24px 0 4px}'
+    + '.eyebrow{font-size:11px;font-weight:bold;text-transform:uppercase;letter-spacing:2px;color:#c47a00;margin-bottom:6px}'
+    + '.situation{background:#fffbf0;border-left:3px solid #f5a623;padding:12px 16px;margin:12px 0;font-style:italic;font-size:14px;border-radius:0 6px 6px 0}'
+    + '.note{font-size:12px;color:#999;margin:4px 0 16px;font-style:italic}'
+    + '.player-block{border:1px solid #eee;border-radius:6px;padding:14px 18px;margin:14px 0}'
+    + '.player-name{font-weight:bold;font-size:14px;color:#c47a00;margin-bottom:4px}'
+    + '.choice-letter{display:inline-block;background:#c47a00;color:#fff;width:22px;height:22px;border-radius:4px;text-align:center;line-height:22px;font-weight:bold;font-size:13px;margin-right:6px;vertical-align:middle}'
+    + '.choice-text{font-style:italic;font-size:13px;color:#555;border-left:3px solid #eee;padding:6px 12px;margin:8px 0}'
+    + '.outcome{font-size:14px;color:#222;margin:8px 0}'
+    + '.chips{margin:10px 0}'
+    + '.chip{display:inline-block;background:#fff3cc;color:#7a5000;padding:3px 10px;border-radius:4px;font-size:12px;font-weight:bold;margin:2px 4px 2px 0}'
+    + '.discuss{background:#f9f9f9;border:1px solid #eee;border-radius:6px;padding:12px 16px;margin:20px 0;font-size:14px;color:#444}'
+    + '.divider{border:none;border-top:1px solid #eee;margin:20px 0}'
+    + '</style></head><body>'
+    + '<div class="eyebrow">Leadership Challenge &middot; HLE/Alaya 2026</div>'
+    + '<h1>Scenario ' + (S.step + 1) + ' of ' + totalRounds + ': ' + scenario.title + '</h1>'
+    + '<div class="situation">' + scenario.situation + '</div>'
+    + '<p class="note">&#128161; Different choices exercise different signals &mdash; a zero does not mean the choice was wrong.</p>'
+    + '<hr class="divider">';
+
+  Object.keys(choiceGroups).sort((a,b) => parseInt(a)-parseInt(b)).forEach(key => {
+    const choice = scenario.choices[parseInt(key)];
+    const playerIdxs = choiceGroups[key];
+    const playerNames = playerIdxs.map(pi => S.players[pi].name).join(', ');
+
+    html += '<div class="player-block">'
+      + '<div class="player-name">' + (isSolo() ? 'You' : playerNames) + '</div>'
+      + '<div style="margin:4px 0"><span class="choice-letter">' + choice.letter + '</span>'
+      + '<strong>Option ' + choice.letter + '</strong></div>'
+      + '<div class="choice-text">' + choice.text + '</div>'
+      + '<div class="outcome">' + choice.outcome + '</div>'
+      + '<div class="chips">'
+      + DIMS.map(d => {
+          const v = choice.scores[d] || 0;
+          return '<span class="chip">' + DIM_ICONS[d] + ' ' + DIM_LABELS[d] + (v > 0 ? ' +' + v : ' 0') + '</span>';
+        }).join('')
+      + '</div></div>';
+  });
+
+  html += '<div class="discuss"><strong>Discuss:</strong> ' + scenario.discussPrompt + '</div>'
+    + '</body></html>';
+
+  const blob = new Blob([html], { type: 'application/msword' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'Outcome-Scenario-' + (S.step + 1) + '-' + scenario.title.replace(/\s+/g,'-') + '.doc';
+  a.click();
+  closeShareModal();
+  showToast('\u2713 Outcome doc downloaded!');
+}
+
+function downloadWord() {
+  const mode = document.getElementById('share-modal').getAttribute('data-mode');
+  if (mode === 'outcome') { downloadOutcomeWord(); return; }
+  const sorted = [...S.players].sort((a,b) => avg4(b.scores, S.MAX) - avg4(a.scores, S.MAX));
+  const medals = ['🥇','🥈','🥉'];
+  let html = '<html><head><meta charset="UTF-8">'
+    + '<style>body{font-family:Calibri,sans-serif;color:#111;max-width:700px;margin:40px auto;padding:0 24px}'
+    + 'h1{color:#c47a00;font-size:26px;margin-bottom:4px}'
+    + 'h2{color:#333;font-size:18px;margin:28px 0 4px}'
+    + 'h3{color:#c47a00;font-size:13px;text-transform:uppercase;letter-spacing:1.5px;margin:18px 0 4px}'
+    + '.tag{display:inline-block;background:#fff3cc;color:#7a5000;padding:3px 10px;border-radius:4px;font-size:13px;font-weight:bold}'
+    + '.bar-row{display:flex;align-items:center;gap:10px;margin:5px 0}'
+    + '.bar-label{font-size:13px;width:110px;color:#555}'
+    + '.bar-track{flex:1;height:10px;background:#f0e8d0;border-radius:5px}'
+    + '.bar-fill{height:10px;background:#f5a623;border-radius:5px}'
+    + '.bar-pct{font-size:13px;color:#c47a00;font-weight:bold;width:36px;text-align:right}'
+    + '.insight{background:#fffbf0;border-left:3px solid #f5a623;padding:10px 14px;margin:8px 0;border-radius:0 6px 6px 0}'
+    + '.insight-from{font-size:11px;color:#999;margin-bottom:4px}'
+    + '.try-this{background:#fff3e0;padding:8px 12px;border-radius:4px;font-size:13px;margin-top:6px}'
+    + '.try-label{font-size:10px;font-weight:bold;text-transform:uppercase;letter-spacing:1.5px;color:#c47a00;display:block;margin-bottom:3px}'
+    + '.divider{border:none;border-top:1px solid #eee;margin:28px 0}'
+    + '</style></head><body>'
+    + '<h1>Leadership Challenge Results</h1>'
+    + '<p style="color:#888;font-size:13px">HLE / Alaya &middot; 2026</p><hr class="divider">';
+
+  sorted.forEach((player, i) => {
+    const profile = getProfile(player.scores, S.MAX);
+    const rank = i < 3 ? medals[i] : (i + 1) + '.';
+    const usedSc = [];
+    const lowestDims = [...DIMS].sort((a,b) => pct(player.scores[a],S.MAX[a]) - pct(player.scores[b],S.MAX[b]));
+    html += '<h2>' + rank + ' ' + player.name + '</h2>';
+    html += '<p><span class="tag">' + profileDisplayName(profile) + ' ' + profile.emoji + '</span></p>';
+    html += '<p style="font-size:14px;color:#444;margin:8px 0 14px">' + profile.desc + '</p>';
+    DIMS.forEach(d => {
+      const p = pct(player.scores[d], S.MAX[d]);
+      html += '<div class="bar-row">'
+        + '<span class="bar-label">' + DIM_ICONS[d] + ' ' + DIM_LABELS[d] + '</span>'
+        + '<div class="bar-track"><div class="bar-fill" style="width:' + p + '%"></div></div>'
+        + '<span class="bar-pct">' + p + '%</span></div>';
+    });
+    html += '<h3 style="margin-top:20px">Growth Insights</h3>';
+    lowestDims.forEach(d => {
+      const ins = getDimInsight(player, d, usedSc);
+      usedSc.push(ins.scenarioIdx);
+      html += '<div class="insight">'
+        + '<div class="insight-from">From &ldquo;' + ins.scenarioTitle + '&rdquo; &mdash; Choice ' + ins.choiceLetter + ' &mdash; ' + DIM_ICONS[d] + ' ' + DIM_LABELS[d] + ' ' + pct(player.scores[d],S.MAX[d]) + '%</div>'
+        + '<p style="font-size:14px;margin:4px 0">' + ins.insight + '</p>'
+        + '<div class="try-this"><span class="try-label">Try this</span>' + ins.action + '</div>'
+        + '</div>';
+    });
+    if (i < sorted.length - 1) html += '<hr class="divider">';
+  });
+
+  html += '</body></html>';
+  const blob = new Blob([html], { type: 'application/msword' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'Leadership-Challenge-Results-2026.doc';
+  a.click();
+  closeShareModal();
+  showToast('✓ Word doc downloaded!');
+}
+
+function playAgain() {
+  S.players = [];
+  S.step = 0;
+  S.roundChoices = [];
+  S.pickerIdx = 0;
+  document.getElementById('player-list').innerHTML = '';
+  go('splash');
+}
+
+// ═══════════════════════════════════════════════════════
+//  BOOT
+// ═══════════════════════════════════════════════════════
+
+// Clicking "Start" on splash goes to tutorial which goes to add-players
+document.querySelector('#splash .btn-gold').onclick = () => {
+  initTutorial();
+};
+
+// Pre-init tutorial dots
+renderTutSlide();
+
+
+</script>
+</body>
+</html>
