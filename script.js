@@ -104,16 +104,12 @@ function renderTutSlide() {
   // Next button — show slide position in label
   const next = document.getElementById('tut-next');
   const isLast = S.tutSlide === TOTAL_SLIDES - 1;
-  next.textContent = isLast ? 'Add Players →' : 'Next  ' + (S.tutSlide + 1) + ' / ' + TOTAL_SLIDES + ' →';
+  next.textContent = isLast ? 'Home →' : 'Next  ' + (S.tutSlide + 1) + ' / ' + TOTAL_SLIDES + ' →';
 }
 
 function tutNav(dir) {
   if (dir === 1 && S.tutSlide === TOTAL_SLIDES - 1) {
-    // Last slide Next → go to add players
-    S.fromTutorial = true;
-    document.getElementById('ap-back-btn').setAttribute('onclick', "go('tutorial')");
-    go('add-players');
-    initPlayerRows();
+    go('splash');
     return;
   }
   if (dir === -1 && S.tutSlide === 0) {
