@@ -1187,7 +1187,6 @@ function goMultiplayer() {
   localStorage.setItem('lc_mp_role', 'host');
   localStorage.setItem('lc_mp_room', MP.roomCode);
   MP.gameRef.set({ status: 'lobby', createdAt: Date.now() });
-  MP.gameRef.child('status').onDisconnect().set('ended');
   document.getElementById('hl-code').textContent = MP.roomCode;
   const btn = document.getElementById('hl-start-btn');
   btn.disabled = true; btn.style.opacity = '.4'; btn.style.cursor = 'not-allowed';
@@ -1419,6 +1418,45 @@ renderTutSlide();
 
 // Auto-restore game on page load if a saved game exists
 restoreGame();
+
+// Reconnect host to multiplayer session on refresh — return to lobby and re-attach listeners
+(function() {
+  if (localStorage.getItem('lc_mp_role') !== 'host') return;
+  const code = localStorage.getItem('lc_mp_room');
+  if (!code) { localStorage.removeItem('lc_mp_role'); return; }
+  MP.active = true; MP.isHost = true; MP.roomCode = code;
+  MP.gameRef = db.ref('games/' + code);
+  MP.gameRef.once('value', snap => {
+    if (!snap.exists()) { resetMP(); go('splash'); return; }
+    // Reset room state back to lobby — game must be restarted from here
+    MP.gameRef.update({ status: 'lobby', step: null, scenarioOrder: null, mode: null, MAX: null, roundChoices: null });
+    // Mark all players as un-answered
+    const players = snap.val().players || {};
+    const updates = {};
+    Object.keys(players).forEach(pid => { updates['players/' + pid + '/answered'] = false; });
+    if (Object.keys(updates).length) MP.gameRef.update(updates);
+    document.getElementById('hl-code').textContent = MP.roomCode;
+    const btn = document.getElementById('hl-start-btn');
+    btn.disabled = true; btn.style.opacity = '.4'; btn.style.cursor = 'not-allowed';
+    document.getElementById('hl-waiting').textContent = 'Reconnected — waiting for players...';
+    document.getElementById('hl-player-list').innerHTML = '';
+    MP.gameRef.child('players').on('value', s => {
+      const arr = Object.entries(s.val() || {});
+      document.getElementById('hl-player-list').innerHTML = arr.map(([, p]) =>
+        '<div class="mp-player-chip"><div class="mp-chip-dot" style="background:' + p.color + '"></div>'
+        + '<span class="mp-chip-name">' + p.name + '</span></div>'
+      ).join('');
+      const n = arr.length;
+      document.getElementById('hl-waiting').textContent = n === 0
+        ? 'Waiting for players to join...'
+        : n + ' player' + (n > 1 ? 's' : '') + ' in the room';
+      btn.disabled = n === 0;
+      btn.style.opacity = n > 0 ? '1' : '.4';
+      btn.style.cursor = n > 0 ? 'pointer' : 'not-allowed';
+    });
+    go('host-lobby');
+  });
+})();
 
 // Reconnect player to multiplayer session on refresh
 (function() {
