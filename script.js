@@ -1187,6 +1187,7 @@ function goMultiplayer() {
   localStorage.setItem('lc_mp_role', 'host');
   localStorage.setItem('lc_mp_room', MP.roomCode);
   MP.gameRef.set({ status: 'lobby', createdAt: Date.now() });
+  MP.gameRef.child('status').onDisconnect().set('ended');
   document.getElementById('hl-code').textContent = MP.roomCode;
   const btn = document.getElementById('hl-start-btn');
   btn.disabled = true; btn.style.opacity = '.4'; btn.style.cursor = 'not-allowed';
