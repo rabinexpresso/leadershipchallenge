@@ -1298,7 +1298,11 @@ function joinRoom() {
     if (!code || !name) { showJoinError('Please enter the room code and your name.'); return; }
     if (code.length < 4) { showJoinError('Room code looks too short. Check again.'); return; }
     if (typeof db === 'undefined' || !db) { showJoinError('DEBUG: Firebase db not loaded'); return; }
+    const timeoutId = setTimeout(() => {
+      showJoinError('Timed out — check Firebase rules in console (must be .read:true, .write:true and Published)');
+    }, 8000);
     db.ref('games/' + code).once('value').then(snap => {
+      clearTimeout(timeoutId);
       if (!snap.exists()) { showJoinError('Room not found: ' + code); return; }
       const game = snap.val();
       if (game.status !== 'lobby') { showJoinError('This game has already started.'); return; }
