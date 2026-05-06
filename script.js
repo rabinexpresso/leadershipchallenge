@@ -1059,8 +1059,6 @@ function restoreGame() {
     else if (sc === 'scoreboard')                        { buildScoreboard(); go('scoreboard'); }
     else if (sc === 'final')                             { buildFinal(); go('final'); }
     else { clearState(); return false; }
-    const banner = document.getElementById('resume-banner');
-    if (banner) banner.remove();
     return true;
   } catch(e) {
     clearState();
@@ -1068,11 +1066,6 @@ function restoreGame() {
   }
 }
 
-function discardSave() {
-  clearState();
-  const banner = document.getElementById('resume-banner');
-  if (banner) banner.remove();
-}
 
 // ═══════════════════════════════════════════════════════
 //  BOOT
@@ -1086,33 +1079,6 @@ document.querySelector('#splash .btn-gold').onclick = () => {
 // Pre-init tutorial dots
 renderTutSlide();
 
-// Show resume banner on splash if a game was saved
-(function() {
-  const raw = localStorage.getItem(STORAGE_KEY);
-  if (!raw) return;
-  try {
-    const saved = JSON.parse(raw);
-    if (!saved.players || !saved.players.length) { clearState(); return; }
-    const names = saved.players.map(p => p.name).join(', ');
-    const total = saved.scenarioOrder.length;
-    const banner = document.createElement('div');
-    banner.id = 'resume-banner';
-    banner.style.cssText = [
-      'position:fixed','bottom:0','left:0','right:0','z-index:999',
-      'background:#0f1421','border-top:1px solid rgba(245,166,35,0.3)',
-      'padding:14px 20px','display:flex','align-items:center',
-      'justify-content:space-between','gap:12px'
-    ].join(';');
-    banner.innerHTML =
-      '<div style="flex:1;min-width:0;">'
-      + '<div style="font-size:11px;color:var(--gold);font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:3px;">Game in progress</div>'
-      + '<div style="font-size:13px;color:var(--body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Scenario ' + (saved.step + 1) + ' of ' + total + ' · ' + names + '</div>'
-      + '</div>'
-      + '<div style="display:flex;gap:8px;flex-shrink:0;">'
-      + '<button onclick="discardSave()" style="padding:8px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.15);background:transparent;color:var(--sub);font-size:13px;cursor:pointer;">Discard</button>'
-      + '<button onclick="restoreGame()" style="padding:8px 16px;border-radius:8px;border:none;background:var(--gold);color:#000;font-size:13px;font-weight:700;cursor:pointer;">Resume →</button>'
-      + '</div>';
-    document.body.appendChild(banner);
-  } catch(e) { clearState(); }
-})();
+// Auto-restore game on page load if a saved game exists
+restoreGame();
 
