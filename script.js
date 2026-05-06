@@ -475,6 +475,21 @@ function showDiscuss() {
   document.getElementById('discuss-heading') && (document.getElementById('discuss-heading').textContent = scenario.title);
   document.getElementById('discuss-prompt') && (document.getElementById('discuss-prompt').textContent = scenario.discussPrompt || '');
 
+  // Recap of each player's choice
+  const recap = document.getElementById('discuss-recap');
+  if (recap) {
+    recap.innerHTML = S.roundChoices.map(rc => {
+      const player = S.players[rc.playerIdx];
+      const choice = scenario.choices[rc.choiceIdx];
+      return '<div style="display:flex;align-items:flex-start;gap:12px;background:var(--card2);border:1px solid var(--border2);border-left:3px solid ' + player.color + ';border-radius:0 10px 10px 0;padding:10px 14px;margin-bottom:8px">'
+        + '<div style="flex-shrink:0;width:28px;height:28px;border-radius:8px;background:' + player.color + '22;color:' + player.color + ';font-family:\'Bricolage Grotesque\',sans-serif;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:14px">' + choice.letter + '</div>'
+        + '<div style="flex:1;min-width:0">'
+        + '<div style="font-size:12px;font-weight:700;color:' + player.color + ';margin-bottom:2px">' + player.name + '</div>'
+        + '<div style="font-size:13px;color:var(--body);line-height:1.5">' + choice.text + '</div>'
+        + '</div></div>';
+    }).join('');
+  }
+
   // Companion question (always shown via HTML, no JS needed)
 
   // Split prompt — show only if choices diverged
