@@ -731,11 +731,11 @@
     <h2 class="ap-heading" style="margin-bottom:8px">Join a game</h2>
     <p class="ap-sub">Ask the host for the room code, then enter your name.</p>
     <div class="eyebrow" style="margin-bottom:8px">Room Code</div>
-    <input class="mp-join-input" id="join-code-input" placeholder="e.g. WOLF7" maxlength="6" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'');validateJoin()">
+    <input class="mp-join-input" id="join-code-input" placeholder="e.g. WOLF7" maxlength="6" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
     <div class="eyebrow" style="margin-bottom:8px;margin-top:6px">Your Name</div>
-    <input class="p-input" id="join-name-input" placeholder="Enter your name" style="margin-bottom:20px" oninput="validateJoin()">
+    <input class="p-input" id="join-name-input" placeholder="Enter your name" style="margin-bottom:20px">
     <p id="join-error" style="font-size:13px;color:#f87171;margin-bottom:16px;display:none;text-align:center"></p>
-    <button class="btn btn-gold" id="join-btn" onclick="joinRoom()" disabled style="opacity:.4;cursor:not-allowed">Join Game →</button>
+    <button class="btn btn-gold" id="join-btn" onclick="joinRoom()">Join Game →</button>
   </div>
 </div>
 

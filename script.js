@@ -1277,8 +1277,6 @@ function goJoin() {
   document.getElementById('join-code-input').value = '';
   document.getElementById('join-name-input').value = '';
   document.getElementById('join-error').style.display = 'none';
-  const btn = document.getElementById('join-btn');
-  btn.disabled = true; btn.style.opacity = '.4'; btn.style.cursor = 'not-allowed';
   go('join-screen');
 }
 
@@ -1295,7 +1293,8 @@ function validateJoin() {
 function joinRoom() {
   const code = document.getElementById('join-code-input').value.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
   const name = document.getElementById('join-name-input').value.trim();
-  if (!code || !name) return;
+  if (!code || !name) { showJoinError('Please enter the room code and your name.'); return; }
+  if (code.length < 4) { showJoinError('Room code looks too short. Check again.'); return; }
   db.ref('games/' + code).once('value').then(snap => {
     if (!snap.exists()) { showJoinError('Room not found. Check the code.'); return; }
     const game = snap.val();
