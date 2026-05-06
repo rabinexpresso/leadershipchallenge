@@ -1330,19 +1330,30 @@ function validateJoin() {
 }
 
 function joinRoom() {
+  if (MP.joining) return;
   const code = document.getElementById('join-code-input').value.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
   const name = document.getElementById('join-name-input').value.trim();
   if (!code || !name) { showJoinError('Please enter the room code and your name.'); return; }
   if (code.length < 4) { showJoinError('Room code looks too short. Check again.'); return; }
   document.getElementById('join-error').style.display = 'none';
+  MP.joining = true;
+  const joinBtn = document.getElementById('join-btn');
+  joinBtn.disabled = true; joinBtn.style.opacity = '.5'; joinBtn.style.cursor = 'wait';
+  joinBtn.textContent = 'Connecting...';
+  const finish = () => {
+    MP.joining = false;
+    joinBtn.disabled = false; joinBtn.style.opacity = '1'; joinBtn.style.cursor = 'pointer';
+    joinBtn.textContent = 'Join Game →';
+  };
   const timeoutId = setTimeout(() => {
     showJoinError('Connection timed out. Check your internet and try again.');
+    finish();
   }, 8000);
   db.ref('games/' + code).once('value').then(snap => {
     clearTimeout(timeoutId);
-    if (!snap.exists()) { showJoinError('Room not found. Check the code.'); return; }
+    if (!snap.exists()) { showJoinError('Room not found. Check the code.'); finish(); return; }
     const game = snap.val();
-    if (game.status !== 'lobby') { showJoinError('This game has already started.'); return; }
+    if (game.status !== 'lobby') { showJoinError('This game has already started.'); finish(); return; }
     const existingCount = game.players ? Object.keys(game.players).length : 0;
     const color = COLORS[existingCount % COLORS.length];
     const playerId = 'p' + Date.now().toString(36);
@@ -1359,8 +1370,9 @@ function joinRoom() {
     }).then(() => {
       showPlayerWait("You're in!", 'Waiting for the host to start...');
       listenAsPlayer();
-    });
-  }).catch(() => { clearTimeout(timeoutId); showJoinError('Could not connect. Check your internet.'); });
+      finish();
+    }).catch(err => { showJoinError('Write failed. Try again.'); finish(); });
+  }).catch(() => { clearTimeout(timeoutId); showJoinError('Could not connect. Check your internet.'); finish(); });
 }
 
 function leaveGame() {
