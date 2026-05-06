@@ -12,6 +12,7 @@ function go(id) {
   document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo({ top:0, behavior:'smooth' });
+  if (SAVE_SCREENS.has(id) && S.players.length > 0) saveState(id);
 }
 
 function skipTutorial() {
@@ -29,6 +30,7 @@ function closeQuitModal() {
   document.getElementById('quit-modal').style.display = 'none';
 }
 function doQuit() {
+  clearState();
   closeQuitModal();
   go('splash');
 }
@@ -1003,12 +1005,73 @@ function downloadWord() {
 }
 
 function playAgain() {
+  clearState();
   S.players = [];
   S.step = 0;
   S.roundChoices = [];
   S.pickerIdx = 0;
   document.getElementById('player-list').innerHTML = '';
   go('splash');
+}
+
+// ═══════════════════════════════════════════════════════
+//  LOCAL STORAGE
+// ═══════════════════════════════════════════════════════
+
+const STORAGE_KEY = 'lc_game_v1';
+const SAVE_SCREENS = new Set(['game','reveal','discuss','consequence','scoreboard','final']);
+
+function saveState(screen) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      screen,
+      players: S.players,
+      step: S.step,
+      scenarioOrder: S.scenarioOrder,
+      roundChoices: S.roundChoices,
+      pickerIdx: S.pickerIdx,
+      MAX: S.MAX
+    }));
+  } catch(e) {}
+}
+
+function clearState() {
+  localStorage.removeItem(STORAGE_KEY);
+}
+
+function restoreGame() {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (!raw) return false;
+  try {
+    const saved = JSON.parse(raw);
+    Object.assign(S, {
+      players: saved.players,
+      step: saved.step,
+      scenarioOrder: saved.scenarioOrder,
+      roundChoices: saved.roundChoices,
+      pickerIdx: saved.pickerIdx,
+      MAX: saved.MAX
+    });
+    const sc = saved.screen;
+    if      (sc === 'game')                              { renderPickTurn(S.pickerIdx); go('game'); }
+    else if (sc === 'reveal')                            { buildRevealScreen(); go('reveal'); }
+    else if (sc === 'discuss' || sc === 'consequence')   { buildConsequenceScreen(); go('consequence'); }
+    else if (sc === 'scoreboard')                        { buildScoreboard(); go('scoreboard'); }
+    else if (sc === 'final')                             { buildFinal(); go('final'); }
+    else { clearState(); return false; }
+    const banner = document.getElementById('resume-banner');
+    if (banner) banner.remove();
+    return true;
+  } catch(e) {
+    clearState();
+    return false;
+  }
+}
+
+function discardSave() {
+  clearState();
+  const banner = document.getElementById('resume-banner');
+  if (banner) banner.remove();
 }
 
 // ═══════════════════════════════════════════════════════
@@ -1022,4 +1085,34 @@ document.querySelector('#splash .btn-gold').onclick = () => {
 
 // Pre-init tutorial dots
 renderTutSlide();
+
+// Show resume banner on splash if a game was saved
+(function() {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (!raw) return;
+  try {
+    const saved = JSON.parse(raw);
+    if (!saved.players || !saved.players.length) { clearState(); return; }
+    const names = saved.players.map(p => p.name).join(', ');
+    const total = saved.scenarioOrder.length;
+    const banner = document.createElement('div');
+    banner.id = 'resume-banner';
+    banner.style.cssText = [
+      'position:fixed','bottom:0','left:0','right:0','z-index:999',
+      'background:#0f1421','border-top:1px solid rgba(245,166,35,0.3)',
+      'padding:14px 20px','display:flex','align-items:center',
+      'justify-content:space-between','gap:12px'
+    ].join(';');
+    banner.innerHTML =
+      '<div style="flex:1;min-width:0;">'
+      + '<div style="font-size:11px;color:var(--gold);font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:3px;">Game in progress</div>'
+      + '<div style="font-size:13px;color:var(--body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Scenario ' + (saved.step + 1) + ' of ' + total + ' · ' + names + '</div>'
+      + '</div>'
+      + '<div style="display:flex;gap:8px;flex-shrink:0;">'
+      + '<button onclick="discardSave()" style="padding:8px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.15);background:transparent;color:var(--sub);font-size:13px;cursor:pointer;">Discard</button>'
+      + '<button onclick="restoreGame()" style="padding:8px 16px;border-radius:8px;border:none;background:var(--gold);color:#000;font-size:13px;font-weight:700;cursor:pointer;">Resume →</button>'
+      + '</div>';
+    document.body.appendChild(banner);
+  } catch(e) { clearState(); }
+})();
 
