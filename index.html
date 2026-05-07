@@ -195,15 +195,7 @@
   .c-alpha { font-family:'Bricolage Grotesque',sans-serif; font-size:12px; font-weight:800; color:var(--gold); background:var(--gold-dim); border:1px solid var(--gold-border); border-radius:8px; width:28px; height:28px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
   .c-text { font-size:14px; line-height:1.65; color:var(--body); }
 
-  /* Locked phase */
-  #game-locked { display:none; flex-direction:column; align-items:center; justify-content:center; flex:1; padding:40px 24px; text-align:center; }
-  #game-locked.vis { display:flex; }
-  #game-pick.hidden { display:none; }
-  .locked-check { font-size:60px; margin-bottom:20px; animation:popIn .4s cubic-bezier(.22,1,.36,1); }
-  .locked-h { font-family:'Bricolage Grotesque',sans-serif; font-size:26px; font-weight:700; margin-bottom:10px; }
-  .locked-sub { font-size:16px; color:var(--body); line-height:1.65; max-width:280px; margin:0 auto 32px; }
-  .next-badge { display:inline-flex; align-items:center; gap:8px; padding:10px 20px; border-radius:100px; font-family:'Bricolage Grotesque',sans-serif; font-size:14px; font-weight:700; margin-bottom:32px; border:2px solid; }
-  .next-badge-dot { width:9px; height:9px; border-radius:50%; }
+
 
   /* ─── REVEAL ─── */
   .rv-body { padding:22px 22px 52px; flex:1; }
@@ -476,32 +468,13 @@
 </div>
 
 
-<!-- ══════════════════════════════════
-     ADD PLAYERS
-══════════════════════════════════ -->
-<div id="add-players" class="screen">
-  <div class="topbar">
-    <button class="back-btn" id="ap-back-btn" onclick="go('tutorial')">← Back</button>
-    <div class="topbar-center">Players</div>
-    <div class="topbar-spacer"></div>
-  </div>
-  <div class="page-inner">
-    <h2 class="ap-heading">Who's playing?</h2>
-    <p class="ap-sub">Add as many players as you like. One device gets passed around — everyone picks privately before the group reveal.</p>
-    <div class="player-list" id="player-list"></div>
-    <button class="add-p-btn" id="add-p-btn" onclick="addPlayerRow()">+ Add player</button>
-    <p class="ap-note" id="ap-note">Add at least 1 player to start</p>
-    <button class="btn btn-gold" id="start-btn" onclick="startGame()" disabled style="opacity:.4;cursor:not-allowed;">Start Game →</button>
-  </div>
-</div>
-
 
 <!-- ══════════════════════════════════
      GAME
 ══════════════════════════════════ -->
 <div id="mode-select" class="screen">
   <div class="topbar">
-    <button class="back-btn" onclick="MP.active && MP.isHost ? go('host-lobby') : go('add-players')">&#8592; Back</button>
+    <button class="back-btn" onclick="go('host-lobby')">&#8592; Back</button>
     <div class="topbar-center">Game Mode</div>
     <div class="topbar-space"></div>
   </div>
@@ -559,14 +532,6 @@
   <!-- PICK PHASE -->
   <div id="game-pick" class="game-body"></div>
 
-  <!-- LOCKED PHASE -->
-  <div id="game-locked">
-    <div class="locked-check">✅</div>
-    <h2 class="locked-h" id="locked-heading">Choice Locked!</h2>
-    <p class="locked-sub" id="locked-sub">Pass the device to the next player.</p>
-    <div id="next-player-badge-wrap"></div>
-    <button class="btn btn-gold" style="max-width:280px;" id="locked-cta" onclick="lockedNext()">Hand it over →</button>
-  </div>
 </div>
 
 
@@ -798,7 +763,7 @@
 
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
-<script src="data.js?v=19"></script>
-<script src="script.js?v=19"></script>
+<script src="data.js?v=20"></script>
+<script src="script.js?v=20"></script>
 </body>
 </html>
