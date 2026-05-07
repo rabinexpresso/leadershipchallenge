@@ -501,7 +501,7 @@
 ══════════════════════════════════ -->
 <div id="mode-select" class="screen">
   <div class="topbar">
-    <button class="back-btn" onclick="go('add-players')">&#8592; Back</button>
+    <button class="back-btn" onclick="MP.active && MP.isHost ? go('host-lobby') : go('add-players')">&#8592; Back</button>
     <div class="topbar-center">Game Mode</div>
     <div class="topbar-space"></div>
   </div>
@@ -798,7 +798,7 @@
 
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
-<script src="data.js?v=18"></script>
-<script src="script.js?v=18"></script>
+<script src="data.js?v=19"></script>
+<script src="script.js?v=19"></script>
 </body>
 </html>
