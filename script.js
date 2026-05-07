@@ -625,14 +625,12 @@ function buildConsequenceScreen() {
 
   html += '<div style="height:24px"></div>' +
     '<button class="btn btn-ghost" style="width:100%;margin-bottom:10px;padding:13px" onclick="openOutcomeShareModal()">📤 Share this outcome</button>' +
-    '<button class="btn btn-gold" style="width:100%" onclick="goToScoreboard()">See Scores →</button>';
+    '<button class="btn btn-gold" style="width:100%" onclick="goToScoreboard()">' + (S.step >= (S.scenarioOrder.length || SCENARIOS.length) - 1 ? 'See Final Results →' : 'Next Scenario →') + '</button>';
   body.innerHTML = html;
 }
 
 function goToScoreboard() {
-  if (MP.active && MP.isHost) mpSyncStatus('scoreboard');
-  buildScoreboard();
-  go('scoreboard');
+  scoreboardNext();
 }
 
 // ═══════════════════════════════════════════════════════
