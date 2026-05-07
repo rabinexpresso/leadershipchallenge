@@ -748,9 +748,7 @@ function scoreboardNext() {
     S.roundChoices = [];
     S.pickerIdx = 0;
     if (MP.active && MP.isHost) {
-      mpClearRound();
-      MP.gameRef.child('step').set(S.step);
-      mpSyncStatus('playing');
+      mpClearRound(S.step, 'playing'); // one atomic Firebase write
     }
     renderPickTurn(0);
     go('game');
@@ -1347,11 +1345,16 @@ function hostReveal() {
   });
 }
 
-function mpClearRound() {
+function mpClearRound(nextStep, newStatus) {
+  // Write step + status + roundChoices clear + answered resets in ONE atomic update
+  // so the player listener never fires with a stale step/status combination
   if (!MP.active || !MP.isHost || !MP.gameRef) return;
-  MP.gameRef.child('roundChoices').remove();
   MP.gameRef.child('players').once('value', snap => {
-    const updates = {};
+    const updates = {
+      roundChoices: null,
+      step: nextStep,
+      status: newStatus
+    };
     Object.keys(snap.val() || {}).forEach(id => { updates['players/' + id + '/answered'] = false; });
     MP.gameRef.update(updates);
   });
@@ -1492,9 +1495,12 @@ function renderPlayerGameScreen() {
 }
 
 function submitPlayerAnswer(choiceIdx) {
+  if (MP.submitting) return; // guard against double-tap
+  MP.submitting = true;
   const scIdx = MP.scenarioOrder[MP.step];
   const choice = SCENARIOS[scIdx].choices[choiceIdx];
   document.querySelectorAll('#player-game-body .c-btn').forEach((el, i) => {
+    el.disabled = true;
     el.classList.add(i === choiceIdx ? 'sel' : 'dim');
   });
   const playerRef = MP.gameRef.child('players/' + MP.playerId);
@@ -1504,8 +1510,10 @@ function submitPlayerAnswer(choiceIdx) {
     const choices = p.choices || {};
     DIMS.forEach(d => { scores[d] = (scores[d] || 0) + (choice.scores[d] || 0); });
     choices[scIdx] = choiceIdx;
-    playerRef.update({ scores, choices, answered: true });
-    MP.gameRef.child('roundChoices/' + MP.playerId).set(choiceIdx);
+    playerRef.update({ scores, choices, answered: true }).then(() => {
+      MP.gameRef.child('roundChoices/' + MP.playerId).set(choiceIdx);
+      MP.submitting = false;
+    });
   });
 }
 
