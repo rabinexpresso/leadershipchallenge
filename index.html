@@ -546,6 +546,16 @@
     <div class="sp-row" id="sp-row"></div>
   </div>
 
+  <!-- QUESTION TIMER -->
+  <div id="game-timer-row" style="display:none;padding:10px 22px 0;flex-shrink:0">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="flex:1;height:6px;background:var(--border);border-radius:10px;overflow:hidden">
+        <div id="game-timer-fill" style="height:100%;width:100%;background:var(--gold);border-radius:10px;transition:width 1s linear"></div>
+      </div>
+      <div id="game-timer-num" style="font-family:'Bricolage Grotesque',sans-serif;font-size:13px;font-weight:800;color:var(--gold);min-width:34px;text-align:right">2:00</div>
+    </div>
+  </div>
+
   <!-- PICK PHASE -->
   <div id="game-pick" class="game-body"></div>
 
@@ -788,7 +798,7 @@
 
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
-<script src="data.js?v=15"></script>
-<script src="script.js?v=15"></script>
+<script src="data.js?v=16"></script>
+<script src="script.js?v=16"></script>
 </body>
 </html>

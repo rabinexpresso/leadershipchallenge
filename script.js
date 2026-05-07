@@ -279,6 +279,49 @@ function startGameWithCount(count) {
 
 const isSolo = () => S.players.length === 1;
 
+const QUESTION_TIME = 120; // seconds
+
+function startGameTimer() {
+  clearGameTimer();
+  let remaining = QUESTION_TIME;
+  const row  = document.getElementById('game-timer-row');
+  const fill = document.getElementById('game-timer-fill');
+  const num  = document.getElementById('game-timer-num');
+  if (!row) return;
+  row.style.display = 'block';
+  const update = () => {
+    const m = Math.floor(remaining / 60);
+    const s = remaining % 60;
+    num.textContent = m + ':' + (s < 10 ? '0' : '') + s;
+    fill.style.width = (remaining / QUESTION_TIME * 100) + '%';
+    const urgent = remaining <= 30;
+    fill.style.background = urgent ? '#ef4444' : 'var(--gold)';
+    num.style.color       = urgent ? '#ef4444' : 'var(--gold)';
+  };
+  update();
+  S.gameTimerInterval = setInterval(() => {
+    remaining--;
+    update();
+    if (remaining <= 0) {
+      clearGameTimer();
+      // Auto-reveal for MP host; nudge for solo/pass-and-play
+      if (MP.active && MP.isHost) {
+        const btn = document.getElementById('mp-reveal-btn');
+        if (btn) btn.click();
+      } else {
+        num.textContent = "Time's up!";
+        num.style.color = '#ef4444';
+      }
+    }
+  }, 1000);
+}
+
+function clearGameTimer() {
+  clearInterval(S.gameTimerInterval);
+  const row = document.getElementById('game-timer-row');
+  if (row) row.style.display = 'none';
+}
+
 function renderPickTurn(playerIdx) {
   const scIdx = S.scenarioOrder.length ? S.scenarioOrder[S.step] : S.step;
   const scenario = SCENARIOS[scIdx];
@@ -324,6 +367,7 @@ function renderPickTurn(playerIdx) {
       + '<div id="mp-answer-counter" style="font-family:\'Bricolage Grotesque\',sans-serif;font-size:40px;font-weight:800;color:var(--gold)">0 / ' + S.players.length + '</div>'
       + '</div>'
       + '<button id="mp-reveal-btn" class="btn btn-gold" onclick="hostReveal()" disabled style="opacity:.4;cursor:not-allowed">Waiting for players...</button>';
+    startGameTimer();
     return;
   }
 
@@ -338,9 +382,11 @@ function renderPickTurn(playerIdx) {
       </button>
     `).join('')}
   `;
+  startGameTimer();
 }
 
 function pick(choiceIdx) {
+  clearGameTimer();
   const scIdx = S.scenarioOrder.length ? S.scenarioOrder[S.step] : S.step;
   const scenario = SCENARIOS[scIdx];
   const choice = scenario.choices[choiceIdx];
@@ -1279,6 +1325,7 @@ function listenHostAnswers() {
 }
 
 function hostReveal() {
+  clearGameTimer();
   MP.gameRef.child('roundChoices').once('value', rcSnap => {
     MP.gameRef.child('players').once('value', playerSnap => {
       const roundChoices = rcSnap.val() || {};
