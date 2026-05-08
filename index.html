@@ -753,7 +753,7 @@
     <div class="eyebrow" style="margin-bottom:8px">Room Code</div>
     <input class="mp-join-input" id="join-code-input" placeholder="e.g. WOLF7" maxlength="6" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
     <div class="eyebrow" style="margin-bottom:8px;margin-top:6px">Your Name</div>
-    <input class="p-input" id="join-name-input" placeholder="Enter your name" style="margin-bottom:20px">
+    <input class="p-input" id="join-name-input" placeholder="Enter your name" style="margin-bottom:20px;flex:none;">
     <p id="join-error" style="font-size:13px;color:#f87171;margin-bottom:16px;display:none;text-align:center"></p>
     <button class="btn btn-gold" id="join-btn" onclick="joinRoom()">Join Game →</button>
   </div>
@@ -806,6 +806,6 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 <script src="data.js?v=27"></script>
-<script src="script.js?v=39"></script>
+<script src="script.js?v=40"></script>
 </body>
 </html>
