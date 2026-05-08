@@ -990,15 +990,12 @@ function downloadAllOutcomesWord() {
   html += '</body></html>';
 
   var blob = new Blob([html], { type: 'application/msword' });
-  var url = URL.createObjectURL(blob);
   var a = document.createElement('a');
-  a.href = url;
+  a.href = URL.createObjectURL(blob);
   a.download = 'Leadership-Challenge-All-Outcomes.doc';
-  document.body.appendChild(a);
   a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
   closeShareModal();
+  showToast('✓ All outcomes doc downloaded!');
 }
 
 function openOutcomeShareModal() {
@@ -1085,13 +1082,24 @@ function getShareText() { return _shareCache.text; }
 function shareWhatsApp() {
   const text = _shareCache.text;
   if (!text) { showToast('Nothing to share.'); return; }
-  // WhatsApp URL can't handle very long text — open web fallback
   const encoded = encodeURIComponent(text);
-  const url = encoded.length < 5000
-    ? 'https://wa.me/?text=' + encoded
-    : 'https://web.whatsapp.com/';
-  window.open(url, '_blank');
-  closeShareModal();
+  if (encoded.length < 5000) {
+    window.open('https://wa.me/?text=' + encoded, '_blank');
+    closeShareModal();
+  } else {
+    // Text too long for WhatsApp URL — copy to clipboard, open WhatsApp, tell user to paste
+    const afterCopy = () => {
+      window.open('https://web.whatsapp.com/', '_blank');
+      closeShareModal();
+      showToast('📋 Text copied — paste it into your chat');
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(afterCopy).catch(() => { _fallbackCopy(text); afterCopy(); });
+    } else {
+      _fallbackCopy(text);
+      afterCopy();
+    }
+  }
 }
 
 function shareEmail() {
