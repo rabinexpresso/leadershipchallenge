@@ -622,14 +622,26 @@ function buildConsequenceScreen() {
       + '<span class="cq-who-picked">Option ' + choice.letter + ' \u2014 ' + whoLabel + '</span>'
       + '</div>'
       + '<div class="cq-choice-text">' + choice.text + '</div>'
+      + '<p class="cq-explanation">' + choice.outcome + '</p>'
       + '<div class="cq-chips">' + chips + '</div>'
-      + '<button class="ao-toggle" style="margin-top:12px" onclick="toggleAllOpts(\'' + whyId + '\')">'
-      + '<span class="ao-toggle-label">📊 Why these scores?</span>'
-      + '<span class="ao-arrow" id="ao-arr-' + whyId + '">▼</span>'
-      + '</button>'
-      + '<div class="ao-body" id="' + whyId + '">'
-      + '<p class="cq-explanation" style="margin-top:12px">' + choice.outcome + '</p>'
-      + '</div>'
+      + (choice.signalNotes ? (
+          '<button class="ao-toggle" style="margin-top:12px" onclick="toggleAllOpts(\'' + whyId + '\')">'
+          + '<span class="ao-toggle-label">📊 Why these scores?</span>'
+          + '<span class="ao-arrow" id="ao-arr-' + whyId + '">▼</span>'
+          + '</button>'
+          + '<div class="ao-body" id="' + whyId + '">'
+          + DIMS.map(function(d) {
+              var v = choice.scores[d] || 0;
+              var val = v > 0 ? '+' + v : '0';
+              var cls = v > 0 ? 'pos' : 'zero';
+              var note = choice.signalNotes[d] || '';
+              return '<div class="sn-row">'
+                + '<span class="cq-chip ' + cls + '">' + ICONS[d] + ' ' + DIM_LABELS[d] + ' ' + val + '</span>'
+                + (note ? '<span class="sn-text"> — ' + note + '</span>' : '')
+                + '</div>';
+            }).join('')
+          + '</div>'
+        ) : '')
       + '</div>'
       + divider;
   });
