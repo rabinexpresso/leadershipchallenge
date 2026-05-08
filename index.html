@@ -288,6 +288,20 @@
   .pr-insights-arrow.open { transform:rotate(180deg); }
   .pr-insights-body { display:none; padding-top:14px; }
   .pr-insights-body.open { display:block; animation:fadeUp .25s ease; }
+  /* Compare all options dropdown */
+  .ao-wrap { margin-top:16px; margin-bottom:16px; }
+  .ao-toggle { display:flex; align-items:center; justify-content:space-between; width:100%; background:var(--card2); border:1px solid var(--border2); border-radius:12px; padding:13px 16px; cursor:pointer; transition:all .2s; }
+  .ao-toggle:hover { border-color:var(--gold-border); background:rgba(245,166,35,.05); }
+  .ao-toggle-label { font-family:'Bricolage Grotesque',sans-serif; font-size:11px; font-weight:800; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold); }
+  .ao-arrow { font-size:16px; color:var(--gold); transition:transform .3s cubic-bezier(.22,1,.36,1); flex-shrink:0; }
+  .ao-arrow.open { transform:rotate(180deg); }
+  .ao-body { display:none; padding-top:10px; }
+  .ao-body.open { display:block; animation:fadeUp .25s ease; }
+  .ao-item { border:1px solid var(--border2); border-radius:14px; padding:16px; margin-bottom:10px; }
+  .ao-item-chosen { border-color:var(--gold-border); background:rgba(245,166,35,.04); }
+  .ao-item-header { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+  .ao-item-title { font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:700; color:var(--body); }
+  .ao-chosen-tag { background:var(--gold-dim); color:var(--gold); font-size:10px; font-weight:800; letter-spacing:1px; text-transform:uppercase; padding:3px 8px; border-radius:99px; }
   /* Share button */
   .share-btn { display:inline-flex; align-items:center; gap:8px; background:var(--card); border:1px solid var(--border2); color:var(--body); font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:700; padding:10px 20px; border-radius:100px; cursor:pointer; transition:all .2s; margin-top:16px; }
   .share-btn:hover { border-color:var(--gold-border); color:var(--gold); }
@@ -415,28 +429,28 @@
         <div class="fw-item">
           <div class="fw-ico">🛡️</div>
           <div>
-            <div class="fw-name">Trust — max 21 pts</div>
+            <div class="fw-name">Trust — max 28 pts</div>
             <div class="fw-desc">Based on Patrick Lencioni's <em>Five Dysfunctions of a Team</em> and Brené Brown's vulnerability-based trust research. The question: does your team feel safe enough to be honest with you?</div>
           </div>
         </div>
         <div class="fw-item">
           <div class="fw-ico">👁️</div>
           <div>
-            <div class="fw-name">Proactivity — max 23 pts</div>
+            <div class="fw-name">Proactivity — max 32 pts</div>
             <div class="fw-desc">Covey's "Be Proactive" habit combined with Goleman's Emotional Intelligence research — specifically social awareness: noticing what's happening in your team before anyone says it out loud.</div>
           </div>
         </div>
         <div class="fw-item">
           <div class="fw-ico">🎯</div>
           <div>
-            <div class="fw-name">Empowerment — max 19 pts</div>
+            <div class="fw-name">Empowerment — max 25 pts</div>
             <div class="fw-desc">Hersey & Blanchard's Situational Leadership model. Real delegation means transferring the <em>why</em>, not just the <em>what</em> — and trusting people to make it better than you would have.</div>
           </div>
         </div>
         <div class="fw-item">
           <div class="fw-ico">🔄</div>
           <div>
-            <div class="fw-name">Adaptability — max 21 pts</div>
+            <div class="fw-name">Adaptability — max 27 pts</div>
             <div class="fw-desc">John Kotter's change leadership model and McKinsey's adaptive leadership research. The best leaders don't just survive change — they help their team move through it with momentum.</div>
           </div>
         </div>
@@ -795,7 +809,7 @@
 
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
-<script src="data.js?v=24"></script>
-<script src="script.js?v=24"></script>
+<script src="data.js?v=25"></script>
+<script src="script.js?v=25"></script>
 </body>
 </html>

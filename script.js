@@ -627,7 +627,39 @@ function buildConsequenceScreen() {
       + divider;
   });
 
-  html += '<div style="height:24px"></div>' +
+  // Compare all options dropdown
+  const chosenIdxSet = new Set(Object.keys(choiceGroups).map(k => parseInt(k)));
+  const aoId = 'ao-' + scIdx;
+  let aoItems = '';
+  scenario.choices.forEach((choice, idx) => {
+    const isChosen = chosenIdxSet.has(idx);
+    const chips = DIMS.map(d => {
+      const v = choice.scores[d] || 0;
+      const cls = v > 0 ? 'pos' : 'zero';
+      const val = v > 0 ? ('+' + v) : '0';
+      return '<span class="cq-chip ' + cls + '">' + ICONS[d] + ' ' + DIM_LABELS[d] + ' ' + val + '</span>';
+    }).join('');
+    const chosenTag = isChosen ? '<span class="ao-chosen-tag">your choice</span>' : '';
+    aoItems += '<div class="ao-item' + (isChosen ? ' ao-item-chosen' : '') + '">'
+      + '<div class="ao-item-header">'
+      + '<div class="cq-choice-alpha" style="background:var(--gold-dim);color:var(--gold)">' + choice.letter + '</div>'
+      + '<span class="ao-item-title">Option ' + choice.letter + '</span>'
+      + chosenTag
+      + '</div>'
+      + '<div class="cq-choice-text">' + choice.text + '</div>'
+      + '<div class="cq-chips">' + chips + '</div>'
+      + '<p class="cq-explanation">' + choice.outcome + '</p>'
+      + '</div>';
+  });
+  html += '<div class="ao-wrap">'
+    + '<button class="ao-toggle" onclick="toggleAllOpts(\'' + aoId + '\')">'
+    + '<span class="ao-toggle-label">📊 Why these scores? Compare all options</span>'
+    + '<span class="ao-arrow" id="ao-arr-' + aoId + '">▼</span>'
+    + '</button>'
+    + '<div class="ao-body" id="' + aoId + '">' + aoItems + '</div>'
+    + '</div>';
+
+  html += '<div style="height:8px"></div>' +
     '<button class="btn btn-ghost" style="width:100%;margin-bottom:10px;padding:13px" onclick="openOutcomeShareModal()">📤 Share this outcome</button>' +
     '<button class="btn btn-gold" style="width:100%" onclick="goToScoreboard()">See Scores →</button>';
   body.innerHTML = html;
@@ -861,6 +893,14 @@ function buildFinal() {
 function toggleInsights(cardId) {
   const body = document.getElementById(cardId);
   const arrow = document.getElementById('arr-' + cardId);
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  arrow.classList.toggle('open', !isOpen);
+}
+
+function toggleAllOpts(aoId) {
+  const body = document.getElementById(aoId);
+  const arrow = document.getElementById('ao-arr-' + aoId);
   const isOpen = body.classList.contains('open');
   body.classList.toggle('open', !isOpen);
   arrow.classList.toggle('open', !isOpen);
