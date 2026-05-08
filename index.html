@@ -280,6 +280,20 @@
   .pr-insights-arrow.open { transform:rotate(180deg); }
   .pr-insights-body { display:none; padding-top:14px; }
   .pr-insights-body.open { display:block; animation:fadeUp .25s ease; }
+  /* Compare all options dropdown */
+  .ao-wrap { margin-top:16px; margin-bottom:16px; }
+  .ao-toggle { display:flex; align-items:center; justify-content:space-between; width:100%; background:var(--card2); border:1px solid var(--border2); border-radius:12px; padding:13px 16px; cursor:pointer; transition:all .2s; }
+  .ao-toggle:hover { border-color:var(--gold-border); background:rgba(245,166,35,.05); }
+  .ao-toggle-label { font-family:'Bricolage Grotesque',sans-serif; font-size:11px; font-weight:800; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold); }
+  .ao-arrow { font-size:16px; color:var(--gold); transition:transform .3s cubic-bezier(.22,1,.36,1); flex-shrink:0; }
+  .ao-arrow.open { transform:rotate(180deg); }
+  .ao-body { display:none; padding-top:10px; }
+  .ao-body.open { display:block; animation:fadeUp .25s ease; }
+  .ao-item { border:1px solid var(--border2); border-radius:14px; padding:16px; margin-bottom:10px; }
+  .ao-item-chosen { border-color:var(--gold-border); background:rgba(245,166,35,.04); }
+  .ao-item-header { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+  .ao-item-title { font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:700; color:var(--body); }
+  .ao-chosen-tag { background:var(--gold-dim); color:var(--gold); font-size:10px; font-weight:800; letter-spacing:1px; text-transform:uppercase; padding:3px 8px; border-radius:99px; }
   /* Share button */
   .share-btn { display:inline-flex; align-items:center; gap:8px; background:var(--card); border:1px solid var(--border2); color:var(--body); font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:700; padding:10px 20px; border-radius:100px; cursor:pointer; transition:all .2s; margin-top:16px; }
   .share-btn:hover { border-color:var(--gold-border); color:var(--gold); }
@@ -774,7 +788,7 @@
 
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
-<script src="data.js?v=24"></script>
-<script src="script.js?v=24"></script>
+<script src="data.js?v=25"></script>
+<script src="script.js?v=25"></script>
 </body>
 </html>
