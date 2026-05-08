@@ -885,6 +885,24 @@ function buildAllOutcomesShareText() {
 }
 
 function downloadAllOutcomesWord() {
+  // Use pre-built text from _shareCache (same content as Copy Text — guaranteed to work)
+  var text = _shareCache.text;
+  if (text) {
+    try {
+      var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'Leadership-Challenge-All-Outcomes.txt';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      closeShareModal();
+      showToast('✓ Downloaded!');
+      return;
+    } catch(e) { /* fall through to HTML builder */ }
+  }
+
+  // HTML fallback
   var scenarioOrder = fbArr(S.scenarioOrder);
   var totalRounds = scenarioOrder.length;
   var html = '<html><head><meta charset="UTF-8">'
@@ -989,13 +1007,19 @@ function downloadAllOutcomesWord() {
 
   html += '</body></html>';
 
-  var blob = new Blob([html], { type: 'application/msword' });
-  var a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'Leadership-Challenge-All-Outcomes.doc';
-  a.click();
-  closeShareModal();
-  showToast('✓ All outcomes doc downloaded!');
+  try {
+    var blob = new Blob([html], { type: 'application/msword' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'Leadership-Challenge-All-Outcomes.doc';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    closeShareModal();
+    showToast('✓ All outcomes doc downloaded!');
+  } catch(e) {
+    showToast('Download failed: ' + String(e));
+  }
 }
 
 function openOutcomeShareModal() {
