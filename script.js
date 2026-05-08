@@ -318,7 +318,7 @@ function renderPickTurn(playerIdx) {
       + '<div class="s-box">' + scenario.situation + '</div>'
       + '<div class="choices-label">Options</div>'
       + scenario.choices.map(c =>
-        '<div class="c-btn" style="pointer-events:none;opacity:0.5">'
+        '<div class="c-btn" style="pointer-events:none;">'
         + '<div class="c-alpha">' + c.letter + '</div>'
         + '<div class="c-text">' + c.text + '</div>'
         + '</div>'
@@ -931,6 +931,15 @@ function buildOutcomeShareText() {
       return DIM_ICONS[d] + ' ' + DIM_LABELS[d] + (v > 0 ? ' +' + v : ' 0');
     }).join('  ');
     text += scores + '\n';
+    if (choice.signalNotes) {
+      text += '\nWhy these scores:\n';
+      DIMS.forEach(d => {
+        const v = choice.scores[d] || 0;
+        const note = choice.signalNotes[d] || '';
+        text += DIM_ICONS[d] + ' ' + DIM_LABELS[d] + ' ' + (v > 0 ? '+' + v : '0') + ' — ' + note + '\n';
+      });
+      text += '\n';
+    }
     text += '━━━━━━━━━━━━━━━━━━━━━━\n\n';
   });
 
@@ -1055,6 +1064,10 @@ function downloadOutcomeWord() {
     + '.outcome{font-size:14px;color:#222;margin:8px 0}'
     + '.chips{margin:10px 0}'
     + '.chip{display:inline-block;background:#fff3cc;color:#7a5000;padding:3px 10px;border-radius:4px;font-size:12px;font-weight:bold;margin:2px 4px 2px 0}'
+    + '.signal-notes{margin:12px 0 4px;}'
+    + '.signal-notes-label{font-size:10px;font-weight:bold;text-transform:uppercase;letter-spacing:1.5px;color:#c47a00;margin-bottom:6px}'
+    + '.signal-note-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:7px}'
+    + '.signal-note-text{font-size:13px;color:#444;line-height:1.55;flex:1}'
     + '.discuss{background:#f9f9f9;border:1px solid #eee;border-radius:6px;padding:12px 16px;margin:20px 0;font-size:14px;color:#444}'
     + '.divider{border:none;border-top:1px solid #eee;margin:20px 0}'
     + '</style></head><body>'
@@ -1080,7 +1093,21 @@ function downloadOutcomeWord() {
           const v = choice.scores[d] || 0;
           return '<span class="chip">' + DIM_ICONS[d] + ' ' + DIM_LABELS[d] + (v > 0 ? ' +' + v : ' 0') + '</span>';
         }).join('')
-      + '</div></div>';
+      + '</div>'
+      + (choice.signalNotes ? (
+          '<div class="signal-notes">'
+          + '<div class="signal-notes-label">Why these scores</div>'
+          + DIMS.map(d => {
+              const v = choice.scores[d] || 0;
+              const note = choice.signalNotes[d] || '';
+              return '<div class="signal-note-row">'
+                + '<span class="chip">' + DIM_ICONS[d] + ' ' + DIM_LABELS[d] + ' ' + (v > 0 ? '+' + v : '0') + '</span>'
+                + '<span class="signal-note-text"> — ' + note + '</span>'
+                + '</div>';
+            }).join('')
+          + '</div>'
+        ) : '')
+      + '</div>';
   });
 
   html += '<div class="discuss"><strong>Discuss:</strong> ' + scenario.discussPrompt + '</div>'
