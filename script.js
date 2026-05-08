@@ -290,9 +290,8 @@ function renderPickTurn(playerIdx) {
   const player = S.players[playerIdx];
   const totalRounds = S.scenarioOrder.length || SCENARIOS.length;
 
-  // Update topbar
+  // Update topbar label \u2014 bar is now the countdown timer, not scenario progress
   document.getElementById('gb-label').textContent = `Scenario ${S.step+1} of ${totalRounds}`;
-  document.getElementById('prog-fill').style.width = `${(S.step / totalRounds)*100}%`;
 
   // Score pills
   const spRow = document.getElementById('sp-row');
@@ -329,6 +328,7 @@ function renderPickTurn(playerIdx) {
       + '<div id="mp-answer-counter" style="font-family:\'Bricolage Grotesque\',sans-serif;font-size:40px;font-weight:800;color:var(--gold)">0 / ' + S.players.length + '</div>'
       + '</div>'
       + '<button id="mp-reveal-btn" class="btn btn-gold" onclick="hostReveal()" disabled style="opacity:.4;cursor:not-allowed">Waiting for players...</button>';
+    startScenarioTimer();  // start timer for MP host too
     return;
   }
 
@@ -567,16 +567,22 @@ function updateTimerDisplay() {
 function startScenarioTimer() {
   clearInterval(S.scenarioTimer);
   S.scenarioTimerSecs = 120;
+  const TOTAL = 120;
   const numEl  = document.getElementById('gb-timer-num');
   const fillEl = document.getElementById('prog-fill');
   function updateGB() {
     const m = Math.floor(S.scenarioTimerSecs / 60);
     const s = S.scenarioTimerSecs % 60;
+    // Update countdown text
     if (numEl) {
       numEl.textContent = m + ':' + (s < 10 ? '0' : '') + s;
       numEl.classList.remove('warn','urgent');
     }
-    if (fillEl) fillEl.classList.remove('warn','urgent');
+    // Progress bar depletes from 100% → 0% as time runs out
+    if (fillEl) {
+      fillEl.classList.remove('warn','urgent');
+      fillEl.style.width = ((S.scenarioTimerSecs / TOTAL) * 100) + '%';
+    }
     if (S.scenarioTimerSecs <= 10) {
       if (numEl) numEl.classList.add('urgent');
       if (fillEl) fillEl.classList.add('urgent');
@@ -596,9 +602,9 @@ function startScenarioTimer() {
 function stopScenarioTimer() {
   clearInterval(S.scenarioTimer);
   const numEl = document.getElementById('gb-timer-num');
-  if (numEl) { numEl.classList.remove('warn','urgent'); numEl.textContent = ''; }
+  if (numEl) { numEl.classList.remove('warn','urgent'); }
   const fillEl = document.getElementById('prog-fill');
-  if (fillEl) fillEl.classList.remove('warn','urgent');
+  if (fillEl) { fillEl.classList.remove('warn','urgent'); fillEl.style.width = '0%'; }
 }
 
 function skipDiscuss() {
