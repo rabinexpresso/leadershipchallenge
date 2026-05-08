@@ -254,6 +254,7 @@ function startGameWithCount(count) {
     });
     return;
   }
+  clearState();
   const inputs = document.querySelectorAll('.p-input');
   S.players = [];
   Array.from(inputs).forEach((input, i) => {
@@ -355,8 +356,12 @@ function pick(choiceIdx) {
     el.classList.add(i === choiceIdx ? 'sel' : 'dim');
   });
 
-  // Record choice + apply scores
+  // Record choice + apply scores (reverse previous pick first if replaying)
   S.roundChoices.push({ playerIdx: S.pickerIdx, choiceIdx });
+  if (player.choices[scIdx] !== null && player.choices[scIdx] !== undefined) {
+    const prev = scenario.choices[player.choices[scIdx]];
+    if (prev) DIMS.forEach(d => { player.scores[d] = Math.max(0, (player.scores[d] || 0) - (prev.scores[d] || 0)); });
+  }
   player.choices[scIdx] = choiceIdx;
   DIMS.forEach(d => {
     player.scores[d] = (player.scores[d] || 0) + (choice.scores[d] || 0);
@@ -1041,24 +1046,7 @@ function buildAllOutcomesShareText() {
 }
 
 function downloadAllOutcomesWord() {
-  // Use pre-built text from _shareCache (same content as Copy Text — guaranteed to work)
-  var text = _shareCache.text;
-  if (text) {
-    try {
-      var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
-      var a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'Leadership-Challenge-All-Outcomes.txt';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      closeShareModal();
-      showToast('✓ Downloaded!');
-      return;
-    } catch(e) { /* fall through to HTML builder */ }
-  }
-
-  // HTML fallback
+  // Build HTML Word doc
   var scenarioOrder = fbArr(S.scenarioOrder);
   var totalRounds = scenarioOrder.length;
   var html = '<html><head><meta charset="UTF-8">'
