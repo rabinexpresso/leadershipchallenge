@@ -792,8 +792,181 @@ function buildOutcomeShareText() {
   return text;
 }
 
+function buildAllOutcomesShareText() {
+  var totalRounds = S.scenarioOrder.length;
+  var text = '📋 Leadership Challenge — All Scenario Outcomes\n';
+  text += 'HLE / Alaya · 2026\n';
+  text += '━━━━━━━━━━━━━━━━━━━━━━\n\n';
+
+  for (var i = 0; i < totalRounds; i++) {
+    var scIdx = S.scenarioOrder[i];
+    var scenario = SCENARIOS[scIdx];
+
+    text += 'SCENARIO ' + (i + 1) + ' OF ' + totalRounds + ': ' + scenario.title.toUpperCase() + '\n\n';
+    text += '📋 Situation:\n' + scenario.situation + '\n\n';
+
+    var choiceGroups = {};
+    if (isSolo()) {
+      var ci0 = S.players[0].choices[scIdx];
+      if (ci0 !== undefined && ci0 !== null) choiceGroups[ci0] = [0];
+    } else {
+      S.players.forEach(function(player, playerIdx) {
+        var ci = player.choices[scIdx];
+        if (ci !== undefined && ci !== null) {
+          if (!choiceGroups[ci]) choiceGroups[ci] = [];
+          choiceGroups[ci].push(playerIdx);
+        }
+      });
+    }
+
+    Object.keys(choiceGroups).sort(function(a,b){ return parseInt(a)-parseInt(b); }).forEach(function(key) {
+      var choice = scenario.choices[parseInt(key)];
+      var playerIdxs = choiceGroups[key];
+      var playerNames = playerIdxs.map(function(pi){ return S.players[pi].name.toUpperCase(); }).join(', ');
+
+      text += isSolo()
+        ? '👤 You chose Option ' + choice.letter + '\n'
+        : '👤 ' + playerNames + ' — Option ' + choice.letter + '\n';
+      text += '"' + choice.text + '"\n\n';
+      text += 'What happened:\n' + choice.outcome + '\n\n';
+
+      var scores = DIMS.map(function(d) {
+        var v = choice.scores[d] || 0;
+        return DIM_ICONS[d] + ' ' + DIM_LABELS[d] + (v > 0 ? ' +' + v : ' 0');
+      }).join('  ');
+      text += scores + '\n';
+
+      if (choice.signalNotes) {
+        text += '\nWhy these scores:\n';
+        DIMS.forEach(function(d) {
+          var v = choice.scores[d] || 0;
+          var note = choice.signalNotes[d] || '';
+          text += DIM_ICONS[d] + ' ' + DIM_LABELS[d] + ' ' + (v > 0 ? '+' + v : '0') + ' — ' + note + '\n';
+        });
+        text += '\n';
+      }
+    });
+
+    text += '💬 Discuss: ' + scenario.discussPrompt + '\n';
+    text += '━━━━━━━━━━━━━━━━━━━━━━\n\n';
+  }
+
+  text += 'The Leadership Challenge — HLE/Alaya 2026';
+  return text;
+}
+
+function downloadAllOutcomesWord() {
+  var totalRounds = S.scenarioOrder.length;
+  var html = '<html><head><meta charset="UTF-8">'
+    + '<style>body{font-family:Calibri,sans-serif;color:#111;max-width:700px;margin:40px auto;padding:0 24px}'
+    + 'h1{color:#c47a00;font-size:22px;margin-bottom:4px}'
+    + 'h2{color:#333;font-size:16px;margin:24px 0 4px}'
+    + '.eyebrow{font-size:11px;font-weight:bold;text-transform:uppercase;letter-spacing:2px;color:#c47a00;margin-bottom:6px}'
+    + '.situation{background:#fffbf0;border-left:3px solid #f5a623;padding:12px 16px;margin:12px 0;font-style:italic;font-size:14px;border-radius:0 6px 6px 0}'
+    + '.note{font-size:12px;color:#999;margin:4px 0 16px;font-style:italic}'
+    + '.player-block{border:1px solid #eee;border-radius:6px;padding:14px 18px;margin:14px 0}'
+    + '.player-name{font-weight:bold;font-size:14px;color:#c47a00;margin-bottom:4px}'
+    + '.choice-letter{display:inline-block;background:#c47a00;color:#fff;width:22px;height:22px;border-radius:4px;text-align:center;line-height:22px;font-weight:bold;font-size:13px;margin-right:6px;vertical-align:middle}'
+    + '.choice-text{font-style:italic;font-size:13px;color:#555;border-left:3px solid #eee;padding:6px 12px;margin:8px 0}'
+    + '.outcome{font-size:14px;color:#222;margin:8px 0}'
+    + '.chips{margin:10px 0}'
+    + '.chip{display:inline-block;background:#fff3cc;color:#7a5000;padding:3px 10px;border-radius:4px;font-size:12px;font-weight:bold;margin:2px 4px 2px 0}'
+    + '.chip-zero{display:inline-block;background:#f5f5f5;color:#999;padding:3px 10px;border-radius:4px;font-size:12px;font-weight:bold;margin:2px 4px 2px 0}'
+    + '.signal-notes{margin:12px 0 4px}'
+    + '.signal-notes-label{font-size:10px;font-weight:bold;text-transform:uppercase;letter-spacing:1.5px;color:#c47a00;margin-bottom:6px}'
+    + '.signal-note-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:7px}'
+    + '.signal-note-text{font-size:13px;color:#444;line-height:1.55;flex:1}'
+    + '.discuss{background:#f9f9f9;border:1px solid #eee;border-radius:6px;padding:12px 16px;margin:16px 0;font-size:14px;color:#444}'
+    + '.divider{border:none;border-top:2px solid #c47a00;margin:28px 0}'
+    + '.thin-divider{border:none;border-top:1px solid #eee;margin:16px 0}'
+    + '</style></head><body>'
+    + '<div class="eyebrow">Leadership Challenge &middot; HLE/Alaya 2026</div>'
+    + '<h1>All Scenario Outcomes &mdash; ' + totalRounds + ' Scenarios</h1>'
+    + '<p class="note">&#128161; Different choices exercise different signals &mdash; a zero does not mean the choice was wrong.</p>';
+
+  for (var i = 0; i < totalRounds; i++) {
+    var scIdx = S.scenarioOrder[i];
+    var scenario = SCENARIOS[scIdx];
+
+    if (i > 0) html += '<hr class="divider">';
+    html += '<h2>Scenario ' + (i + 1) + ' of ' + totalRounds + ': ' + scenario.title + '</h2>'
+      + '<div class="situation">' + scenario.situation + '</div>';
+
+    var choiceGroups = {};
+    if (isSolo()) {
+      var ci0 = S.players[0].choices[scIdx];
+      if (ci0 !== undefined && ci0 !== null) choiceGroups[ci0] = [0];
+    } else {
+      S.players.forEach(function(player, playerIdx) {
+        var ci = player.choices[scIdx];
+        if (ci !== undefined && ci !== null) {
+          if (!choiceGroups[ci]) choiceGroups[ci] = [];
+          choiceGroups[ci].push(playerIdx);
+        }
+      });
+    }
+
+    Object.keys(choiceGroups).sort(function(a,b){ return parseInt(a)-parseInt(b); }).forEach(function(key) {
+      var choice = scenario.choices[parseInt(key)];
+      var playerIdxs = choiceGroups[key];
+      var playerNames = playerIdxs.map(function(pi){ return S.players[pi].name; }).join(', ');
+
+      html += '<div class="player-block">'
+        + '<div class="player-name">' + (isSolo() ? 'You' : playerNames) + '</div>'
+        + '<div style="margin:4px 0"><span class="choice-letter">' + choice.letter + '</span>'
+        + '<span style="font-size:13px;color:#666">' + (isSolo() ? 'You chose' : playerNames + ' chose') + ' Option ' + choice.letter + '</span></div>'
+        + '<div class="choice-text">' + choice.text + '</div>'
+        + '<div class="outcome"><strong>What happened:</strong><br>' + choice.outcome + '</div>'
+        + '<div class="chips">';
+
+      DIMS.forEach(function(d) {
+        var v = choice.scores[d] || 0;
+        var label = DIM_ICONS[d] + ' ' + DIM_LABELS[d] + (v > 0 ? ' +' + v : ' 0');
+        html += v > 0
+          ? '<span class="chip">' + label + '</span>'
+          : '<span class="chip-zero">' + label + '</span>';
+      });
+
+      html += '</div>';
+
+      if (choice.signalNotes) {
+        html += '<div class="signal-notes">'
+          + '<div class="signal-notes-label">Why these scores</div>';
+        DIMS.forEach(function(d) {
+          var v = choice.scores[d] || 0;
+          var note = choice.signalNotes[d] || '';
+          var label = DIM_ICONS[d] + ' ' + DIM_LABELS[d] + (v > 0 ? ' +' + v : ' 0');
+          html += '<div class="signal-note-row">'
+            + '<span class="chip' + (v === 0 ? '-zero' : '') + '" style="white-space:nowrap">' + label + '</span>'
+            + (note ? '<span class="signal-note-text"> &mdash; ' + note + '</span>' : '')
+            + '</div>';
+        });
+        html += '</div>';
+      }
+
+      html += '</div>';
+    });
+
+    html += '<div class="discuss"><strong>&#128172; Discuss:</strong> ' + scenario.discussPrompt + '</div>';
+  }
+
+  html += '</body></html>';
+
+  var blob = new Blob([html], { type: 'application/msword' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'Leadership-Challenge-All-Outcomes.doc';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  closeShareModal();
+}
+
 function openOutcomeShareModal() {
   const n = S.players.length;
+  document.getElementById('share-modal-title').textContent = 'Share Scenario Outcome';
   document.getElementById('share-modal-sub').textContent =
     n === 1 ? 'Share this scenario outcome.' : 'Share what everyone chose and what happened.';
   document.getElementById('share-modal').setAttribute('data-mode', 'outcome');
@@ -833,8 +1006,19 @@ function buildShareText() {
 
 function openShareModal() {
   const n = S.players.length;
+  document.getElementById('share-modal-title').textContent = 'Share Final Results';
   document.getElementById('share-modal-sub').textContent =
     n === 1 ? 'Share your leadership profile.' : 'Share all ' + n + ' players\u2019 leadership profiles.';
+  document.getElementById('share-modal').setAttribute('data-mode', 'results');
+  document.getElementById('share-modal').classList.add('vis');
+}
+
+function openAllOutcomesShareModal() {
+  const n = S.players.length;
+  document.getElementById('share-modal-title').textContent = 'Share All Questions Outcomes';
+  document.getElementById('share-modal-sub').textContent =
+    n === 1 ? 'Share every scenario outcome with signal explanations.' : 'Share every scenario outcome and signal explanations for all players.';
+  document.getElementById('share-modal').setAttribute('data-mode', 'all-outcomes');
   document.getElementById('share-modal').classList.add('vis');
 }
 function closeShareModal() { const m = document.getElementById('share-modal'); m.classList.remove('vis'); m.removeAttribute('data-mode'); }
@@ -847,23 +1031,29 @@ function showToast(msg) {
   setTimeout(() => { t.style.opacity = '0'; }, 2200);
 }
 
-function shareWhatsApp() {
+function getShareText() {
   const mode = document.getElementById('share-modal').getAttribute('data-mode');
-  const text = mode === 'outcome' ? buildOutcomeShareText() : buildShareText();
-  window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+  if (mode === 'outcome') return buildOutcomeShareText();
+  if (mode === 'all-outcomes') return buildAllOutcomesShareText();
+  return buildShareText();
+}
+
+function shareWhatsApp() {
+  window.open('https://wa.me/?text=' + encodeURIComponent(getShareText()), '_blank');
   closeShareModal();
 }
 
 function shareEmail() {
-  const text = buildShareText();
-  const subject = 'Leadership Challenge Results — HLE/Alaya 2026';
-  window.open('mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(text), '_blank');
+  const mode = document.getElementById('share-modal').getAttribute('data-mode');
+  const subject = mode === 'all-outcomes'
+    ? 'Leadership Challenge — All Scenario Outcomes — HLE/Alaya 2026'
+    : 'Leadership Challenge Results — HLE/Alaya 2026';
+  window.open('mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(getShareText()), '_blank');
   closeShareModal();
 }
 
 function copyShareText() {
-  const mode = document.getElementById('share-modal').getAttribute('data-mode');
-  const text = mode === 'outcome' ? buildOutcomeShareText() : buildShareText();
+  const text = getShareText();
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(text).then(() => { showToast('✓ Copied to clipboard!'); });
   } else {
@@ -965,6 +1155,7 @@ function downloadOutcomeWord() {
 function downloadWord() {
   const mode = document.getElementById('share-modal').getAttribute('data-mode');
   if (mode === 'outcome') { downloadOutcomeWord(); return; }
+  if (mode === 'all-outcomes') { downloadAllOutcomesWord(); return; }
   const sorted = [...S.players].sort((a,b) => avg4(b.scores, S.MAX) - avg4(a.scores, S.MAX));
   const medals = ['🥇','🥈','🥉'];
   let html = '<html><head><meta charset="UTF-8">'
