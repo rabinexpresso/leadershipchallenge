@@ -951,68 +951,93 @@ function buildOutcomeShareText() {
 function buildAllOutcomesShareText() {
   var scenarioOrder = fbArr(S.scenarioOrder);
   var totalRounds = scenarioOrder.length;
-  var text = '📋 Leadership Challenge — All Scenario Outcomes\n';
-  text += 'HLE / Alaya · 2026\n';
-  text += '━━━━━━━━━━━━━━━━━━━━━━\n\n';
+  var lines = [];
+
+  lines.push('📋 Leadership Challenge — All Scenario Outcomes');
+  lines.push('HLE / Alaya · 2026');
+  lines.push('━━━━━━━━━━━━━━━━━━━━━━');
+  lines.push('');
 
   for (var i = 0; i < totalRounds; i++) {
-    var scIdx = parseInt(scenarioOrder[i], 10);
-    var scenario = SCENARIOS[scIdx];
-    if (!scenario) continue;
+    try {
+      var scIdx = parseInt(scenarioOrder[i], 10);
+      var scenario = SCENARIOS[scIdx];
+      if (!scenario) { lines.push('[Scenario ' + (i+1) + ': data not found]'); lines.push(''); continue; }
 
-    text += 'SCENARIO ' + (i + 1) + ' OF ' + totalRounds + ': ' + scenario.title.toUpperCase() + '\n\n';
-    text += '📋 Situation:\n' + scenario.situation + '\n\n';
+      lines.push('SCENARIO ' + (i + 1) + ' OF ' + totalRounds + ': ' + scenario.title.toUpperCase());
+      lines.push('');
+      lines.push('📋 Situation:');
+      lines.push(scenario.situation || '');
+      lines.push('');
 
-    var choiceGroups = {};
-    if (isSolo()) {
-      var playerChoices = fbArr(S.players[0].choices);
-      var ci0 = playerChoices[scIdx];
-      if (ci0 !== undefined && ci0 !== null) choiceGroups[ci0] = [0];
-    } else {
-      S.players.forEach(function(player, playerIdx) {
-        var playerChoices = fbArr(player.choices);
-        var ci = playerChoices[scIdx];
-        if (ci !== undefined && ci !== null) {
-          if (!choiceGroups[ci]) choiceGroups[ci] = [];
-          choiceGroups[ci].push(playerIdx);
+      var choiceGroups = {};
+      var players = S.players || [];
+
+      if (players.length === 1) {
+        var ch0 = players[0] ? players[0].choices : null;
+        var ci0 = ch0 ? (Array.isArray(ch0) ? ch0[scIdx] : ch0[scIdx]) : undefined;
+        if (ci0 !== undefined && ci0 !== null) choiceGroups[String(ci0)] = [0];
+      } else {
+        players.forEach(function(player, playerIdx) {
+          var ch = player ? player.choices : null;
+          var ci = ch ? (Array.isArray(ch) ? ch[scIdx] : ch[scIdx]) : undefined;
+          if (ci !== undefined && ci !== null) {
+            var k = String(ci);
+            if (!choiceGroups[k]) choiceGroups[k] = [];
+            choiceGroups[k].push(playerIdx);
+          }
+        });
+      }
+
+      var choiceKeys = Object.keys(choiceGroups).sort(function(a,b){ return parseInt(a)-parseInt(b); });
+      choiceKeys.forEach(function(key) {
+        var ci = parseInt(key, 10);
+        var choice = (scenario.choices && scenario.choices[ci]) || null;
+        if (!choice) return;
+        var playerIdxs = choiceGroups[key];
+        var playerNames = playerIdxs.map(function(pi){
+          var nm = (players[pi] && players[pi].name) ? players[pi].name : 'Player';
+          return nm.toUpperCase();
+        }).join(', ');
+
+        lines.push(players.length === 1
+          ? '👤 You chose Option ' + (choice.letter || '?')
+          : '👤 ' + playerNames + ' — Option ' + (choice.letter || '?'));
+        lines.push('"' + (choice.text || '') + '"');
+        lines.push('');
+        lines.push('What happened:');
+        lines.push(choice.outcome || '');
+        lines.push('');
+
+        var scoreChips = DIMS.map(function(d) {
+          var v = (choice.scores && choice.scores[d]) || 0;
+          return (DIM_ICONS[d] || '') + ' ' + (DIM_LABELS[d] || d) + (v > 0 ? ' +' + v : ' 0');
+        }).join('  ');
+        lines.push(scoreChips);
+
+        if (choice.signalNotes) {
+          lines.push('');
+          lines.push('Why these scores:');
+          DIMS.forEach(function(d) {
+            var v = (choice.scores && choice.scores[d]) || 0;
+            var note = (choice.signalNotes[d]) || '';
+            lines.push((DIM_ICONS[d] || '') + ' ' + (DIM_LABELS[d] || d) + ' ' + (v > 0 ? '+' + v : '0') + ' — ' + note);
+          });
+          lines.push('');
         }
       });
+
+      lines.push('💬 Discuss: ' + (scenario.discussPrompt || ''));
+      lines.push('━━━━━━━━━━━━━━━━━━━━━━');
+      lines.push('');
+    } catch(scenarioErr) {
+      lines.push('[Scenario ' + (i+1) + ' error: ' + String(scenarioErr) + ']');
+      lines.push('');
     }
-
-    Object.keys(choiceGroups).sort(function(a,b){ return parseInt(a)-parseInt(b); }).forEach(function(key) {
-      var choice = scenario.choices[parseInt(key)];
-      var playerIdxs = choiceGroups[key];
-      var playerNames = playerIdxs.map(function(pi){ return S.players[pi].name.toUpperCase(); }).join(', ');
-
-      text += isSolo()
-        ? '👤 You chose Option ' + choice.letter + '\n'
-        : '👤 ' + playerNames + ' — Option ' + choice.letter + '\n';
-      text += '"' + choice.text + '"\n\n';
-      text += 'What happened:\n' + choice.outcome + '\n\n';
-
-      var scores = DIMS.map(function(d) {
-        var v = choice.scores[d] || 0;
-        return DIM_ICONS[d] + ' ' + DIM_LABELS[d] + (v > 0 ? ' +' + v : ' 0');
-      }).join('  ');
-      text += scores + '\n';
-
-      if (choice.signalNotes) {
-        text += '\nWhy these scores:\n';
-        DIMS.forEach(function(d) {
-          var v = choice.scores[d] || 0;
-          var note = choice.signalNotes[d] || '';
-          text += DIM_ICONS[d] + ' ' + DIM_LABELS[d] + ' ' + (v > 0 ? '+' + v : '0') + ' — ' + note + '\n';
-        });
-        text += '\n';
-      }
-    });
-
-    text += '💬 Discuss: ' + scenario.discussPrompt + '\n';
-    text += '━━━━━━━━━━━━━━━━━━━━━━\n\n';
   }
 
-  text += 'The Leadership Challenge — HLE/Alaya 2026';
-  return text;
+  lines.push('The Leadership Challenge — HLE/Alaya 2026');
+  return lines.join('\n');
 }
 
 function downloadAllOutcomesWord() {
@@ -1055,25 +1080,29 @@ function downloadAllOutcomesWord() {
       + '<div class="situation">' + scenario.situation + '</div>';
 
     var choiceGroups = {};
-    if (isSolo()) {
-      var playerChoices = fbArr(S.players[0].choices);
-      var ci0 = playerChoices[scIdx];
-      if (ci0 !== undefined && ci0 !== null) choiceGroups[ci0] = [0];
+    var players = S.players || [];
+    if (players.length === 1) {
+      var ch0 = players[0] ? players[0].choices : null;
+      var ci0 = ch0 ? (Array.isArray(ch0) ? ch0[scIdx] : ch0[scIdx]) : undefined;
+      if (ci0 !== undefined && ci0 !== null) choiceGroups[String(ci0)] = [0];
     } else {
-      S.players.forEach(function(player, playerIdx) {
-        var playerChoices = fbArr(player.choices);
-        var ci = playerChoices[scIdx];
+      players.forEach(function(player, playerIdx) {
+        var ch = player ? player.choices : null;
+        var ci = ch ? (Array.isArray(ch) ? ch[scIdx] : ch[scIdx]) : undefined;
         if (ci !== undefined && ci !== null) {
-          if (!choiceGroups[ci]) choiceGroups[ci] = [];
-          choiceGroups[ci].push(playerIdx);
+          var k = String(ci);
+          if (!choiceGroups[k]) choiceGroups[k] = [];
+          choiceGroups[k].push(playerIdx);
         }
       });
     }
 
     Object.keys(choiceGroups).sort(function(a,b){ return parseInt(a)-parseInt(b); }).forEach(function(key) {
-      var choice = scenario.choices[parseInt(key)];
+      var ci = parseInt(key, 10);
+      var choice = (scenario.choices && scenario.choices[ci]) || null;
+      if (!choice) return;
       var playerIdxs = choiceGroups[key];
-      var playerNames = playerIdxs.map(function(pi){ return S.players[pi].name; }).join(', ');
+      var playerNames = playerIdxs.map(function(pi){ return (players[pi] && players[pi].name) || 'Player'; }).join(', ');
 
       html += '<div class="player-block">'
         + '<div class="player-name">' + (isSolo() ? 'You' : playerNames) + '</div>'
@@ -1182,12 +1211,14 @@ function openShareModal() {
 function openAllOutcomesShareModal() {
   const n = S.players.length;
   var text = '';
+  var errMsg = '';
   try { text = buildAllOutcomesShareText(); }
-  catch(e) { console.error('buildAllOutcomesShareText:', e); text = ''; }
+  catch(e) { errMsg = String(e); text = ''; }
   _shareCache = { mode: 'all-outcomes', text: text, subject: 'Leadership Challenge \u2014 All Scenario Outcomes \u2014 HLE/Alaya 2026' };
   document.getElementById('share-modal-title').textContent = 'Share All Questions Outcomes';
-  document.getElementById('share-modal-sub').textContent =
-    n === 1 ? 'Share every scenario outcome with signal explanations.' : 'Share every scenario outcome and signal explanations for all players.';
+  document.getElementById('share-modal-sub').textContent = errMsg
+    ? 'Build error: ' + errMsg
+    : (n === 1 ? 'Share every scenario outcome with signal explanations.' : 'Share every scenario outcome and signal explanations for all players.');
   document.getElementById('share-modal').setAttribute('data-mode', 'all-outcomes');
   document.getElementById('share-modal').classList.add('vis');
 }
