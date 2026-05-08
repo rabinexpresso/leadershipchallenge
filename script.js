@@ -793,25 +793,29 @@ function buildOutcomeShareText() {
 }
 
 function buildAllOutcomesShareText() {
-  var totalRounds = S.scenarioOrder.length;
+  var scenarioOrder = fbArr(S.scenarioOrder);
+  var totalRounds = scenarioOrder.length;
   var text = '📋 Leadership Challenge — All Scenario Outcomes\n';
   text += 'HLE / Alaya · 2026\n';
   text += '━━━━━━━━━━━━━━━━━━━━━━\n\n';
 
   for (var i = 0; i < totalRounds; i++) {
-    var scIdx = S.scenarioOrder[i];
+    var scIdx = parseInt(scenarioOrder[i], 10);
     var scenario = SCENARIOS[scIdx];
+    if (!scenario) continue;
 
     text += 'SCENARIO ' + (i + 1) + ' OF ' + totalRounds + ': ' + scenario.title.toUpperCase() + '\n\n';
     text += '📋 Situation:\n' + scenario.situation + '\n\n';
 
     var choiceGroups = {};
     if (isSolo()) {
-      var ci0 = S.players[0].choices[scIdx];
+      var playerChoices = fbArr(S.players[0].choices);
+      var ci0 = playerChoices[scIdx];
       if (ci0 !== undefined && ci0 !== null) choiceGroups[ci0] = [0];
     } else {
       S.players.forEach(function(player, playerIdx) {
-        var ci = player.choices[scIdx];
+        var playerChoices = fbArr(player.choices);
+        var ci = playerChoices[scIdx];
         if (ci !== undefined && ci !== null) {
           if (!choiceGroups[ci]) choiceGroups[ci] = [];
           choiceGroups[ci].push(playerIdx);
@@ -856,7 +860,8 @@ function buildAllOutcomesShareText() {
 }
 
 function downloadAllOutcomesWord() {
-  var totalRounds = S.scenarioOrder.length;
+  var scenarioOrder = fbArr(S.scenarioOrder);
+  var totalRounds = scenarioOrder.length;
   var html = '<html><head><meta charset="UTF-8">'
     + '<style>body{font-family:Calibri,sans-serif;color:#111;max-width:700px;margin:40px auto;padding:0 24px}'
     + 'h1{color:#c47a00;font-size:22px;margin-bottom:4px}'
@@ -885,8 +890,9 @@ function downloadAllOutcomesWord() {
     + '<p class="note">&#128161; Different choices exercise different signals &mdash; a zero does not mean the choice was wrong.</p>';
 
   for (var i = 0; i < totalRounds; i++) {
-    var scIdx = S.scenarioOrder[i];
+    var scIdx = parseInt(scenarioOrder[i], 10);
     var scenario = SCENARIOS[scIdx];
+    if (!scenario) continue;
 
     if (i > 0) html += '<hr class="divider">';
     html += '<h2>Scenario ' + (i + 1) + ' of ' + totalRounds + ': ' + scenario.title + '</h2>'
@@ -894,11 +900,13 @@ function downloadAllOutcomesWord() {
 
     var choiceGroups = {};
     if (isSolo()) {
-      var ci0 = S.players[0].choices[scIdx];
+      var playerChoices = fbArr(S.players[0].choices);
+      var ci0 = playerChoices[scIdx];
       if (ci0 !== undefined && ci0 !== null) choiceGroups[ci0] = [0];
     } else {
       S.players.forEach(function(player, playerIdx) {
-        var ci = player.choices[scIdx];
+        var playerChoices = fbArr(player.choices);
+        var ci = playerChoices[scIdx];
         if (ci !== undefined && ci !== null) {
           if (!choiceGroups[ci]) choiceGroups[ci] = [];
           choiceGroups[ci].push(playerIdx);
@@ -1034,7 +1042,10 @@ function showToast(msg) {
 function getShareText() {
   const mode = document.getElementById('share-modal').getAttribute('data-mode');
   if (mode === 'outcome') return buildOutcomeShareText();
-  if (mode === 'all-outcomes') return buildAllOutcomesShareText();
+  if (mode === 'all-outcomes') {
+    try { return buildAllOutcomesShareText(); }
+    catch(e) { console.error('buildAllOutcomesShareText error:', e); alert('Share error: ' + e.message); return ''; }
+  }
   return buildShareText();
 }
 
