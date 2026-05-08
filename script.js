@@ -58,6 +58,12 @@ function go(id) {
   if (SAVE_SCREENS.has(id) && S.players.length > 0) saveState(id);
 }
 
+function skipTutorial() {
+  S.fromTutorial = false;
+  document.getElementById('ap-back-btn').setAttribute('onclick', "go('splash')");
+  go('add-players');
+  initPlayerRows();
+}
 
 function confirmQuit() {
   const modal = document.getElementById('quit-modal');
@@ -115,6 +121,69 @@ function tutNav(dir) {
   renderTutSlide();
 }
 
+// ═══════════════════════════════════════════════════════
+//  ADD PLAYERS
+// ═══════════════════════════════════════════════════════
+
+function initPlayerRows() {
+  const list = document.getElementById('player-list');
+  if (list.children.length === 0) {
+    addPlayerRow();
+    addPlayerRow();
+  }
+}
+
+function addPlayerRow() {
+  const list = document.getElementById('player-list');
+  const idx = list.children.length;
+  const color = COLORS[idx % COLORS.length];
+  const row = document.createElement('div');
+  row.className = 'p-row';
+  row.innerHTML = `
+    <div class="p-dot" style="background:${color}"></div>
+    <input class="p-input" placeholder="Player ${idx+1} name" oninput="validatePlayers()" />
+    <button class="p-remove" onclick="removePlayerRow(this)">×</button>
+  `;
+  list.appendChild(row);
+  validatePlayers();
+  row.querySelector('input').focus();
+}
+
+function removePlayerRow(btn) {
+  const list = document.getElementById('player-list');
+  if (list.children.length <= 1) return;
+  btn.closest('.p-row').remove();
+  // Renumber + recolor dots
+  Array.from(list.children).forEach((row, i) => {
+    row.querySelector('.p-dot').style.background = COLORS[i % COLORS.length];
+    row.querySelector('input').placeholder = `Player ${i+1} name`;
+  });
+  document.getElementById('add-p-btn').style.display = 'flex';
+  validatePlayers();
+}
+
+function validatePlayers() {
+  const inputs = document.querySelectorAll('.p-input');
+  const filled = Array.from(inputs).filter(i => i.value.trim() !== '');
+  const startBtn = document.getElementById('start-btn');
+  const note = document.getElementById('ap-note');
+  if (filled.length > 0) {
+    startBtn.disabled = false;
+    startBtn.style.opacity = '1';
+    startBtn.style.cursor = 'pointer';
+    note.textContent = filled.length === 1 ? '1 player — solo mode' : `${filled.length} players — pass & play mode`;
+  } else {
+    startBtn.disabled = true;
+    startBtn.style.opacity = '.4';
+    startBtn.style.cursor = 'not-allowed';
+    note.textContent = 'Add at least 1 player to start';
+  }
+}
+
+function startGame() {
+  // Go to mode select — count is chosen there
+  go('mode-select');
+}
 
 function shuffle(arr) {
   const a = arr.slice();
@@ -185,55 +254,35 @@ function startGameWithCount(count) {
     });
     return;
   }
+  clearState();
+  const inputs = document.querySelectorAll('.p-input');
+  S.players = [];
+  Array.from(inputs).forEach((input, i) => {
+    const name = input.value.trim();
+    if (name) {
+      S.players.push({
+        name,
+        color: COLORS[i % COLORS.length],
+        scores: { T:0, P:0, E:0, A:0 },
+        choices: new Array(12).fill(null)
+      });
+    }
+  });
+  if (S.players.length === 0) return;
+  S.scenarioOrder = buildScenarioOrder(count);
+  S.step = 0;
+  S.roundChoices = [];
+  S.pickerIdx = 0;
+  S.MAX = getMaxForScenarios(S.scenarioOrder);
+  renderPickTurn(0);
+  go('game');
 }
 
 // ═══════════════════════════════════════════════════════
 //  GAME
 // ═══════════════════════════════════════════════════════
 
-
-const QUESTION_TIME = 120; // seconds
-
-function startGameTimer() {
-  clearGameTimer();
-  let remaining = QUESTION_TIME;
-  const row  = document.getElementById('game-timer-row');
-  const fill = document.getElementById('game-timer-fill');
-  const num  = document.getElementById('game-timer-num');
-  if (!row) return;
-  row.style.display = 'block';
-  const update = () => {
-    const m = Math.floor(remaining / 60);
-    const s = remaining % 60;
-    num.textContent = m + ':' + (s < 10 ? '0' : '') + s;
-    fill.style.width = (remaining / QUESTION_TIME * 100) + '%';
-    const urgent = remaining <= 30;
-    fill.style.background = urgent ? '#ef4444' : 'var(--gold)';
-    num.style.color       = urgent ? '#ef4444' : 'var(--gold)';
-  };
-  update();
-  S.gameTimerInterval = setInterval(() => {
-    remaining--;
-    update();
-    if (remaining <= 0) {
-      clearGameTimer();
-      // Auto-reveal for MP host
-      if (MP.active && MP.isHost) {
-        const btn = document.getElementById('mp-reveal-btn');
-        if (btn) btn.click();
-      } else {
-        num.textContent = "Time's up!";
-        num.style.color = '#ef4444';
-      }
-    }
-  }, 1000);
-}
-
-function clearGameTimer() {
-  clearInterval(S.gameTimerInterval);
-  const row = document.getElementById('game-timer-row');
-  if (row) row.style.display = 'none';
-}
+const isSolo = () => S.players.length === 1;
 
 function renderPickTurn(playerIdx) {
   const scIdx = S.scenarioOrder.length ? S.scenarioOrder[S.step] : S.step;
@@ -247,11 +296,22 @@ function renderPickTurn(playerIdx) {
 
   // Score pills
   const spRow = document.getElementById('sp-row');
-  spRow.innerHTML = '<span class="sp" style="color:var(--gold);border-color:var(--gold-border);">\ud83c\udfae Host \u00b7 ' + S.players.length + ' players</span>';
+  if (MP.active && MP.isHost) {
+    spRow.innerHTML = '<span class="sp" style="color:var(--gold);border-color:var(--gold-border);">\ud83c\udfae Host \u00b7 ' + S.players.length + ' players</span>';
+  } else if (isSolo()) {
+    const p = S.players[0];
+    spRow.innerHTML = DIMS.map(d => {
+      const cls = p.scores[d] > 0 ? 'sp lit' : 'sp';
+      return '<span class="' + cls + '">' + DIM_ICONS[d] + ' ' + p.scores[d] + '</span>';
+    }).join('');
+  } else {
+    spRow.innerHTML = '<span class="sp" style="color:' + player.color + ';border-color:' + player.color + '40;">\u25cf ' + player.name + '\u2019s turn</span>';
+  }
 
   // Pick content
   const pick = document.getElementById('game-pick');
   pick.classList.remove('hidden');
+  document.getElementById('game-locked').classList.remove('vis');
 
   if (MP.active && MP.isHost) {
     pick.innerHTML =
@@ -269,11 +329,97 @@ function renderPickTurn(playerIdx) {
       + '<div id="mp-answer-counter" style="font-family:\'Bricolage Grotesque\',sans-serif;font-size:40px;font-weight:800;color:var(--gold)">0 / ' + S.players.length + '</div>'
       + '</div>'
       + '<button id="mp-reveal-btn" class="btn btn-gold" onclick="hostReveal()" disabled style="opacity:.4;cursor:not-allowed">Waiting for players...</button>';
-    startGameTimer();
+    return;
+  }
+
+  pick.innerHTML = `
+    <h2 class="s-heading">${scenario.title}</h2>
+    <div class="s-box">${scenario.situation}</div>
+    <div class="choices-label">What would you do?</div>
+    ${scenario.choices.map((c,i) => `
+      <button class="c-btn" onclick="pick(${i})">
+        <div class="c-alpha">${c.letter}</div>
+        <div class="c-text">${c.text}</div>
+      </button>
+    `).join('')}
+  `;
+}
+
+function pick(choiceIdx) {
+  const scIdx = S.scenarioOrder.length ? S.scenarioOrder[S.step] : S.step;
+  const scenario = SCENARIOS[scIdx];
+  const choice = scenario.choices[choiceIdx];
+  const player = S.players[S.pickerIdx];
+
+  // Visual feedback
+  document.querySelectorAll('.c-btn').forEach((el, i) => {
+    el.classList.add(i === choiceIdx ? 'sel' : 'dim');
+  });
+
+  // Record choice + apply scores (reverse previous pick first if replaying)
+  S.roundChoices.push({ playerIdx: S.pickerIdx, choiceIdx });
+  if (player.choices[scIdx] !== null && player.choices[scIdx] !== undefined) {
+    const prev = scenario.choices[player.choices[scIdx]];
+    if (prev) DIMS.forEach(d => { player.scores[d] = Math.max(0, (player.scores[d] || 0) - (prev.scores[d] || 0)); });
+  }
+  player.choices[scIdx] = choiceIdx;
+  DIMS.forEach(d => {
+    player.scores[d] = (player.scores[d] || 0) + (choice.scores[d] || 0);
+  });
+
+  setTimeout(() => {
+    if (isSolo()) {
+      // Solo: skip locked, go to reveal then discuss
+      buildRevealScreen();
+      go('reveal');
+    } else {
+      showLocked(choiceIdx);
+    }
+  }, 280);
+}
+
+function showLocked(choiceIdx) {
+  const scIdx = S.scenarioOrder.length ? S.scenarioOrder[S.step] : S.step;
+  const scenario = SCENARIOS[scIdx];
+  const choice = scenario.choices[choiceIdx];
+  const player = S.players[S.pickerIdx];
+  const nextIdx = S.pickerIdx + 1;
+
+  document.getElementById('game-pick').classList.add('hidden');
+  document.getElementById('game-locked').classList.add('vis');
+
+  document.getElementById('locked-heading').textContent = `${player.name}'s choice is locked!`;
+  document.getElementById('locked-sub').textContent = `Choice ${choice.letter} recorded. Don't show the screen to the next player yet!`;
+
+  const isLast = nextIdx >= S.players.length;
+  const wrap = document.getElementById('next-player-badge-wrap');
+
+  if (!isLast) {
+    const next = S.players[nextIdx];
+    wrap.innerHTML = `
+      <div class="next-badge" style="color:${next.color};border-color:${next.color}60;">
+        <div class="next-badge-dot" style="background:${next.color}"></div>
+        Pass to ${next.name}
+      </div>
+    `;
+    document.getElementById('locked-cta').textContent = `Hand it to ${next.name} →`;
+  } else {
+    wrap.innerHTML = `<div class="next-badge" style="color:var(--gold);border-color:var(--gold-border);">✓ All players have chosen!</div>`;
+    document.getElementById('locked-cta').textContent = 'Reveal all choices →';
   }
 }
 
-
+function lockedNext() {
+  const nextIdx = S.pickerIdx + 1;
+  if (nextIdx < S.players.length) {
+    S.pickerIdx = nextIdx;
+    renderPickTurn(nextIdx);
+    go('game');
+  } else {
+    buildRevealScreen();
+    go('reveal');
+  }
+}
 
 // ═══════════════════════════════════════════════════════
 //  REVEAL
@@ -432,10 +578,15 @@ function buildConsequenceScreen() {
 
   // Group by choice
   const choiceGroups = {};
-  S.roundChoices.forEach(rc => {
-    if (!choiceGroups[rc.choiceIdx]) choiceGroups[rc.choiceIdx] = [];
-    choiceGroups[rc.choiceIdx].push(rc.playerIdx);
-  });
+  if (isSolo()) {
+    const rc = S.roundChoices[0];
+    choiceGroups[rc.choiceIdx] = [0];
+  } else {
+    S.roundChoices.forEach(rc => {
+      if (!choiceGroups[rc.choiceIdx]) choiceGroups[rc.choiceIdx] = [];
+      choiceGroups[rc.choiceIdx].push(rc.playerIdx);
+    });
+  }
 
   const choiceKeys = Object.keys(choiceGroups).sort((a,b) => parseInt(a)-parseInt(b));
 
@@ -458,7 +609,7 @@ function buildConsequenceScreen() {
 
     // Who picked this (multiplayer)
     let whoHtml = '';
-    if (S.players.length > 1) {
+    if (!isSolo() && S.players.length > 1) {
       const chips2 = playerIdxs.map(pi => {
         const p = S.players[pi];
         return '<div class="cq-player-chip"><div class="cq-pdot" style="background:' + p.color + '"></div><span class="cq-pname">' + p.name + '</span></div>';
@@ -466,7 +617,7 @@ function buildConsequenceScreen() {
       whoHtml = '<div class="cq-players-who">' + chips2 + '</div>';
     }
 
-    const whoLabel = playerIdxs.length + ' player' + (playerIdxs.length > 1 ? 's' : '');
+    const whoLabel = isSolo() ? 'Your choice' : (playerIdxs.length + ' player' + (playerIdxs.length > 1 ? 's' : ''));
     const divider = (i < choiceKeys.length - 1) ? '<div class="cq-divider"></div>' : '';
     const whyId = 'why-' + scIdx + '-' + key;
     html += '<div class="cq-outcome-block">'
@@ -502,12 +653,14 @@ function buildConsequenceScreen() {
 
   html += '<div style="height:16px"></div>' +
     '<button class="btn btn-ghost" style="width:100%;margin-bottom:10px;padding:13px" onclick="openOutcomeShareModal()">📤 Share this outcome</button>' +
-    '<button class="btn btn-gold" style="width:100%" onclick="goToScoreboard()">' + (S.step >= (S.scenarioOrder.length || SCENARIOS.length) - 1 ? 'See Final Results →' : 'Next Scenario →') + '</button>';
+    '<button class="btn btn-gold" style="width:100%" onclick="goToScoreboard()">See Scores →</button>';
   body.innerHTML = html;
 }
 
 function goToScoreboard() {
-  scoreboardNext();
+  if (MP.active && MP.isHost) mpSyncStatus('scoreboard');
+  buildScoreboard();
+  go('scoreboard');
 }
 
 // ═══════════════════════════════════════════════════════
@@ -579,7 +732,9 @@ function scoreboardNext() {
     S.roundChoices = [];
     S.pickerIdx = 0;
     if (MP.active && MP.isHost) {
-      mpClearRound(S.step, 'playing'); // one atomic Firebase write
+      mpClearRound();
+      MP.gameRef.child('step').set(S.step);
+      mpSyncStatus('playing');
     }
     renderPickTurn(0);
     go('game');
@@ -756,17 +911,23 @@ function buildOutcomeShareText() {
   text += '━━━━━━━━━━━━━━━━━━━━━━\n\n';
 
   const choiceGroups = {};
-  S.roundChoices.forEach(rc => {
-    if (!choiceGroups[rc.choiceIdx]) choiceGroups[rc.choiceIdx] = [];
-    choiceGroups[rc.choiceIdx].push(rc.playerIdx);
-  });
+  if (isSolo()) {
+    choiceGroups[S.roundChoices[0].choiceIdx] = [0];
+  } else {
+    S.roundChoices.forEach(rc => {
+      if (!choiceGroups[rc.choiceIdx]) choiceGroups[rc.choiceIdx] = [];
+      choiceGroups[rc.choiceIdx].push(rc.playerIdx);
+    });
+  }
 
   Object.keys(choiceGroups).sort((a,b) => parseInt(a)-parseInt(b)).forEach(key => {
     const choice = scenario.choices[parseInt(key)];
     const playerIdxs = choiceGroups[key];
     const playerNames = playerIdxs.map(pi => S.players[pi].name.toUpperCase()).join(', ');
 
-    text += '👤 ' + playerNames + ' — Option ' + choice.letter + '\n';
+    text += isSolo()
+      ? '👤 You chose Option ' + choice.letter + '\n'
+      : '👤 ' + playerNames + ' — Option ' + choice.letter + '\n';
     text += '"' + choice.text + '"\n\n';
     text += 'What happened:\n' + choice.outcome + '\n\n';
 
@@ -885,24 +1046,7 @@ function buildAllOutcomesShareText() {
 }
 
 function downloadAllOutcomesWord() {
-  // Use pre-built text from _shareCache (same content as Copy Text — guaranteed to work)
-  var text = _shareCache.text;
-  if (text) {
-    try {
-      var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
-      var a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'Leadership-Challenge-All-Outcomes.txt';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      closeShareModal();
-      showToast('✓ Downloaded!');
-      return;
-    } catch(e) { /* fall through to HTML builder */ }
-  }
-
-  // HTML fallback
+  // Build HTML Word doc
   var scenarioOrder = fbArr(S.scenarioOrder);
   var totalRounds = scenarioOrder.length;
   var html = '<html><head><meta charset="UTF-8">'
@@ -1175,10 +1319,14 @@ function downloadOutcomeWord() {
   const totalRounds = S.scenarioOrder.length || SCENARIOS.length;
 
   const choiceGroups = {};
-  S.roundChoices.forEach(rc => {
-    if (!choiceGroups[rc.choiceIdx]) choiceGroups[rc.choiceIdx] = [];
-    choiceGroups[rc.choiceIdx].push(rc.playerIdx);
-  });
+  if (isSolo()) {
+    choiceGroups[S.roundChoices[0].choiceIdx] = [0];
+  } else {
+    S.roundChoices.forEach(rc => {
+      if (!choiceGroups[rc.choiceIdx]) choiceGroups[rc.choiceIdx] = [];
+      choiceGroups[rc.choiceIdx].push(rc.playerIdx);
+    });
+  }
 
   let html = '<html><head><meta charset="UTF-8">'
     + '<style>body{font-family:Calibri,sans-serif;color:#111;max-width:700px;margin:40px auto;padding:0 24px}'
@@ -1213,7 +1361,7 @@ function downloadOutcomeWord() {
     const playerNames = playerIdxs.map(pi => S.players[pi].name).join(', ');
 
     html += '<div class="player-block">'
-      + '<div class="player-name">' + playerNames + '</div>'
+      + '<div class="player-name">' + (isSolo() ? 'You' : playerNames) + '</div>'
       + '<div style="margin:4px 0"><span class="choice-letter">' + choice.letter + '</span>'
       + '<strong>Option ' + choice.letter + '</strong></div>'
       + '<div class="choice-text">' + choice.text + '</div>'
@@ -1339,6 +1487,7 @@ function playAgain() {
   S.step = 0;
   S.roundChoices = [];
   S.pickerIdx = 0;
+  document.getElementById('player-list').innerHTML = '';
   go('splash');
 }
 
@@ -1469,7 +1618,6 @@ function listenHostAnswers() {
 }
 
 function hostReveal() {
-  clearGameTimer();
   MP.gameRef.child('roundChoices').once('value', rcSnap => {
     MP.gameRef.child('players').once('value', playerSnap => {
       const roundChoices = rcSnap.val() || {};
@@ -1491,16 +1639,11 @@ function hostReveal() {
   });
 }
 
-function mpClearRound(nextStep, newStatus) {
-  // Write step + status + roundChoices clear + answered resets in ONE atomic update
-  // so the player listener never fires with a stale step/status combination
+function mpClearRound() {
   if (!MP.active || !MP.isHost || !MP.gameRef) return;
+  MP.gameRef.child('roundChoices').remove();
   MP.gameRef.child('players').once('value', snap => {
-    const updates = {
-      roundChoices: null,
-      step: nextStep,
-      status: newStatus
-    };
+    const updates = {};
     Object.keys(snap.val() || {}).forEach(id => { updates['players/' + id + '/answered'] = false; });
     MP.gameRef.update(updates);
   });
@@ -1641,12 +1784,9 @@ function renderPlayerGameScreen() {
 }
 
 function submitPlayerAnswer(choiceIdx) {
-  if (MP.submitting) return; // guard against double-tap
-  MP.submitting = true;
   const scIdx = MP.scenarioOrder[MP.step];
   const choice = SCENARIOS[scIdx].choices[choiceIdx];
   document.querySelectorAll('#player-game-body .c-btn').forEach((el, i) => {
-    el.disabled = true;
     el.classList.add(i === choiceIdx ? 'sel' : 'dim');
   });
   const playerRef = MP.gameRef.child('players/' + MP.playerId);
@@ -1656,10 +1796,8 @@ function submitPlayerAnswer(choiceIdx) {
     const choices = p.choices || {};
     DIMS.forEach(d => { scores[d] = (scores[d] || 0) + (choice.scores[d] || 0); });
     choices[scIdx] = choiceIdx;
-    playerRef.update({ scores, choices, answered: true }).then(() => {
-      MP.gameRef.child('roundChoices/' + MP.playerId).set(choiceIdx);
-      MP.submitting = false;
-    });
+    playerRef.update({ scores, choices, answered: true });
+    MP.gameRef.child('roundChoices/' + MP.playerId).set(choiceIdx);
   });
 }
 
