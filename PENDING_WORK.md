@@ -142,12 +142,15 @@ Tell Claude Code: "Read PENDING_WORK.md — write the outcome text for the 3 new
 
 **Option A:** Sit down with her properly this week — not in passing. Walk through the specific errors, show her the pattern you've been seeing, and set a clear standard for what "done" looks like before anything gets submitted.
 - Scores: { T:2, P:3, E:1 }
+- Outcome: "You sat down properly and named the pattern — not in passing, but as a specific recurring problem with a clear standard attached. That shift from casual mention to structured conversation is what the situation required. The gap: setting a standard for someone to meet is different from building a habit. Asking her to walk you through her own checklist before she submits moves the check from you to her."
 
 **Option B:** Assign her to shadow a senior loan analyst for two weeks so she can see the quality standard in practice before she works independently again.
 - Scores: { T:1, P:1, E:3 }
+- Outcome: "You gave her a better environment to learn from — a genuine development instinct. The gap is in what you stepped around: the direct conversation about the pattern you have been watching. She now has exposure to a higher quality standard. She does not know you have seen a recurring problem, what that pattern looks like, or where the line is. Shadowing develops skill. It does not replace the feedback."
 
 **Option C:** Give her a written summary of the errors and what needs to improve so she has a reference she can check herself before submitting future files.
 - Scores: { P:2, A:2 }
+- Outcome: "A written reference is more useful than another passing mention. The gap is in what the medium cannot carry: how seriously this landed with the client, what the consequences were, and what happens if the pattern continues. She now has a checklist. She does not have your read on how significant this has become."
 
 **Discuss prompt:** At what point does covering for someone stop being kindness and start being the reason they never improve?
 
@@ -164,12 +167,15 @@ The manager's output metrics look fine. But The Compass is clear: using intimida
 
 **Option A:** Address it directly with the manager this week. Share specifically what you have observed and what you have heard from their team — without naming who came to you. Name it clearly: this behaviour violates Alaya's values and it needs to stop, regardless of how strong their team's output appears.
 - Scores: { T:2, P:3, A:1 }
+- Outcome: "You named the behaviour directly, tied it to Alaya's values, and made clear this was not a style preference. That clarity is necessary when a pattern is established and a team is already adjusting their behaviour around it. The gap: opening with a values violation before the manager has had any chance to reflect can produce defensiveness rather than change. The information landed — whether it shifts the behaviour depends on whether they could hear it."
 
 **Option B:** Start with genuine curiosity. Ask the manager how they feel the team dynamic is going and whether they are aware of how they come across when things go wrong. Give them the chance to surface it themselves before you share what you know.
 - Scores: { T:3, P:1, E:1 }
+- Outcome: "You opened with genuine curiosity rather than a verdict — which is the harder choice when you are already holding specific information about someone's team. Giving someone the chance to name a problem themselves produces more durable change than being told about it. The gap is in what you left unspoken: the specific observations you are already holding. If the manager is not self-aware enough to surface it themselves, you leave the conversation without naming what you know — and the people who came to you are still unprotected."
 
 **Option C:** Quietly adjust how their team escalates problems — route sensitive issues through you or another senior person for now — while you prepare for a more formal conversation later.
 - Scores: { A:1 }
+- Outcome: "Quietly rerouting issues is not a preparation for a harder conversation — it is the avoidance of one. The manager continues as before. The analysts who came to you are still working in the same environment. The longer you work around the behaviour rather than through it, the harder the eventual conversation becomes and the more credibility you lose with the people who chose to tell you."
 
 **Discuss prompt:** When someone's results are strong but their behaviour is damaging — how long is it fair to wait before saying something?
 
@@ -184,12 +190,15 @@ The manager's output metrics look fine. But The Compass is clear: using intimida
 
 **Option A:** Bring both of them into the same room together. Tell them directly: you have two accounts that don't match and you need to understand what actually happened. Ask them to walk through it in front of each other.
 - Scores: { T:2, P:2, A:1 }
+- Outcome: "Bringing both of them into the same room is direct and produces the most information fastest. The gap is in what the dynamic creates: two people defending their account to each other in front of you tends to produce entrenchment before it produces clarity. It works best when both parties are genuinely oriented toward resolution. When one or both feel accused, the room can close down faster than it opens up."
 
 **Option B:** Speak to each of them separately and thoroughly first — go through emails, call logs, referral records — before drawing any conclusion or saying anything definitive to either of them.
 - Scores: { T:1, P:3, A:1 }
+- Outcome: "You built the most complete picture before drawing any conclusions — the right instinct when two accounts are genuinely irreconcilable and a commission has already been paid. The gap: both people are waiting. The longer a thorough investigation runs without a signal from you, the more each of them fills the silence with their own conclusions about where you stand. Thoroughness and timeliness are both required here — and this situation needed both at the same time."
 
 **Option C:** Tell both of them honestly that the situation is too unclear to resolve fairly after the fact. Shift the conversation to how referrals get attributed going forward — put a clear, agreed process in place so this cannot happen again.
 - Scores: { T:1, E:2, A:3 }
+- Outcome: "You read the situation correctly: when evidence is incomplete and money has already moved, attempting retrospective justice often creates more damage than the original dispute. Moving to a clear forward process is the adaptive call. The gap is in what neither person received: an acknowledgement that their specific experience mattered, even if the outcome could not be fairly resolved. Without that, the process conversation can feel like it came at the cost of being heard."
 
 **Discuss prompt:** When you can't find a clear answer — is moving forward without one a leadership decision or an avoidance of one?
 
