@@ -651,16 +651,17 @@ function buildConsequenceScreen() {
       + divider;
   });
 
+  const _totalRounds = S.scenarioOrder.length || SCENARIOS.length;
+  const isLastRound = S.step >= _totalRounds - 1;
+  const nextBtnLabel = isLastRound ? 'See Final Results →' : 'Next Scenario →';
   html += '<div style="height:16px"></div>' +
     '<button class="btn btn-ghost" style="width:100%;margin-bottom:10px;padding:13px" onclick="openOutcomeShareModal()">📤 Share this outcome</button>' +
-    '<button class="btn btn-gold" style="width:100%" onclick="goToScoreboard()">See Scores →</button>';
+    '<button class="btn btn-gold" style="width:100%" onclick="goToScoreboard()">' + nextBtnLabel + '</button>';
   body.innerHTML = html;
 }
 
 function goToScoreboard() {
-  if (MP.active && MP.isHost) mpSyncStatus('scoreboard');
-  buildScoreboard();
-  go('scoreboard');
+  scoreboardNext();
 }
 
 // ═══════════════════════════════════════════════════════
@@ -1496,7 +1497,7 @@ function playAgain() {
 // ═══════════════════════════════════════════════════════
 
 const STORAGE_KEY = 'lc_game_v1';
-const SAVE_SCREENS = new Set(['game','reveal','discuss','consequence','scoreboard','final']);
+const SAVE_SCREENS = new Set(['game','reveal','discuss','consequence','final']);
 
 function saveState(screen) {
   if (MP.active) return;
@@ -1535,7 +1536,7 @@ function restoreGame() {
     if      (sc === 'game')                              { renderPickTurn(S.pickerIdx); go('game'); }
     else if (sc === 'reveal')                            { buildRevealScreen(); go('reveal'); }
     else if (sc === 'discuss' || sc === 'consequence')   { buildConsequenceScreen(); go('consequence'); }
-    else if (sc === 'scoreboard')                        { buildScoreboard(); go('scoreboard'); }
+    else if (sc === 'scoreboard')                        { scoreboardNext(); }
     else if (sc === 'final')                             { buildFinal(); go('final'); }
     else { clearState(); return false; }
     return true;
@@ -1746,7 +1747,7 @@ function listenAsPlayer() {
     else if (status === 'revealing')   { showPlayerWait('Results are in! 🎭', "The host is showing everyone's choices."); }
     else if (status === 'discussing')  { showPlayerWait('Discussion time 💬', 'Talk through the scenario with your group.'); }
     else if (status === 'consequence') { showPlayerWait('Outcome ⚡', 'The host is showing what happened.'); }
-    else if (status === 'scoreboard')  { showPlayerWait('Scoreboard 📊', 'Check the screen to see live standings.'); }
+    // scoreboard removed — no mid-game standings shown
     else if (status === 'final')       { showPlayerWait('Game complete! 🎉', 'Check the screen for your leadership profile.'); }
     else if (status === 'ended')       { showPlayerWait('Session ended', 'The host has ended the game.'); resetMP(); }
   });
