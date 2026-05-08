@@ -217,11 +217,11 @@ function buildScenarioOrder(count) {
     return shuffle([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]);
   }
   if (count === 12) {
-    // Deep Dive: all 12 shuffled — full variety
+    // Long Game: all 12 shuffled — full variety
     return shuffle([0,1,2,3,4,5,6,7,8,9,10,11]);
   }
   if (count === 8) {
-    // Full Game: both key scenarios per signal (8 total), shuffled
+    // Short Game: both key scenarios per signal (8 total), shuffled
     // Every signal is covered twice — profile is reliable
     return shuffle([0,3,7,10,2,4,5,8]);
   }
