@@ -662,7 +662,7 @@ function goToScoreboard() {
 //  SCOREBOARD
 // ═══════════════════════════════════════════════════════
 
-function pct(v, max) { return max===0 ? 0 : Math.round((v/max)*100); }
+function pct(v, max) { return max===0 ? 0 : Math.min(100, Math.round((v/max)*100)); }
 function avg4(s, mx) { mx=mx||MAX; return (pct(s.T||0,mx.T)+pct(s.P||0,mx.P)+pct(s.E||0,mx.E)+pct(s.A||0,mx.A))/4; }
 
 function buildScoreboard() {
@@ -1130,6 +1130,7 @@ function downloadAllOutcomesWord() {
 
 function openOutcomeShareModal() {
   const n = S.players.length;
+  _shareCache = { mode: 'outcome', text: buildOutcomeShareText(), subject: 'Leadership Challenge Outcome — HLE/Alaya 2026' };
   document.getElementById('share-modal-title').textContent = 'Share Scenario Outcome';
   document.getElementById('share-modal-sub').textContent =
     n === 1 ? 'Share this scenario outcome.' : 'Share what everyone chose and what happened.';
@@ -1170,6 +1171,7 @@ function buildShareText() {
 
 function openShareModal() {
   const n = S.players.length;
+  _shareCache = { mode: 'results', text: buildShareText(), subject: 'Leadership Challenge Results \u2014 HLE/Alaya 2026' };
   document.getElementById('share-modal-title').textContent = 'Share Final Results';
   document.getElementById('share-modal-sub').textContent =
     n === 1 ? 'Share your leadership profile.' : 'Share all ' + n + ' players\u2019 leadership profiles.';
@@ -1179,13 +1181,17 @@ function openShareModal() {
 
 function openAllOutcomesShareModal() {
   const n = S.players.length;
+  var text = '';
+  try { text = buildAllOutcomesShareText(); }
+  catch(e) { console.error('buildAllOutcomesShareText:', e); text = ''; }
+  _shareCache = { mode: 'all-outcomes', text: text, subject: 'Leadership Challenge \u2014 All Scenario Outcomes \u2014 HLE/Alaya 2026' };
   document.getElementById('share-modal-title').textContent = 'Share All Questions Outcomes';
   document.getElementById('share-modal-sub').textContent =
     n === 1 ? 'Share every scenario outcome with signal explanations.' : 'Share every scenario outcome and signal explanations for all players.';
   document.getElementById('share-modal').setAttribute('data-mode', 'all-outcomes');
   document.getElementById('share-modal').classList.add('vis');
 }
-function closeShareModal() { const m = document.getElementById('share-modal'); m.classList.remove('vis'); m.removeAttribute('data-mode'); }
+function closeShareModal() { const m = document.getElementById('share-modal'); m.classList.remove('vis'); m.removeAttribute('data-mode'); _shareCache = { mode:'', text:'', subject:'' }; }
 function handleShareOverlayClick(e) { if (e.target === document.getElementById('share-modal')) closeShareModal(); }
 
 function showToast(msg) {
@@ -1195,43 +1201,63 @@ function showToast(msg) {
   setTimeout(() => { t.style.opacity = '0'; }, 2200);
 }
 
-function getShareText() {
-  const mode = document.getElementById('share-modal').getAttribute('data-mode');
-  if (mode === 'outcome') return buildOutcomeShareText();
-  if (mode === 'all-outcomes') {
-    try { return buildAllOutcomesShareText(); }
-    catch(e) { console.error('buildAllOutcomesShareText error:', e); alert('Share error: ' + e.message); return ''; }
-  }
-  return buildShareText();
-}
+// ── SHARE CACHE ──────────────────────────────────────────────
+// Pre-built at modal-open time so buttons never re-read DOM state.
+var _shareCache = { mode: '', text: '', subject: '' };
+
+function getShareText() { return _shareCache.text; }
 
 function shareWhatsApp() {
-  window.open('https://wa.me/?text=' + encodeURIComponent(getShareText()), '_blank');
+  const text = _shareCache.text;
+  if (!text) { showToast('Nothing to share.'); return; }
+  // WhatsApp URL can't handle very long text — open web fallback
+  const encoded = encodeURIComponent(text);
+  const url = encoded.length < 5000
+    ? 'https://wa.me/?text=' + encoded
+    : 'https://web.whatsapp.com/';
+  window.open(url, '_blank');
   closeShareModal();
 }
 
 function shareEmail() {
-  const mode = document.getElementById('share-modal').getAttribute('data-mode');
-  const subject = mode === 'all-outcomes'
-    ? 'Leadership Challenge — All Scenario Outcomes — HLE/Alaya 2026'
-    : 'Leadership Challenge Results — HLE/Alaya 2026';
-  window.open('mailto:?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(getShareText()), '_blank');
+  const text = _shareCache.text;
+  if (!text) { showToast('Nothing to share.'); return; }
+  const subject = _shareCache.subject;
+  const encoded = encodeURIComponent(text);
+  // mailto: URLs have limits too — truncate gracefully
+  const body = encoded.length < 8000 ? encoded : encodeURIComponent(text.slice(0, 2500) + '\n\n[Text truncated — use Copy Text for the full version]');
+  window.open('mailto:?subject=' + encodeURIComponent(subject) + '&body=' + body, '_blank');
   closeShareModal();
 }
 
 function copyShareText() {
-  const text = getShareText();
+  const text = _shareCache.text;
+  if (!text) { showToast('Nothing to share.'); return; }
   if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).then(() => { showToast('✓ Copied to clipboard!'); });
+    navigator.clipboard.writeText(text)
+      .then(() => { showToast('✓ Copied to clipboard!'); closeShareModal(); })
+      .catch(() => {
+        // Fallback for browsers that deny async clipboard
+        _fallbackCopy(text);
+      });
   } else {
+    _fallbackCopy(text);
+  }
+}
+
+function _fallbackCopy(text) {
+  try {
     const ta = document.createElement('textarea');
     ta.value = text;
-    ta.style.position = 'fixed'; ta.style.opacity = '0';
+    ta.style.cssText = 'position:fixed;top:0;left:0;width:2em;height:2em;opacity:0;border:none;outline:none;box-shadow:none';
     document.body.appendChild(ta);
-    ta.select();
+    ta.focus();
+    ta.setSelectionRange(0, ta.value.length); // required for iOS
     document.execCommand('copy');
     document.body.removeChild(ta);
     showToast('✓ Copied to clipboard!');
+  } catch(e) {
+    showToast('Copy failed — use Word Doc instead.');
   }
   closeShareModal();
 }
@@ -1324,7 +1350,7 @@ function downloadOutcomeWord() {
 }
 
 function downloadWord() {
-  const mode = document.getElementById('share-modal').getAttribute('data-mode');
+  const mode = _shareCache.mode;
   if (mode === 'outcome') { downloadOutcomeWord(); return; }
   if (mode === 'all-outcomes') { downloadAllOutcomesWord(); return; }
   const sorted = [...S.players].sort((a,b) => avg4(b.scores, S.MAX) - avg4(a.scores, S.MAX));
