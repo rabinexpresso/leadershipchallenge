@@ -195,7 +195,15 @@
   .c-alpha { font-family:'Bricolage Grotesque',sans-serif; font-size:12px; font-weight:800; color:var(--gold); background:var(--gold-dim); border:1px solid var(--gold-border); border-radius:8px; width:28px; height:28px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
   .c-text { font-size:14px; line-height:1.65; color:var(--body); }
 
-
+  /* Locked phase */
+  #game-locked { display:none; flex-direction:column; align-items:center; justify-content:center; flex:1; padding:40px 24px; text-align:center; }
+  #game-locked.vis { display:flex; }
+  #game-pick.hidden { display:none; }
+  .locked-check { font-size:60px; margin-bottom:20px; animation:popIn .4s cubic-bezier(.22,1,.36,1); }
+  .locked-h { font-family:'Bricolage Grotesque',sans-serif; font-size:26px; font-weight:700; margin-bottom:10px; }
+  .locked-sub { font-size:16px; color:var(--body); line-height:1.65; max-width:280px; margin:0 auto 32px; }
+  .next-badge { display:inline-flex; align-items:center; gap:8px; padding:10px 20px; border-radius:100px; font-family:'Bricolage Grotesque',sans-serif; font-size:14px; font-weight:700; margin-bottom:32px; border:2px solid; }
+  .next-badge-dot { width:9px; height:9px; border-radius:50%; }
 
   /* ─── REVEAL ─── */
   .rv-body { padding:22px 22px 52px; flex:1; }
@@ -380,7 +388,7 @@
         <p class="tut-text">You'll face <strong style="color:var(--text)">up to 15 real leadership situations</strong> drawn directly from conversations with leaders at HLE/Alaya — the exact problems they described facing day-to-day. You choose how many to play when you start.</p>
         <p class="tut-text">For each situation, you'll pick how you'd respond. After everyone picks, you'll see what actually happens as a result — and why.</p>
         <p class="tut-text">At the end, you'll get a <strong style="color:var(--text)">Leadership Profile</strong> showing your strengths and where to grow next.</p>
-        <div class="info-box"><p>💡 <strong>How it works:</strong> the host runs the game on one screen. Each player joins from their own phone using a room code — no passing devices around. Everyone answers privately, then the host reveals all choices at once.</p></div>
+        <div class="info-box"><p>💡 <strong>In multiplayer mode:</strong> pass the device around so each person picks privately. After all players choose, you'll reveal your answers at the same time — which is where the real discussion starts.</p></div>
       </div>
 
       <!-- Slide 2 -->
@@ -455,22 +463,22 @@
       <div class="tut-slide">
         <div class="ghost-num">04</div>
         <h2 class="tut-heading">How to play together</h2>
-        <p class="tut-text">Once players join your room, here's what happens each round:</p>
+        <p class="tut-text">Once you add players, here's what happens for each round:</p>
         <div class="fw-item">
-          <div class="fw-ico">📱</div>
-          <div><div class="fw-name">Step 1 — Everyone answers on their phone</div><div class="fw-desc">Each player reads the situation and picks privately on their own device. A 2-minute timer keeps things moving.</div></div>
+          <div class="fw-ico">👤</div>
+          <div><div class="fw-name">Step 1 — Each player picks privately</div><div class="fw-desc">The device is passed around. Each person reads the situation and picks their response without seeing what others chose.</div></div>
         </div>
         <div class="fw-item">
           <div class="fw-ico">🎭</div>
-          <div><div class="fw-name">Step 2 — Reveal all at once</div><div class="fw-desc">The host reveals everyone's choices simultaneously. Seeing where instincts differ — or align — is where it gets interesting.</div></div>
-        </div>
-        <div class="fw-item">
-          <div class="fw-ico">💬</div>
-          <div><div class="fw-name">Step 3 — Discussion time (2:30)</div><div class="fw-desc">Every choice made sense to someone. A 2:30 timer gives the group space to hear each other's thinking before moving on.</div></div>
+          <div><div class="fw-name">Step 2 — Reveal all at once</div><div class="fw-desc">After everyone picks, you hit Reveal together. Seeing where your instincts differ — or align — is the most interesting part.</div></div>
         </div>
         <div class="fw-item">
           <div class="fw-ico">📖</div>
-          <div><div class="fw-name">Step 4 — See the outcome</div><div class="fw-desc">Each choice has a real consequence explained in full. At the end of all rounds, everyone gets their Leadership Profile.</div></div>
+          <div><div class="fw-name">Step 3 — Read the outcome</div><div class="fw-desc">Each choice has a real consequence explained in full. Don't skip this — it's where the learning happens.</div></div>
+        </div>
+        <div class="fw-item">
+          <div class="fw-ico">📊</div>
+          <div><div class="fw-name">Step 4 — Check the scoreboard</div><div class="fw-desc">After each round, see how everyone's dimensions are tracking. Then move to the next scenario.</div></div>
         </div>
       </div>
 
@@ -484,13 +492,32 @@
 </div>
 
 
+<!-- ══════════════════════════════════
+     ADD PLAYERS
+══════════════════════════════════ -->
+<div id="add-players" class="screen">
+  <div class="topbar">
+    <button class="back-btn" id="ap-back-btn" onclick="go('tutorial')">← Back</button>
+    <div class="topbar-center">Players</div>
+    <div class="topbar-spacer"></div>
+  </div>
+  <div class="page-inner">
+    <h2 class="ap-heading">Who's playing?</h2>
+    <p class="ap-sub">Add as many players as you like. One device gets passed around — everyone picks privately before the group reveal.</p>
+    <div class="player-list" id="player-list"></div>
+    <button class="add-p-btn" id="add-p-btn" onclick="addPlayerRow()">+ Add player</button>
+    <p class="ap-note" id="ap-note">Add at least 1 player to start</p>
+    <button class="btn btn-gold" id="start-btn" onclick="startGame()" disabled style="opacity:.4;cursor:not-allowed;">Start Game →</button>
+  </div>
+</div>
+
 
 <!-- ══════════════════════════════════
      GAME
 ══════════════════════════════════ -->
 <div id="mode-select" class="screen">
   <div class="topbar">
-    <button class="back-btn" onclick="go('host-lobby')">&#8592; Back</button>
+    <button class="back-btn" onclick="go('add-players')">&#8592; Back</button>
     <div class="topbar-center">Game Mode</div>
     <div class="topbar-space"></div>
   </div>
@@ -542,19 +569,17 @@
     <div class="sp-row" id="sp-row"></div>
   </div>
 
-  <!-- QUESTION TIMER -->
-  <div id="game-timer-row" style="display:none;padding:10px 22px 0;flex-shrink:0">
-    <div style="display:flex;align-items:center;gap:10px">
-      <div style="flex:1;height:6px;background:var(--border);border-radius:10px;overflow:hidden">
-        <div id="game-timer-fill" style="height:100%;width:100%;background:var(--gold);border-radius:10px;transition:width 1s linear"></div>
-      </div>
-      <div id="game-timer-num" style="font-family:'Bricolage Grotesque',sans-serif;font-size:13px;font-weight:800;color:var(--gold);min-width:34px;text-align:right">2:00</div>
-    </div>
-  </div>
-
   <!-- PICK PHASE -->
   <div id="game-pick" class="game-body"></div>
 
+  <!-- LOCKED PHASE -->
+  <div id="game-locked">
+    <div class="locked-check">✅</div>
+    <h2 class="locked-h" id="locked-heading">Choice Locked!</h2>
+    <p class="locked-sub" id="locked-sub">Pass the device to the next player.</p>
+    <div id="next-player-badge-wrap"></div>
+    <button class="btn btn-gold" style="max-width:280px;" id="locked-cta" onclick="lockedNext()">Hand it over →</button>
+  </div>
 </div>
 
 
@@ -588,10 +613,6 @@
     <div style="width:70px"></div>
   </div>
   <div style="padding:22px 22px 52px;flex:1;display:flex;flex-direction:column">
-    <div style="text-align:center;margin-bottom:16px;flex-shrink:0">
-      <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px">Discussion Time</div>
-      <p style="font-size:15px;color:var(--body);line-height:1.5">Every choice made sense to someone. Find out why.</p>
-    </div>
     <div style="display:flex;justify-content:center;margin-bottom:20px;flex-shrink:0">
       <div style="position:relative;width:80px;height:80px">
         <svg width="80" height="80" viewBox="0 0 90 90" style="transform:rotate(-90deg)">
@@ -741,7 +762,7 @@
     <div class="eyebrow" style="margin-bottom:8px">Room Code</div>
     <input class="mp-join-input" id="join-code-input" placeholder="e.g. WOLF7" maxlength="6" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
     <div class="eyebrow" style="margin-bottom:8px;margin-top:6px">Your Name</div>
-    <input class="p-input" id="join-name-input" placeholder="Enter your name" style="margin-bottom:20px;flex:none;padding:10px 14px;font-size:15px">
+    <input class="p-input" id="join-name-input" placeholder="Enter your name" style="margin-bottom:20px">
     <p id="join-error" style="font-size:13px;color:#f87171;margin-bottom:16px;display:none;text-align:center"></p>
     <button class="btn btn-gold" id="join-btn" onclick="joinRoom()">Join Game →</button>
   </div>
