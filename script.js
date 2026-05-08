@@ -212,6 +212,10 @@ function buildScenarioOrder(count) {
   // Best single per signal:  T=0, P=7, E=2, A=5
   // Quick: [0,7,2,5,9] fixed  |  Full: [0,3,7,10,2,4,5,8] fixed  |  Deep: all 12 shuffled
 
+  if (count === 15) {
+    // The Full Works: all 15 scenarios shuffled — includes HLE-specific scenarios
+    return shuffle([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14]);
+  }
   if (count === 12) {
     // Deep Dive: all 12 shuffled — full variety
     return shuffle([0,1,2,3,4,5,6,7,8,9,10,11]);
