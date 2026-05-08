@@ -343,6 +343,7 @@ function renderPickTurn(playerIdx) {
       </button>
     `).join('')}
   `;
+  startScenarioTimer();
 }
 
 function pick(choiceIdx) {
@@ -350,6 +351,9 @@ function pick(choiceIdx) {
   const scenario = SCENARIOS[scIdx];
   const choice = scenario.choices[choiceIdx];
   const player = S.players[S.pickerIdx];
+
+  // Stop scenario timer when choice is made
+  stopScenarioTimer();
 
   // Visual feedback
   document.querySelectorAll('.c-btn').forEach((el, i) => {
@@ -441,11 +445,13 @@ function buildRevealScreen() {
   cards.innerHTML = S.roundChoices.map((rc, idx) => {
     const player = S.players[rc.playerIdx];
     const choice = scenario.choices[rc.choiceIdx];
-    return '<div class="rv-card" style="animation-delay:' + (idx * 80) + 'ms;border-left:3px solid ' + player.color + ';">'
-      + '<div class="rv-letter" style="background:' + player.color + '18;color:' + player.color + ';">' + choice.letter + '</div>'
+    return '<div class="rv-card" style="animation-delay:' + (idx * 80) + 'ms;">'
+      + '<div class="rv-letter">' + choice.letter + '</div>'
       + '<div class="rv-player-info">'
-      + '<div class="rv-pname" style="color:' + player.color + '">' + player.name + '</div>'
-      + '<div class="rv-chose">chose option ' + choice.letter + '</div>'
+      + '<div class="rv-header-row">'
+      + '<span class="rv-pname" style="color:' + player.color + '">' + player.name + '</span>'
+      + '<span class="rv-chose">CHOSE</span>'
+      + '</div>'
       + '<div class="rv-choice-text">' + choice.text + '</div>'
       + '</div></div>';
   }).join('');
@@ -555,6 +561,44 @@ function updateTimerDisplay() {
   const progEl = document.getElementById('timer-prog');
   if (numEl)  numEl.textContent = `${m}:${sec < 10 ? '0' : ''}${sec}`;
   if (progEl) progEl.style.strokeDashoffset = Math.round(((150 - S.timerRemaining) / 150) * 283);
+}
+
+// ── Scenario pick timer (game bar countdown) ─────────────────
+function startScenarioTimer() {
+  clearInterval(S.scenarioTimer);
+  S.scenarioTimerSecs = 120;
+  const numEl  = document.getElementById('gb-timer-num');
+  const fillEl = document.getElementById('prog-fill');
+  function updateGB() {
+    const m = Math.floor(S.scenarioTimerSecs / 60);
+    const s = S.scenarioTimerSecs % 60;
+    if (numEl) {
+      numEl.textContent = m + ':' + (s < 10 ? '0' : '') + s;
+      numEl.classList.remove('warn','urgent');
+    }
+    if (fillEl) fillEl.classList.remove('warn','urgent');
+    if (S.scenarioTimerSecs <= 10) {
+      if (numEl) numEl.classList.add('urgent');
+      if (fillEl) fillEl.classList.add('urgent');
+    } else if (S.scenarioTimerSecs <= 30) {
+      if (numEl) numEl.classList.add('warn');
+      if (fillEl) fillEl.classList.add('warn');
+    }
+  }
+  updateGB();
+  S.scenarioTimer = setInterval(() => {
+    S.scenarioTimerSecs--;
+    updateGB();
+    if (S.scenarioTimerSecs <= 0) clearInterval(S.scenarioTimer);
+  }, 1000);
+}
+
+function stopScenarioTimer() {
+  clearInterval(S.scenarioTimer);
+  const numEl = document.getElementById('gb-timer-num');
+  if (numEl) { numEl.classList.remove('warn','urgent'); numEl.textContent = ''; }
+  const fillEl = document.getElementById('prog-fill');
+  if (fillEl) fillEl.classList.remove('warn','urgent');
 }
 
 function skipDiscuss() {
@@ -858,7 +902,7 @@ function buildFinal() {
       + '<div class="pr-name" style="color:' + player.color + '">' + player.name + '</div>'
       + '<div class="pr-emoji">' + profile.emoji + '</div>'
       + '</div>'
-      + '<div class="pr-profile">' + profileDisplayName(profile) + '</div>'
+      + '<div class="pr-profile" style="color:var(--gold)">' + profileDisplayName(profile) + '</div>'
       + '<p class="pr-desc">' + profile.desc + '</p>'
       + '<div class="pr-bars">' + bars + '</div>'
       + '<button class="pr-insights-toggle" onclick="toggleInsights(\'' + cardId + '\')">'

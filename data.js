@@ -345,7 +345,7 @@ function _isSteadyHand(s, mx) {
 
 // ── PROFILES ─────────────────────────────────────────────────
 var PROFILES = [
-  { id:"visionary", name:"The Visionary", emoji:"🌟",
+  { id:"visionary", name:"The Visionary", emoji:"☀️",
     desc:"You have built something genuinely rare. Your team trusts you enough to tell you the hard things. You notice problems before they escalate. You develop people rather than depending on them. When conditions shift, you lead through the change rather than managing around it. The risk at this level: leaders who are strong everywhere sometimes stop growing anywhere.",
     actions:{ T:"Your team feels safe with you. The next level is using that safety to have the conversations that are genuinely difficult. Once a month, initiate a conversation with a team member about something you have been avoiding.", P:"In your next team meeting, name something you are watching — not a problem yet, just a signal — and ask your team what they see. You are teaching the habit by modelling it out loud.", E:"You develop people well. The next level is developing people who develop people. Identify one team member ready to start coaching others. Give them a specific person to develop and a specific outcome to aim for.", A:"When change lands, narrate your first 24 hours: here is what I know, here is what I do not know, and here is what I am doing about it." },
     match(s,mx){ mx=mx||MAX; const t=pct(s.T||0,mx.T),p=pct(s.P||0,mx.P),e=pct(s.E||0,mx.E),a=pct(s.A||0,mx.A); return t>=65&&p>=65&&e>=65&&a>=65; } },
@@ -522,5 +522,7 @@ var S = {
   tutSlide: 0,
   fromTutorial: true,
   timerInterval: null,
-  timerRemaining: 150
+  timerRemaining: 150,
+  scenarioTimer: null,
+  scenarioTimerSecs: 120
 };

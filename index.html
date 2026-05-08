@@ -19,6 +19,13 @@
     --sub: #7a829a;
     --border: rgba(255,255,255,0.07);
     --border2: rgba(255,255,255,0.13);
+    --danger: #f87171;
+    /* Spacing scale */
+    --sp-chip:8px; --sp-card-x:12px; --sp-card:16px;
+    --sp-gutter:22px; --sp-section:24px; --sp-hero:28px; --sp-screen:52px;
+    /* Radius scale */
+    --r-chip:8px; --r-input:12px; --r-card:16px; --r-hero:20px;
+    --r-sheet:24px; --r-pill:100px;
   }
 
   *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
@@ -106,10 +113,11 @@
     background:radial-gradient(ellipse 80% 55% at 50% 15%, rgba(245,166,35,.07) 0%, transparent 70%), var(--bg);
   }
   .splash-grid { position:absolute; inset:0; background-image:linear-gradient(rgba(245,166,35,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(245,166,35,.035) 1px,transparent 1px); background-size:44px 44px; pointer-events:none; }
-  .splash-pill { display:inline-block; font-family:'Bricolage Grotesque',sans-serif; font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--gold); border:1px solid var(--gold-border); padding:7px 18px; border-radius:100px; margin-bottom:28px; background:var(--gold-dim); position:relative; }
-  .splash-title { font-family:'Bricolage Grotesque',sans-serif; font-size:clamp(42px,11vw,60px); font-weight:800; line-height:1.0; letter-spacing:-2px; margin-bottom:18px; }
-  .splash-title .hl { color:var(--gold); display:block; }
-  .splash-sub { font-size:16px; color:var(--body); line-height:1.65; max-width:280px; margin:0 auto 32px; }
+  .splash-pill { display:inline-block; font-family:'Bricolage Grotesque',sans-serif; font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--text); border:1px solid rgba(255,255,255,0.18); padding:7px 18px; border-radius:100px; margin-bottom:28px; background:rgba(255,255,255,0.07); position:relative; }
+  .splash-title { font-family:'Bricolage Grotesque',sans-serif; font-size:clamp(38px,11vw,54px); font-weight:800; line-height:1.05; letter-spacing:-2px; margin-bottom:18px; }
+  .splash-title .hl { color:var(--gold); display:inline; }
+  .splash-sub { font-size:15px; color:var(--body); line-height:1.65; max-width:280px; margin:0 auto 28px; }
+  .splash-tagline { font-family:'Bricolage Grotesque',sans-serif; font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--sub); margin-top:16px; }
   .dim-tags { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:40px; }
   .dim-tag { font-size:13px; font-weight:500; padding:7px 14px; border-radius:100px; background:var(--card); border:1px solid var(--border); color:var(--body); }
   .splash-actions { display:flex; flex-direction:column; gap:10px; width:100%; max-width:280px; }
@@ -171,10 +179,19 @@
     padding:10px 18px;
     flex-shrink:0;
   }
-  .gb-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
-  .gb-label { font-family:'Bricolage Grotesque',sans-serif; font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--gold); }
-  .prog-track { height:3px; background:rgba(255,255,255,.07); border-radius:10px; overflow:hidden; margin-bottom:8px; }
+  .gb-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
+  .gb-label { font-family:'Bricolage Grotesque',sans-serif; font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--sub); }
+  .prog-track { height:3px; background:rgba(255,255,255,.07); border-radius:10px; overflow:hidden; margin-bottom:6px; }
   .prog-fill { height:100%; background:linear-gradient(90deg, var(--gold), var(--gold-l)); border-radius:10px; transition:width .5s cubic-bezier(.4,0,.2,1); }
+  .prog-fill.warn  { background:linear-gradient(90deg,#f59e0b,#fbbf24); }
+  .prog-fill.urgent{ background:linear-gradient(90deg,#ef4444,#f87171); }
+  /* Game bar timer */
+  .gb-timer-row { display:flex; align-items:baseline; gap:7px; }
+  .gb-timer-num { font-family:'Bricolage Grotesque',sans-serif; font-size:20px; font-weight:800; color:var(--text); transition:color .4s; letter-spacing:-1px; }
+  .gb-timer-label { font-family:'Bricolage Grotesque',sans-serif; font-size:9px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--sub); }
+  .gb-timer-num.warn   { color:#fbbf24; }
+  .gb-timer-num.urgent { color:var(--danger); animation:gbPulse 1s ease-in-out infinite; }
+  @keyframes gbPulse { 0%,100%{opacity:1} 50%{opacity:.45} }
   .sp-row { display:flex; gap:6px; flex-wrap:wrap; }
   .sp { font-size:11px; font-weight:600; padding:4px 10px; border-radius:100px; background:var(--card); border:1px solid var(--border); color:var(--sub); transition:all .3s; }
   .sp.lit { background:var(--gold-dim); border-color:var(--gold-border); color:var(--gold); }
@@ -187,12 +204,13 @@
   .s-heading { font-family:'Bricolage Grotesque',sans-serif; font-size:23px; font-weight:700; line-height:1.15; margin-bottom:14px; }
   .s-box { font-size:15px; color:var(--body); line-height:1.8; background:var(--card); border:1px solid var(--border); border-left:3px solid var(--gold); border-radius:0 12px 12px 0; padding:16px 18px; margin-bottom:24px; }
   .choices-label { font-family:'Bricolage Grotesque',sans-serif; font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--sub); margin-bottom:12px; }
-  .c-btn { width:100%; background:var(--card); border:1px solid var(--border); border-radius:16px; padding:15px 16px; text-align:left; cursor:pointer; margin-bottom:10px; transition:all .2s cubic-bezier(.22,1,.36,1); display:flex; gap:12px; align-items:flex-start; color:var(--text); font-family:'Plus Jakarta Sans',sans-serif; }
-  .c-btn:hover { border-color:var(--gold-border); background:var(--card2); transform:translateX(3px); }
-  .c-btn:active { transform:scale(.98); }
-  .c-btn.sel { border-color:var(--gold); background:var(--gold-dim); pointer-events:none; }
-  .c-btn.dim { opacity:.35; pointer-events:none; }
-  .c-alpha { font-family:'Bricolage Grotesque',sans-serif; font-size:12px; font-weight:800; color:var(--gold); background:var(--gold-dim); border:1px solid var(--gold-border); border-radius:8px; width:28px; height:28px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+  .c-btn { width:100%; background:var(--card); border:1px solid var(--border2); border-radius:var(--r-card); padding:15px 16px; text-align:left; cursor:pointer; margin-bottom:10px; transition:all .2s cubic-bezier(.22,1,.36,1); display:flex; gap:12px; align-items:flex-start; color:var(--text); font-family:'Plus Jakarta Sans',sans-serif; }
+  .c-btn:hover { border-color:var(--gold-border); background:var(--card2); transform:translateX(4px); }
+  .c-btn:active { transform:scale(.97); }
+  .c-btn.sel { border-color:var(--gold); background:rgba(245,166,35,0.09); pointer-events:none; }
+  .c-btn.sel .c-alpha { background:var(--gold); color:#07090d; border-color:var(--gold); }
+  .c-btn.dim { opacity:.3; pointer-events:none; }
+  .c-alpha { font-family:'Bricolage Grotesque',sans-serif; font-size:12px; font-weight:800; color:var(--gold); background:var(--gold-dim); border:1px solid var(--gold-border); border-radius:var(--r-chip); width:30px; height:30px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; transition:all .2s; }
   .c-text { font-size:14px; line-height:1.65; color:var(--body); }
 
   /* Locked phase */
@@ -210,12 +228,13 @@
   .rv-heading { font-family:'Bricolage Grotesque',sans-serif; font-size:26px; font-weight:700; line-height:1.15; margin-bottom:6px; }
   .rv-sub { font-size:15px; color:var(--body); margin-bottom:26px; line-height:1.65; }
   .rv-cards { display:flex; flex-direction:column; gap:10px; margin-bottom:24px; }
-  .rv-card { display:flex; align-items:flex-start; gap:14px; background:var(--card); border:1px solid var(--border); border-radius:16px; padding:16px; animation:slideIn .3s ease both; }
+  .rv-card { display:flex; align-items:flex-start; gap:14px; background:var(--card); border:1px solid var(--border2); border-radius:var(--r-card); padding:16px; animation:slideIn .3s ease both; }
   .rv-player-info { flex:1; min-width:0; }
-  .rv-pname { font-family:'Bricolage Grotesque',sans-serif; font-size:14px; font-weight:700; margin-bottom:3px; }
-  .rv-chose { font-size:11px; color:var(--sub); font-family:'Bricolage Grotesque',sans-serif; letter-spacing:1px; text-transform:uppercase; margin-bottom:5px; }
+  .rv-header-row { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
+  .rv-pname { font-family:'Bricolage Grotesque',sans-serif; font-size:15px; font-weight:700; }
+  .rv-chose { font-size:10px; color:var(--gold); font-family:'Bricolage Grotesque',sans-serif; letter-spacing:1.5px; text-transform:uppercase; font-weight:700; }
   .rv-choice-text { font-size:13.5px; color:var(--body); line-height:1.55; }
-  .rv-letter { font-family:'Bricolage Grotesque',sans-serif; font-size:14px; font-weight:800; width:32px; height:32px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .rv-letter { font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:800; width:34px; height:34px; border-radius:var(--r-chip); display:flex; align-items:center; justify-content:center; flex-shrink:0; background:var(--gold-dim); color:var(--gold); border:1px solid var(--gold-border); }
   .rv-stat { font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:700; padding:8px 16px; border-radius:100px; background:var(--gold-dim); border:1px solid var(--gold-border); color:var(--gold); margin-bottom:24px; display:inline-block; }
 
   /* ─── CONSEQUENCE ─── */
@@ -240,23 +259,8 @@
   .cq-pdot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
   .cq-pname { font-family:'Bricolage Grotesque',sans-serif; font-size:12px; font-weight:700; color:var(--body); }
 
-  /* ─── SCOREBOARD ─── */
+  /* ─── SCOREBOARD (hidden — removed from flow, CSS kept for legacy) ─── */
   .sb-body { padding:22px 22px 52px; flex:1; overflow-y:auto; }
-  .sb-heading { font-family:'Bricolage Grotesque',sans-serif; font-size:26px; font-weight:700; margin-bottom:6px; }
-  .sb-sub { font-size:15px; color:var(--body); margin-bottom:26px; line-height:1.65; }
-  .sb-card { background:var(--card); border:1px solid var(--border); border-radius:18px; padding:20px; margin-bottom:12px; transition:border-color .3s; }
-  .sb-card.first { border-color:var(--gold-border); background:linear-gradient(135deg, rgba(245,166,35,.05) 0%, var(--card) 60%); }
-  .sb-header { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
-  .sb-rank { font-family:'Bricolage Grotesque',sans-serif; font-size:20px; font-weight:800; color:var(--sub); width:28px; flex-shrink:0; }
-  .sb-rank.g { color:var(--gold); }
-  .sb-pname { font-family:'Bricolage Grotesque',sans-serif; font-size:16px; font-weight:700; flex:1; }
-  .sb-total { font-family:'Bricolage Grotesque',sans-serif; font-size:14px; font-weight:700; color:var(--gold); }
-  .sb-bars { display:flex; flex-direction:column; gap:8px; }
-  .sb-br { }
-  .sb-bl { display:flex; justify-content:space-between; font-size:12px; color:var(--sub); margin-bottom:4px; }
-  .sb-bl-pct { font-family:'Bricolage Grotesque',sans-serif; font-weight:700; }
-  .sb-track { height:6px; background:rgba(255,255,255,.06); border-radius:100px; overflow:hidden; }
-  .sb-fill { height:100%; background:linear-gradient(90deg, var(--gold), var(--gold-l)); border-radius:100px; width:0%; transition:width 1s cubic-bezier(.4,0,.2,1); }
 
   /* ─── FINAL ─── */
   .final-hero { background:radial-gradient(ellipse 90% 60% at 50% 0%, rgba(245,166,35,.1) 0%, transparent 60%), var(--bg); padding:40px 24px 28px; text-align:center; border-bottom:1px solid var(--border); flex-shrink:0; }
@@ -264,12 +268,12 @@
   .final-title span { color:var(--gold); }
   .final-sub { font-size:15px; color:var(--body); margin:0 auto; line-height:1.65; }
   .final-body { padding:22px 22px 52px; flex:1; }
-  .pr-card { background:var(--card); border:1px solid var(--border); border-radius:20px; padding:22px; margin-bottom:14px; }
-  .pr-header { display:flex; align-items:center; gap:12px; margin-bottom:14px; }
-  .pr-dot { width:14px; height:14px; border-radius:50%; flex-shrink:0; }
-  .pr-name { font-family:'Bricolage Grotesque',sans-serif; font-size:16px; font-weight:700; flex:1; }
-  .pr-emoji { font-size:28px; }
-  .pr-profile { font-family:'Bricolage Grotesque',sans-serif; font-size:20px; font-weight:800; margin-bottom:10px; }
+  .pr-card { background:var(--card); border:1px solid var(--border2); border-radius:var(--r-hero); padding:22px; margin-bottom:14px; }
+  .pr-header { display:flex; align-items:center; gap:10px; margin-bottom:16px; }
+  .pr-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+  .pr-name { font-family:'Bricolage Grotesque',sans-serif; font-size:15px; font-weight:700; flex:1; }
+  .pr-emoji { font-size:32px; line-height:1; }
+  .pr-profile { font-family:'Bricolage Grotesque',sans-serif; font-size:22px; font-weight:800; color:var(--gold); margin-bottom:10px; letter-spacing:-0.5px; }
   .pr-desc { font-size:14px; color:var(--body); line-height:1.75; margin-bottom:18px; }
   .pr-insight-label { font-family:'Bricolage Grotesque',sans-serif; font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--sub); margin-bottom:12px; }
   .pr-insight { background:var(--card2); border:1px solid var(--border); border-radius:14px; padding:16px; margin-bottom:10px; }
@@ -355,8 +359,8 @@
 ══════════════════════════════════ -->
 <div id="splash" class="screen active">
   <div class="splash-grid"></div>
-  <div class="splash-pill">HLE / Alaya · 2026</div>
-  <h1 class="splash-title">The<span class="hl">Leadership</span>Challenge</h1>
+  <div class="splash-pill">HLE / ALAYA · 2026</div>
+  <h1 class="splash-title">The <span class="hl">Leadership</span> Challenge</h1>
   <p class="splash-sub">15 real leadership situations.<br>No perfect answers. Just yours.</p>
   <div class="dim-tags">
     <div class="dim-tag">🛡️ Trust</div>
@@ -370,7 +374,7 @@
     <button class="btn btn-gold" onclick="goMultiplayer()">🎮 Host Multiplayer</button>
     <button class="btn btn-ghost" onclick="goJoin()">Join a Game →</button>
   </div>
-  <p class="splash-meta">Choose your pace when you start · based on real leader insights</p>
+  <p class="splash-tagline">— A SELF-ASSESSMENT TOOL · NOT A CLINICAL TEST —</p>
 </div>
 
 
@@ -477,8 +481,8 @@
           <div><div class="fw-name">Step 3 — Read the outcome</div><div class="fw-desc">Each choice has a real consequence explained in full. Don't skip this — it's where the learning happens.</div></div>
         </div>
         <div class="fw-item">
-          <div class="fw-ico">📊</div>
-          <div><div class="fw-name">Step 4 — Check the scoreboard</div><div class="fw-desc">After each round, see how everyone's dimensions are tracking. Then move to the next scenario.</div></div>
+          <div class="fw-ico">➡️</div>
+          <div><div class="fw-name">Step 4 — Next scenario</div><div class="fw-desc">After the outcome, move straight to the next scenario. Your full Leadership Profile is revealed at the very end.</div></div>
         </div>
       </div>
 
@@ -563,6 +567,10 @@
   <div class="game-bar">
     <div class="gb-top">
       <span class="gb-label" id="gb-label">Scenario 1 of 5</span>
+      <div class="gb-timer-row">
+        <span class="gb-timer-num" id="gb-timer-num">2:00</span>
+        <span class="gb-timer-label">TIME TO DECIDE</span>
+      </div>
       <button class="quit-btn" onclick="confirmQuit()">✕ Quit</button>
     </div>
     <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
@@ -655,22 +663,6 @@
 </div>
 
 
-<!-- ══════════════════════════════════
-     SCOREBOARD
-══════════════════════════════════ -->
-<div id="scoreboard" class="screen">
-  <div class="topbar">
-    <div style="width:70px"></div>
-    <div class="topbar-center" id="sb-topbar-title">Scoreboard</div>
-    <div style="width:70px"></div>
-  </div>
-  <div class="sb-body">
-    <div class="eyebrow" style="margin-bottom:10px;" id="sb-eyebrow">After Round 1</div>
-    <p class="sb-sub" id="sb-sub">How everyone's leadership dimensions are tracking.</p>
-    <div id="sb-cards"></div>
-    <button class="btn btn-gold" id="sb-cta" onclick="scoreboardNext()">Next Scenario →</button>
-  </div>
-</div>
 
 
 <!-- ══════════════════════════════════
@@ -813,7 +805,7 @@
 
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
-<script src="data.js?v=26"></script>
-<script src="script.js?v=36"></script>
+<script src="data.js?v=27"></script>
+<script src="script.js?v=37"></script>
 </body>
 </html>
