@@ -29,7 +29,7 @@ Then prime Claude Code with: *"Read SWITCHING_BETWEEN_COMPUTERS.md and the lates
 - **Hosting:** GitHub Pages (auto-deploys from `main`)
 - **Backend:** Firebase Realtime Database (project `leadershipchallenge-1bc16`)
 - **Files:** `index.html`, `data.js`, `script.js`, `README.md`, `SWITCHING_BETWEEN_COMPUTERS.md`
-- **Cache-bust version:** `?v=14` (bump this in `index.html` whenever script changes)
+- **Cache-bust version:** `?v=23` (bump this in `index.html` whenever script changes)
 
 ### Multiplayer architecture
 - Host creates room via "Host Multiplayer" → generates code (e.g. `WOLF7`) → projects on TV
@@ -40,31 +40,38 @@ Then prime Claude Code with: *"Read SWITCHING_BETWEEN_COMPUTERS.md and the lates
 
 ---
 
-## Last session: 2026-05-07 (MacBook)
+## Last session: 2026-05-08 (MacBook)
 
 ### Done
-- Fixed Host Multiplayer button (was opening tutorial due to old boot code)
-- Made join button always-tappable on mobile (removed brittle `oninput` gate)
-- Added Firebase connection timeout + cache-busting `?v=N` on script tags
-- Added "← Leave Game" button on player-wait screen
-- Stale-room reconnect now sends player to splash instead of hung waiting screen
-- Host reconnect on refresh — restores to lobby with same room code
-- Discuss screen now shows scenario situation + each player's choice + options nobody picked
-- Fixed duplicate/undefined player rows (stacked listeners)
-- Prevented double-click ghost players (`MP.joining` guard + button disable)
-- Wiped stale room data on host create (room code collisions were showing old players)
+- Removed mid-game scoreboard — scores now only shown in final leadership profile
+- Added 2-minute countdown timer on question screen (auto-reveals on expiry for host)
+- Added "Discussion Time" header + subtitle to discuss screen
+- Removed pass-and-play mode entirely — multiplayer only now
+- Fixed Back button on mode-select to return to host lobby (not add-players)
+- Shrunk name input on join screen for better mobile fit
+- Discuss screen: added full scenario text + unselected options ("Nobody picked")
+- Fixed race condition causing score inflation (multiple Firebase writes now atomic)
+- Tutorial updated to reflect multiplayer-only flow
+
+### Content work done (NOT yet coded — see PENDING_WORK.md)
+- Rewrote all 12 existing scenario situations and options in plain human language (scores unchanged)
+- Brainstormed 3 new Alaya/HLE scenarios with scores:
+  1. The Rookie Who Can't Seem to Get It Right (loan analyst training)
+  2. The Manager Who Goes Sharp Under Pressure (Alaya Compass — aggression trap)
+  3. The Two Accounts That Don't Match (conflicting referral stories)
 
 ### Next up
-- [ ] Re-test full multiplayer flow end-to-end after all the recent fixes
-- [ ] Mobile Safari sometimes still needs full cache clear — verify `?v=14` reaches it
-- [ ] **Firebase security rules expire ~June 5 2026** — need real rules before then (currently `read:true, write:true`)
-- [ ] Consider expanding room code space (currently only 135 combos: 15 words × 9 digits)
-- [ ] Optional: detect host disconnect via Firebase `onDisconnect()` and notify players gracefully
-- [ ] Optional: full mid-game reconnect for host (currently resets to lobby on refresh)
+- [ ] **Read PENDING_WORK.md first** — all scenario content work is documented there
+- [ ] Write outcome text for 3 new scenarios (9 paragraphs total)
+- [ ] Rewrite existing 12 scenario text in data.js (plain human language)
+- [ ] Add 3 new scenarios to data.js
+- [ ] Decide which game modes the new scenarios appear in (Quick/Full/Deep)
+- [ ] **Firebase security rules expire ~June 5 2026** — need proper rules before then
+- [ ] Consider expanding room code space (135 combos is low for repeated sessions)
 
 ### Known limitations
-- Mobile Safari caches aggressively — `?v=N` cache-bust helps but sometimes needs Settings → Safari → Clear History
-- Mid-game host refresh resets to lobby (loses round progress, players in same room)
+- Mobile Safari sometimes needs full cache clear (Settings → Safari → Clear History)
+- Mid-game host refresh resets to lobby (round progress lost)
 - 135 possible room codes → collisions possible after ~12 sessions
 
 ---
