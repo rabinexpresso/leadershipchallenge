@@ -682,7 +682,10 @@
     <div class="eyebrow" style="margin-bottom:10px;">Results</div>
     <h2 class="final-title">Leadership<br><span>Profiles</span></h2>
     <p class="final-sub" id="final-sub">Here's what your choices revealed about each player.</p>
-    <button class="share-btn" onclick="openShareModal()">📤 Share Results</button>
+    <div style="display:flex;flex-direction:column;gap:10px;align-items:center;margin-top:4px">
+      <button class="share-btn" onclick="openAllOutcomesShareModal()">📋 Share All Questions Outcomes</button>
+      <button class="share-btn" onclick="openShareModal()">📤 Share Final Results</button>
+    </div>
   </div>
   <div class="final-body">
     <div id="final-cards"></div>
@@ -695,7 +698,7 @@
 <!-- SHARE MODAL -->
 <div id="share-modal" class="share-modal-overlay" onclick="handleShareOverlayClick(event)">
   <div class="share-modal-box">
-    <h3 class="share-modal-title">Share Results</h3>
+    <h3 class="share-modal-title" id="share-modal-title">Share Results</h3>
     <p class="share-modal-sub" id="share-modal-sub">Send everyone their leadership profiles.</p>
     <div class="share-options">
       <div class="share-option" onclick="shareWhatsApp()">
@@ -812,6 +815,6 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 <script src="data.js?v=26"></script>
-<script src="script.js?v=28"></script>
+<script src="script.js?v=29"></script>
 </body>
 </html>
