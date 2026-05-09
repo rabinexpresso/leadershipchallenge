@@ -1819,7 +1819,7 @@ function showJoinError(msg) {
 
 function listenAsPlayer() {
   MP.gameRef.on('value', snap => {
-    if (!snap.exists()) { showPlayerWait('Room ended', 'The host has ended the session.'); return; }
+    if (!snap.exists()) { showPlayerWait('Room ended', 'The host ended the session. Taking you back…'); setTimeout(() => { resetMP(); go('splash'); }, 2500); return; }
     const game = snap.val();
     const status = game.status;
     MP.step = game.step || 0;
@@ -1835,7 +1835,7 @@ function listenAsPlayer() {
     else if (status === 'consequence') { showPlayerWait('Outcome ⚡', 'The host is showing what happened.'); }
     // scoreboard removed — no mid-game standings shown
     else if (status === 'final')       { showPlayerWait('Game complete! 🎉', 'Check the screen for your leadership profile.'); }
-    else if (status === 'ended')       { showPlayerWait('Session ended', 'The host has ended the game.'); resetMP(); }
+    else if (status === 'ended')       { showPlayerWait('Session ended', 'The host has ended the game. Taking you back…'); setTimeout(() => { resetMP(); go('splash'); }, 2500); }
   });
 }
 
