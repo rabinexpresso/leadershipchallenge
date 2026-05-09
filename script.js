@@ -1530,6 +1530,7 @@ function playAgain() {
     });
     S.players = []; S.step = 0; S.roundChoices = [];
     document.getElementById('hl-code').textContent = MP.roomCode;
+    generateHostQR(MP.roomCode);
     go('host-lobby');
     return;
   }
@@ -1598,6 +1599,40 @@ function restoreGame() {
 
 
 // ═══════════════════════════════════════════════════════
+//  QR CODE
+// ═══════════════════════════════════════════════════════
+
+function generateHostQR(code) {
+  const url = window.location.origin + window.location.pathname + '?join=' + code;
+  // Small QR (inline on host lobby)
+  const el = document.getElementById('hl-qr');
+  if (el) {
+    el.innerHTML = '';
+    if (typeof QRCode !== 'undefined') {
+      new QRCode(el, { text: url, width: 150, height: 150, colorDark: '#000', colorLight: '#fff', correctLevel: QRCode.CorrectLevel.M });
+    }
+  }
+  // Large QR (overlay)
+  const ovEl = document.getElementById('qr-overlay-inner');
+  if (ovEl) {
+    ovEl.innerHTML = '';
+    if (typeof QRCode !== 'undefined') {
+      new QRCode(ovEl, { text: url, width: 280, height: 280, colorDark: '#000', colorLight: '#fff', correctLevel: QRCode.CorrectLevel.M });
+    }
+  }
+  const ovCode = document.getElementById('qr-overlay-code');
+  if (ovCode) ovCode.textContent = code;
+}
+
+function openQROverlay() {
+  document.getElementById('qr-overlay').classList.add('vis');
+}
+
+function closeQROverlay() {
+  document.getElementById('qr-overlay').classList.remove('vis');
+}
+
+// ═══════════════════════════════════════════════════════
 //  MULTIPLAYER — HOST
 // ═══════════════════════════════════════════════════════
 
@@ -1631,6 +1666,7 @@ function goMultiplayer() {
   localStorage.setItem('lc_mp_role', 'host');
   localStorage.setItem('lc_mp_room', MP.roomCode);
   document.getElementById('hl-code').textContent = MP.roomCode;
+  generateHostQR(MP.roomCode);
   document.getElementById('hl-player-list').innerHTML = '';
   document.getElementById('hl-waiting').textContent = 'Creating room...';
   go('host-lobby');
@@ -1862,6 +1898,18 @@ renderTutSlide();
 // Auto-restore game on page load if a saved game exists
 restoreGame();
 
+// Auto-join via QR code — if URL has ?join=CODE, pre-fill and go to join screen
+(function() {
+  const joinCode = new URLSearchParams(window.location.search).get('join');
+  if (!joinCode) return;
+  window.history.replaceState({}, '', window.location.pathname);
+  document.getElementById('join-code-input').value = joinCode.toUpperCase().replace(/[^A-Z0-9]/g, '');
+  document.getElementById('join-name-input').value = '';
+  document.getElementById('join-error').style.display = 'none';
+  go('join-screen');
+  setTimeout(function() { var n = document.getElementById('join-name-input'); if (n) n.focus(); }, 350);
+})();
+
 // Reconnect host to multiplayer session on refresh — return to lobby and re-attach listeners
 (function() {
   if (localStorage.getItem('lc_mp_role') !== 'host') return;
@@ -1877,6 +1925,7 @@ restoreGame();
     Object.keys(players).forEach(pid => { updates['players/' + pid + '/answered'] = false; });
     if (Object.keys(updates).length) MP.gameRef.update(updates);
     document.getElementById('hl-code').textContent = MP.roomCode;
+    generateHostQR(MP.roomCode);
     attachHostLobbyListener();
     go('host-lobby');
   });

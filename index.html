@@ -345,6 +345,12 @@
   .mp-join-input::placeholder { font-size:15px; letter-spacing:0; font-weight:400; font-family:'Plus Jakarta Sans',sans-serif; color:var(--sub); text-transform:none; }
   .mp-join-input:focus { border-color:var(--gold-border); }
   .mp-wait-center { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:40px 24px; gap:10px; }
+  /* QR code */
+  #hl-qr { display:inline-block; background:#fff; padding:10px; border-radius:12px; cursor:pointer; transition:opacity .15s,transform .15s; line-height:0; }
+  #hl-qr:hover { opacity:.85; }
+  #hl-qr:active { transform:scale(.95); }
+  #qr-overlay { position:fixed; inset:0; background:rgba(0,0,0,.88); backdrop-filter:blur(12px); z-index:200; display:none; align-items:center; justify-content:center; flex-direction:column; gap:16px; }
+  #qr-overlay.vis { display:flex; }
   .mp-wait-emoji { font-size:52px; margin-bottom:6px; }
   .mp-wait-heading { font-family:'Bricolage Grotesque',sans-serif; font-size:26px; font-weight:700; }
   .mp-wait-sub { font-size:15px; color:var(--body); line-height:1.65; max-width:260px; }
@@ -729,7 +735,11 @@
   <div class="mp-screen-inner">
     <div class="eyebrow" style="margin-bottom:4px">Room Code</div>
     <div class="mp-code-big" id="hl-code">----</div>
-    <p class="mp-instr">Players: open the same website and tap <strong style="color:var(--text)">Join a Game</strong>, then enter this code.</p>
+    <div style="text-align:center;margin:12px 0 8px">
+      <div id="hl-qr" onclick="openQROverlay()" title="Tap to enlarge"></div>
+      <p style="font-size:11px;color:var(--sub);margin-top:8px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;letter-spacing:2px;text-transform:uppercase;">Tap to enlarge · scan to join</p>
+    </div>
+    <p class="mp-instr">Players scan the QR with their camera to join instantly — or open this site and tap <strong style="color:var(--text)">Join a Game</strong> and enter the code manually.</p>
     <div class="eyebrow" style="margin-bottom:10px">Players in room</div>
     <div id="hl-player-list" style="margin-bottom:10px;min-height:40px"></div>
     <p id="hl-waiting" style="font-size:14px;color:var(--sub);text-align:center;margin-bottom:24px">Waiting for players to join...</p>
@@ -805,7 +815,15 @@
 
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<!-- QR overlay — fullscreen tap-to-enlarge -->
+<div id="qr-overlay" onclick="closeQROverlay()">
+  <p style="font-family:'Bricolage Grotesque',sans-serif;font-size:13px;font-weight:700;color:var(--gold);letter-spacing:3px;text-transform:uppercase;" id="qr-overlay-code"></p>
+  <div id="qr-overlay-inner" style="background:#fff;padding:16px;border-radius:16px;"></div>
+  <p style="font-size:13px;color:rgba(255,255,255,.45);font-family:'Plus Jakarta Sans',sans-serif;margin-top:4px;">Tap anywhere to close</p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="data.js?v=27"></script>
-<script src="script.js?v=40"></script>
+<script src="script.js?v=41"></script>
 </body>
 </html>
