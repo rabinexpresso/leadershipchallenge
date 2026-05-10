@@ -67,6 +67,7 @@
   @keyframes fadeUp   { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
   @keyframes popIn    { from{opacity:0;transform:scale(.85)} to{opacity:1;transform:scale(1)} }
   @keyframes slideIn  { from{opacity:0;transform:translateX(-14px)} to{opacity:1;transform:translateX(0)} }
+  @keyframes revealIn { from{opacity:0;transform:translateY(22px) scale(.96)} to{opacity:1;transform:translateY(0) scale(1)} }
 
   /* ─── TOPBAR ─── */
   .topbar {
@@ -229,18 +230,18 @@
   .next-badge-dot { width:9px; height:9px; border-radius:50%; }
 
   /* ─── REVEAL ─── */
-  .rv-body { padding:22px 22px 52px; flex:1; }
-  .rv-heading { font-family:'Bricolage Grotesque',sans-serif; font-size:26px; font-weight:700; line-height:1.15; margin-bottom:6px; }
-  .rv-sub { font-size:15px; color:var(--body); margin-bottom:26px; line-height:1.65; }
-  .rv-cards { display:flex; flex-direction:column; gap:10px; margin-bottom:24px; }
-  .rv-card { display:flex; align-items:flex-start; gap:14px; background:var(--card); border:1px solid var(--border2); border-radius:var(--r-card); padding:16px; animation:slideIn .3s ease both; }
+  .rv-body { padding:28px 22px 52px; flex:1; background:radial-gradient(ellipse 90% 30% at 50% 0%, rgba(245,166,35,.08) 0%, transparent 55%); }
+  .rv-heading { font-family:'Bricolage Grotesque',sans-serif; font-size:32px; font-weight:800; line-height:1.05; letter-spacing:-0.5px; margin-bottom:8px; }
+  .rv-sub { font-size:14px; color:var(--sub); margin-bottom:28px; line-height:1.5; letter-spacing:0.2px; }
+  .rv-cards { display:flex; flex-direction:column; gap:12px; margin-bottom:28px; }
+  .rv-card { display:flex; align-items:flex-start; gap:16px; background:var(--card); border:1px solid var(--border); border-radius:var(--r-card); padding:20px 18px; animation:revealIn .45s cubic-bezier(.22,1,.36,1) both; box-shadow:0 6px 32px rgba(0,0,0,.4); }
   .rv-player-info { flex:1; min-width:0; }
-  .rv-header-row { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
-  .rv-pname { font-family:'Bricolage Grotesque',sans-serif; font-size:15px; font-weight:700; }
-  .rv-chose { font-size:10px; color:var(--gold); font-family:'Bricolage Grotesque',sans-serif; letter-spacing:1.5px; text-transform:uppercase; font-weight:700; }
-  .rv-choice-text { font-size:13.5px; color:var(--body); line-height:1.55; }
-  .rv-letter { font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:800; width:34px; height:34px; border-radius:var(--r-chip); display:flex; align-items:center; justify-content:center; flex-shrink:0; background:var(--gold-dim); color:var(--gold); border:1px solid var(--gold-border); }
-  .rv-stat { font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:700; padding:8px 16px; border-radius:100px; background:var(--gold-dim); border:1px solid var(--gold-border); color:var(--gold); margin-bottom:24px; display:inline-block; }
+  .rv-header-row { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+  .rv-pname { font-family:'Bricolage Grotesque',sans-serif; font-size:16px; font-weight:700; }
+  .rv-chose { font-size:10px; color:var(--sub); font-family:'Bricolage Grotesque',sans-serif; letter-spacing:1.5px; text-transform:uppercase; font-weight:700; }
+  .rv-choice-text { font-size:14px; color:var(--body); line-height:1.6; }
+  .rv-letter { font-family:'Bricolage Grotesque',sans-serif; font-size:16px; font-weight:800; width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0; background:rgba(245,166,35,.1); color:var(--gold); border:1px solid var(--gold-border); box-shadow:0 0 14px rgba(245,166,35,.15); }
+  .rv-stat { font-family:'Bricolage Grotesque',sans-serif; font-size:14px; font-weight:700; padding:12px 20px; border-radius:14px; background:rgba(245,166,35,.07); border:1px solid rgba(245,166,35,.28); color:var(--gold); margin-bottom:28px; display:block; text-align:center; box-shadow:0 0 24px rgba(245,166,35,.07); }
 
   /* ─── CONSEQUENCE ─── */
   .cq-body { padding:22px 22px 52px; flex:1; }
@@ -837,6 +838,6 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="data.js?v=29"></script>
-<script src="script.js?v=46"></script>
+<script src="script.js?v=47"></script>
 </body>
 </html>
