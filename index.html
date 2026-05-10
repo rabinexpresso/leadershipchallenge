@@ -124,11 +124,7 @@
   .dim-tag-p { border-color:rgba(16,185,129,.35); color:#6ee7b7; }
   .dim-tag-e { border-color:rgba(245,166,35,.35); color:var(--gold); }
   .dim-tag-a { border-color:rgba(167,139,250,.35); color:#c4b5fd; }
-  .splash-actions { display:flex; flex-direction:column; gap:10px; width:100%; max-width:300px; }
-  .splash-actions-row { display:flex; gap:8px; width:100%; }
-  .splash-actions-row .btn { font-size:13px; padding:13px 16px; }
-  .btn-text-link { background:none; border:none; color:var(--sub); font-family:'Bricolage Grotesque',sans-serif; font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; cursor:pointer; padding:8px; transition:color .2s; }
-  .btn-text-link:hover { color:var(--text); }
+  .splash-actions { display:flex; flex-direction:column; gap:10px; width:100%; max-width:280px; }
   .splash-meta { margin-top:20px; font-size:13px; color:var(--sub); position:relative; }
 
   /* ─── TUTORIAL ─── */
@@ -392,12 +388,9 @@
     <div class="dim-tag dim-tag-a">🔄 Adaptability</div>
   </div>
   <div class="splash-actions">
-    <button class="btn btn-gold" onclick="goPlay()">▶&nbsp; Let's Play →</button>
-    <div class="splash-actions-row">
-      <button class="btn btn-ghost" onclick="goMultiplayer()">🎮 Host</button>
-      <button class="btn btn-ghost" onclick="goJoin()">Join a Game</button>
-    </div>
-    <button class="btn-text-link" onclick="go('tutorial')">Tutorial →</button>
+    <button class="btn btn-gold" onclick="goMultiplayer()">🎮 Host Multiplayer</button>
+    <button class="btn btn-ghost" onclick="goJoin()">Join a Game →</button>
+    <button class="btn btn-ghost" onclick="go('tutorial')">Tutorial →</button>
   </div>
   <p class="splash-tagline">— A SELF-ASSESSMENT TOOL · NOT A CLINICAL TEST —</p>
 </div>
@@ -843,6 +836,6 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="data.js?v=29"></script>
-<script src="script.js?v=44"></script>
+<script src="script.js?v=45"></script>
 </body>
 </html>
