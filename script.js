@@ -65,6 +65,13 @@ function skipTutorial() {
   initPlayerRows();
 }
 
+function goPlay() {
+  S.fromTutorial = false;
+  document.getElementById('ap-back-btn').setAttribute('onclick', "go('splash')");
+  go('add-players');
+  initPlayerRows();
+}
+
 function confirmQuit() {
   const modal = document.getElementById('quit-modal');
   modal.style.display = 'flex';

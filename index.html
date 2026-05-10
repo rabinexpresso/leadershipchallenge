@@ -110,7 +110,7 @@
   #splash {
     align-items:center; justify-content:center; text-align:center;
     padding:52px 24px 48px; gap:0; position:relative; overflow:hidden;
-    background:radial-gradient(ellipse 80% 55% at 50% 15%, rgba(245,166,35,.07) 0%, transparent 70%), var(--bg);
+    background:radial-gradient(ellipse 90% 60% at 50% 10%, rgba(245,166,35,.11) 0%, transparent 65%), radial-gradient(ellipse 50% 35% at 50% 100%, rgba(245,166,35,.04) 0%, transparent 60%), var(--bg);
   }
   .splash-grid { position:absolute; inset:0; background-image:linear-gradient(rgba(245,166,35,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(245,166,35,.035) 1px,transparent 1px); background-size:44px 44px; pointer-events:none; }
   .splash-pill { display:inline-block; font-family:'Bricolage Grotesque',sans-serif; font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--text); border:1px solid rgba(255,255,255,0.18); padding:7px 18px; border-radius:100px; margin-bottom:28px; background:rgba(255,255,255,0.07); position:relative; }
@@ -119,8 +119,16 @@
   .splash-sub { font-size:15px; color:var(--body); line-height:1.65; max-width:280px; margin:0 auto 28px; }
   .splash-tagline { font-family:'Bricolage Grotesque',sans-serif; font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--sub); margin-top:16px; }
   .dim-tags { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:40px; }
-  .dim-tag { font-size:13px; font-weight:500; padding:7px 14px; border-radius:100px; background:var(--card); border:1px solid var(--border); color:var(--body); }
-  .splash-actions { display:flex; flex-direction:column; gap:10px; width:100%; max-width:280px; }
+  .dim-tag { font-size:13px; font-weight:600; padding:7px 14px; border-radius:100px; background:var(--card); border:1px solid var(--border); color:var(--body); }
+  .dim-tag-t { border-color:rgba(96,165,250,.35); color:#93c5fd; }
+  .dim-tag-p { border-color:rgba(16,185,129,.35); color:#6ee7b7; }
+  .dim-tag-e { border-color:rgba(245,166,35,.35); color:var(--gold); }
+  .dim-tag-a { border-color:rgba(167,139,250,.35); color:#c4b5fd; }
+  .splash-actions { display:flex; flex-direction:column; gap:10px; width:100%; max-width:300px; }
+  .splash-actions-row { display:flex; gap:8px; width:100%; }
+  .splash-actions-row .btn { font-size:13px; padding:13px 16px; }
+  .btn-text-link { background:none; border:none; color:var(--sub); font-family:'Bricolage Grotesque',sans-serif; font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; cursor:pointer; padding:8px; transition:color .2s; }
+  .btn-text-link:hover { color:var(--text); }
   .splash-meta { margin-top:20px; font-size:13px; color:var(--sub); position:relative; }
 
   /* ─── TUTORIAL ─── */
@@ -152,7 +160,7 @@
   .fw-desc { font-size:13px; color:var(--body); line-height:1.55; }
   .fw-src { font-size:11.5px; color:var(--sub); font-style:italic; }
 
-  .info-box { background:var(--card); border:1px solid var(--border); border-left:3px solid var(--gold); border-radius:0 12px 12px 0; padding:14px 16px; margin-top:16px; }
+  .info-box { background:rgba(245,166,35,0.04); border:1px solid var(--gold-border); border-radius:12px; padding:14px 16px; margin-top:16px; }
   .info-box p { font-size:13px; color:var(--body); line-height:1.65; }
   .info-box strong { color:var(--text); }
 
@@ -202,7 +210,7 @@
   .player-badge-dot { width:8px; height:8px; border-radius:50%; }
   .s-tag { margin-bottom:10px; }
   .s-heading { font-family:'Bricolage Grotesque',sans-serif; font-size:23px; font-weight:700; line-height:1.15; margin-bottom:14px; }
-  .s-box { font-size:15px; color:var(--body); line-height:1.8; background:var(--card); border:1px solid var(--border); border-left:3px solid var(--gold); border-radius:0 12px 12px 0; padding:16px 18px; margin-bottom:24px; }
+  .s-box { font-size:15px; color:var(--body); line-height:1.8; background:rgba(245,166,35,0.04); border:1px solid var(--gold-border); border-radius:12px; padding:16px 18px; margin-bottom:24px; }
   .choices-label { font-family:'Bricolage Grotesque',sans-serif; font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--sub); margin-bottom:12px; }
   .c-btn { width:100%; background:var(--card); border:1px solid var(--border2); border-radius:var(--r-card); padding:15px 16px; text-align:left; cursor:pointer; margin-bottom:10px; transition:all .2s cubic-bezier(.22,1,.36,1); display:flex; gap:12px; align-items:flex-start; color:var(--text); font-family:'Plus Jakarta Sans',sans-serif; }
   .c-btn:hover { border-color:var(--gold-border); background:var(--card2); transform:translateX(4px); }
@@ -245,7 +253,7 @@
   .cq-choice-header { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
   .cq-choice-alpha { font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:800; width:32px; height:32px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
   .cq-who-picked { font-family:'Bricolage Grotesque',sans-serif; font-size:12px; font-weight:700; color:var(--sub); }
-  .cq-choice-text { font-size:14px; font-style:italic; color:var(--body); border-left:2px solid var(--gold); padding-left:14px; line-height:1.65; margin-bottom:14px; }
+  .cq-choice-text { font-size:14px; font-style:italic; color:var(--body); background:var(--card2); border-radius:8px; padding:10px 14px; line-height:1.65; margin-bottom:14px; }
   .cq-explanation { font-size:15px; color:var(--body); line-height:1.8; margin-bottom:16px; }
   .cq-chips { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:4px; }
   .cq-chip { font-family:'Bricolage Grotesque',sans-serif; font-size:12px; font-weight:700; padding:5px 11px; border-radius:100px; }
@@ -290,8 +298,8 @@
   .pr-insights-toggle-label { font-family:'Bricolage Grotesque',sans-serif; font-size:11px; font-weight:800; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold); display:flex; align-items:center; gap:8px; }
   .pr-insights-arrow { font-size:16px; color:var(--gold); transition:transform .3s cubic-bezier(.22,1,.36,1); flex-shrink:0; }
   .pr-insights-arrow.open { transform:rotate(180deg); }
-  .pr-insights-body { display:none; padding-top:14px; }
-  .pr-insights-body.open { display:block; animation:fadeUp .25s ease; }
+  .pr-insights-body { overflow:hidden; max-height:0; opacity:0; transition:max-height .35s cubic-bezier(.22,1,.36,1), opacity .2s ease; padding-top:0; }
+  .pr-insights-body.open { max-height:3000px; opacity:1; padding-top:14px; }
   /* Compare all options dropdown */
   .ao-wrap { margin-top:16px; margin-bottom:16px; }
   .ao-toggle { display:flex; align-items:center; justify-content:space-between; width:100%; background:var(--card2); border:1px solid var(--border2); border-radius:12px; padding:13px 16px; cursor:pointer; transition:all .2s; }
@@ -299,8 +307,8 @@
   .ao-toggle-label { font-family:'Bricolage Grotesque',sans-serif; font-size:11px; font-weight:800; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold); }
   .ao-arrow { font-size:16px; color:var(--gold); transition:transform .3s cubic-bezier(.22,1,.36,1); flex-shrink:0; }
   .ao-arrow.open { transform:rotate(180deg); }
-  .ao-body { display:none; padding-top:10px; }
-  .ao-body.open { display:block; animation:fadeUp .25s ease; }
+  .ao-body { overflow:hidden; max-height:0; opacity:0; transition:max-height .35s cubic-bezier(.22,1,.36,1), opacity .2s ease; padding-top:0; }
+  .ao-body.open { max-height:3000px; opacity:1; padding-top:10px; }
   .sn-row { display:flex; align-items:flex-start; gap:8px; margin-bottom:10px; flex-wrap:wrap; }
   .sn-text { font-size:13px; color:var(--body); line-height:1.6; flex:1; min-width:150px; padding-top:3px; }
   .ao-item { border:1px solid var(--border2); border-radius:14px; padding:16px; margin-bottom:10px; }
@@ -356,6 +364,15 @@
   .mp-wait-sub { font-size:15px; color:var(--body); line-height:1.65; max-width:260px; }
   .mp-wait-code { font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:700; color:var(--gold); margin-top:16px; padding:8px 18px; background:var(--gold-dim); border:1px solid var(--gold-border); border-radius:100px; }
   .splash-divider { width:100%; height:1px; background:var(--border); margin:4px 0; }
+
+  /* ─── ACCESSIBILITY ─── */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: .01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: .01ms !important;
+    }
+  }
   </style>
 </head>
 <body>
@@ -369,16 +386,18 @@
   <h1 class="splash-title">The <span class="hl">Leadership</span> Challenge</h1>
   <p class="splash-sub">15 real leadership situations.<br>No perfect answers. Just yours.</p>
   <div class="dim-tags">
-    <div class="dim-tag">🛡️ Trust</div>
-    <div class="dim-tag">👁️ Proactivity</div>
-    <div class="dim-tag">🎯 Empowerment</div>
-    <div class="dim-tag">🔄 Adaptability</div>
+    <div class="dim-tag dim-tag-t">🛡️ Trust</div>
+    <div class="dim-tag dim-tag-p">👁️ Proactivity</div>
+    <div class="dim-tag dim-tag-e">🎯 Empowerment</div>
+    <div class="dim-tag dim-tag-a">🔄 Adaptability</div>
   </div>
   <div class="splash-actions">
-    <button class="btn btn-ghost" onclick="go('tutorial')">Tutorial →</button>
-    <div class="splash-divider"></div>
-    <button class="btn btn-gold" onclick="goMultiplayer()">🎮 Host Multiplayer</button>
-    <button class="btn btn-ghost" onclick="goJoin()">Join a Game →</button>
+    <button class="btn btn-gold" onclick="goPlay()">▶&nbsp; Let's Play →</button>
+    <div class="splash-actions-row">
+      <button class="btn btn-ghost" onclick="goMultiplayer()">🎮 Host</button>
+      <button class="btn btn-ghost" onclick="goJoin()">Join a Game</button>
+    </div>
+    <button class="btn-text-link" onclick="go('tutorial')">Tutorial →</button>
   </div>
   <p class="splash-tagline">— A SELF-ASSESSMENT TOOL · NOT A CLINICAL TEST —</p>
 </div>
@@ -824,6 +843,6 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="data.js?v=29"></script>
-<script src="script.js?v=42"></script>
+<script src="script.js?v=44"></script>
 </body>
 </html>
