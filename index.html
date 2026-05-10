@@ -269,18 +269,18 @@
   .sb-body { padding:22px 22px 52px; flex:1; overflow-y:auto; }
 
   /* ─── FINAL ─── */
-  .final-hero { background:radial-gradient(ellipse 90% 60% at 50% 0%, rgba(245,166,35,.1) 0%, transparent 60%), var(--bg); padding:40px 24px 28px; text-align:center; border-bottom:1px solid var(--border); flex-shrink:0; }
-  .final-title { font-family:'Bricolage Grotesque',sans-serif; font-size:clamp(28px,8vw,40px); font-weight:800; line-height:1.1; letter-spacing:-1px; margin-bottom:8px; }
+  .final-hero { background:radial-gradient(ellipse 110% 80% at 50% 0%, rgba(245,166,35,.14) 0%, transparent 58%), var(--bg); padding:48px 24px 32px; text-align:center; border-bottom:1px solid var(--border); flex-shrink:0; }
+  .final-title { font-family:'Bricolage Grotesque',sans-serif; font-size:clamp(32px,9vw,46px); font-weight:800; line-height:1.05; letter-spacing:-1.5px; margin-bottom:10px; }
   .final-title span { color:var(--gold); }
   .final-sub { font-size:15px; color:var(--body); margin:0 auto; line-height:1.65; }
-  .final-body { padding:22px 22px 52px; flex:1; }
-  .pr-card { background:var(--card); border:1px solid var(--border2); border-radius:var(--r-hero); padding:22px; margin-bottom:14px; }
-  .pr-header { display:flex; align-items:center; gap:10px; margin-bottom:16px; }
-  .pr-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
-  .pr-name { font-family:'Bricolage Grotesque',sans-serif; font-size:15px; font-weight:700; flex:1; }
-  .pr-emoji { font-size:32px; line-height:1; }
-  .pr-profile { font-family:'Bricolage Grotesque',sans-serif; font-size:22px; font-weight:800; color:var(--gold); margin-bottom:10px; letter-spacing:-0.5px; }
-  .pr-desc { font-size:14px; color:var(--body); line-height:1.75; margin-bottom:18px; }
+  .final-body { padding:26px 22px 52px; flex:1; }
+  .pr-card { background:var(--card); border:1px solid rgba(245,166,35,.18); border-radius:var(--r-hero); padding:26px 22px; margin-bottom:16px; animation:fadeUp .45s cubic-bezier(.22,1,.36,1) both; box-shadow:0 8px 40px rgba(0,0,0,.45); }
+  .pr-header { display:flex; align-items:center; gap:10px; margin-bottom:20px; }
+  .pr-dot { width:12px; height:12px; border-radius:50%; flex-shrink:0; }
+  .pr-name { font-family:'Bricolage Grotesque',sans-serif; font-size:17px; font-weight:700; flex:1; }
+  .pr-emoji { font-size:46px; line-height:1; }
+  .pr-profile { font-family:'Bricolage Grotesque',sans-serif; font-size:28px; font-weight:800; color:var(--gold); margin-bottom:12px; letter-spacing:-0.8px; line-height:1.1; }
+  .pr-desc { font-size:14px; color:var(--body); line-height:1.8; margin-bottom:22px; }
   .pr-insight-label { font-family:'Bricolage Grotesque',sans-serif; font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--sub); margin-bottom:12px; }
   .pr-insight { background:var(--card2); border:1px solid var(--border); border-radius:14px; padding:16px; margin-bottom:10px; }
   .pr-insight-dim { font-family:'Bricolage Grotesque',sans-serif; font-size:11px; font-weight:800; color:var(--gold); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:5px; display:flex; align-items:center; gap:6px; }
@@ -289,7 +289,7 @@
   .pr-insight-text { font-size:14px; color:var(--body); line-height:1.75; margin-bottom:12px; }
   .pr-insight-action { background:rgba(245,166,35,0.06); border:1px solid rgba(245,166,35,0.18); border-radius:10px; padding:12px 14px; font-size:13.5px; color:var(--body); line-height:1.7; }
   .pr-insight-action-label { display:block; font-family:'Bricolage Grotesque',sans-serif; font-size:9px; font-weight:800; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold); margin-bottom:6px; }
-  .pr-bars { margin-bottom:16px; }
+  .pr-bars { margin-bottom:20px; }
   /* Accordion toggle */
   .pr-insights-toggle { display:flex; align-items:center; justify-content:space-between; width:100%; background:var(--card2); border:1px solid var(--border2); border-radius:12px; padding:13px 16px; cursor:pointer; transition:all .2s; margin-top:4px; }
   .pr-insights-toggle:hover { border-color:var(--gold-border); background:rgba(245,166,35,.05); }
@@ -332,11 +332,11 @@
   .share-close { width:100%; background:transparent; border:1px solid var(--border2); color:var(--sub); font-family:'Bricolage Grotesque',sans-serif; font-size:14px; font-weight:700; padding:14px; border-radius:100px; cursor:pointer; transition:all .2s; }
   .share-close:hover { color:var(--text); border-color:var(--border2); }
   .share-toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:var(--gold); color:#07090d; font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:700; padding:12px 22px; border-radius:100px; z-index:200; opacity:0; pointer-events:none; transition:opacity .3s; white-space:nowrap; }
-  .pr-br { margin-bottom:8px; }
-  .pr-bl { display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px; }
+  .pr-br { margin-bottom:10px; }
+  .pr-bl { display:flex; justify-content:space-between; font-size:12px; margin-bottom:5px; }
   .pr-bl-name { color:var(--sub); }
   .pr-bl-pct { color:var(--gold); font-weight:700; font-family:'Bricolage Grotesque',sans-serif; }
-  .pr-track { height:5px; background:rgba(255,255,255,.06); border-radius:100px; overflow:hidden; }
+  .pr-track { height:6px; background:rgba(255,255,255,.06); border-radius:100px; overflow:hidden; }
   .pr-fill { height:100%; background:linear-gradient(90deg, var(--gold), var(--gold-l)); border-radius:100px; width:0%; transition:width 1s cubic-bezier(.4,0,.2,1); }
   .final-cta { text-align:center; padding-top:4px; }
 
@@ -838,6 +838,6 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="data.js?v=29"></script>
-<script src="script.js?v=47"></script>
+<script src="script.js?v=48"></script>
 </body>
 </html>
