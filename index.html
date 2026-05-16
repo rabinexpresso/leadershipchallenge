@@ -886,96 +886,108 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="data.js?v=29"></script>
-<script src="script.js?v=50"></script>
+<script src="script.js?v=51"></script>
 
 <!-- ── GSAP — professional animation engine (vanilla JS, no framework) ── -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script>
 (function () {
   'use strict';
-  const E  = 'power3.out';
-  const EB = 'back.out(1.5)';
+  var E  = 'power3.out';
+  var EB = 'back.out(1.4)';
+  /* clearProps ensures GSAP removes inline styles after animation —
+     elements can NEVER get stuck invisible */
+  var CP = 'opacity,transform,scale';
 
-  /* ── helpers ─────────────────────────────────────────────── */
-  function q(sel, ctx) { return Array.from((ctx || document).querySelectorAll(sel)); }
+  function q(sel) { return Array.from(document.querySelectorAll(sel)); }
 
-  /* ── SPLASH entrance (fires once — splash is already .active on load) ── */
+  /* ── SAFE from() wrapper — always clears props on complete ── */
+  function safefrom(sel, vars) {
+    var els = typeof sel === 'string' ? q(sel) : sel;
+    if (!els || (Array.isArray(els) && !els.length)) return;
+    vars.clearProps = vars.clearProps || CP;
+    gsap.from(els, vars);
+  }
+
+  /* ── SPLASH entrance ─────────────────────────────────────── */
+  /* Uses explicit delays (not chained timeline) — more reliable  */
   function animateSplash() {
-    const tl = gsap.timeline({ delay: 0.1 });
-    tl.from('.splash-pill',          { opacity:0, y:-20, duration:.5, ease:E })
-      .from('.splash-title',         { opacity:0, y:30,  duration:.65, ease:E },  '-=.32')
-      .from('.splash-sub',           { opacity:0, y:18,  duration:.5,  ease:E },  '-=.32')
-      .from('.dim-tag',              { opacity:0, y:14, scale:.9, duration:.4, ease:E, stagger:.07 }, '-=.25')
-      .from('.splash-actions .btn',  { opacity:0, y:16, duration:.45, ease:E, stagger:.1 }, '-=.18')
-      .from('.splash-tagline',       { opacity:0, duration:.4 }, '-=.08');
+    safefrom('.splash-pill',         { opacity:0, y:-20, duration:.5,  ease:E, delay:.12 });
+    safefrom('.splash-title',        { opacity:0, y:30,  duration:.65, ease:E, delay:.28 });
+    safefrom('.splash-sub',          { opacity:0, y:18,  duration:.5,  ease:E, delay:.50 });
+    safefrom('.dim-tag',             { opacity:0, y:14, scale:.9, duration:.4, ease:E, stagger:.07, delay:.70 });
+    safefrom('.splash-actions .btn', { opacity:0, y:16,  duration:.5,  ease:E, stagger:.1, delay:1.05 });
+    safefrom('.splash-tagline',      { opacity:0, duration:.4, delay:1.5, clearProps:'opacity' });
+    /* Hard failsafe — buttons always visible after 3 s */
+    setTimeout(function () {
+      gsap.set('.splash-actions .btn', { clearProps:'all' });
+    }, 3000);
   }
 
   /* ── Primary CTA breathing glow pulse ────────────────────── */
   function startCTAGlow() {
+    /* Start after splash finishes so it doesn't fight the from() */
     gsap.to('.btn-gold', {
-      boxShadow: '0 16px 56px rgba(0,176,255,.65), 0 4px 24px rgba(0,176,255,.35)',
-      duration: 2, repeat: -1, yoyo: true, ease: 'power1.inOut'
+      boxShadow: '0 16px 56px rgba(0,176,255,.6), 0 4px 24px rgba(0,176,255,.3)',
+      duration: 2, repeat: -1, yoyo: true, ease: 'power1.inOut', delay: 1.7
     });
   }
 
   /* ── Reveal screen ───────────────────────────────────────── */
   function animateReveal() {
-    gsap.from('.rv-heading', { opacity:0, y:24, duration:.5, ease:E, delay:.05 });
-    gsap.from('.rv-sub',     { opacity:0, y:16, duration:.4, ease:E, delay:.14 });
+    safefrom('.rv-heading', { opacity:0, y:24, duration:.5,  ease:E, delay:.05 });
+    safefrom('.rv-sub',     { opacity:0, y:16, duration:.4,  ease:E, delay:.14 });
     setTimeout(function () {
       var cards = q('.rv-card');
-      if (cards.length) gsap.from(cards, { opacity:0, y:36, scale:.93, duration:.6, ease:EB, stagger:.12 });
+      if (cards.length) safefrom(cards, { opacity:0, y:36, scale:.93, duration:.6, ease:EB, stagger:.12 });
       var stat = document.querySelector('.rv-stat');
-      if (stat) gsap.from(stat, { opacity:0, y:18, duration:.45, ease:E, delay:.35 });
-      var nextBtn = document.querySelector('#reveal .next-btn, #reveal .btn');
-      if (nextBtn) gsap.from(nextBtn, { opacity:0, y:12, duration:.4, ease:E, delay:.5 });
+      if (stat) safefrom([stat], { opacity:0, y:18, duration:.45, ease:E, delay:.4 });
     }, 60);
   }
 
   /* ── Final / Results screen ──────────────────────────────── */
   function animateFinal() {
-    gsap.from('.final-title', { opacity:0, y:28, duration:.65, ease:E, delay:.08 });
-    gsap.from('.final-sub',   { opacity:0, y:18, duration:.5,  ease:E, delay:.2  });
+    safefrom('.final-title', { opacity:0, y:28, duration:.65, ease:E, delay:.08 });
+    safefrom('.final-sub',   { opacity:0, y:18, duration:.5,  ease:E, delay:.2  });
     setTimeout(function () {
       var cards = q('.pr-card');
       if (cards.length) {
-        gsap.from(cards, { opacity:0, y:48, scale:.94, duration:.7, ease:EB, stagger:.2, delay:.05 });
-        /* Score bars fill after cards land */
+        safefrom(cards, { opacity:0, y:48, scale:.94, duration:.7, ease:EB, stagger:.2, delay:.05 });
         setTimeout(function () {
           q('.pr-fill').forEach(function (fill) {
             var target = fill.style.width || '0%';
             gsap.fromTo(fill, { width:'0%' }, { width:target, duration:1.4, ease:'power2.out' });
           });
-        }, 550);
+        }, 600);
       }
     }, 80);
   }
 
   /* ── Consequence screen ──────────────────────────────────── */
   function animateConsequence() {
-    gsap.from('.cq-heading', { opacity:0, y:22, duration:.5, ease:E, delay:.05 });
+    safefrom('.cq-heading', { opacity:0, y:22, duration:.5, ease:E, delay:.05 });
     setTimeout(function () {
       var blocks = q('.cq-outcome-block');
-      if (blocks.length) gsap.from(blocks, { opacity:0, y:28, duration:.55, ease:E, stagger:.14, delay:.05 });
+      if (blocks.length) safefrom(blocks, { opacity:0, y:28, duration:.55, ease:E, stagger:.14, delay:.05 });
     }, 60);
   }
 
   /* ── Scenario / Pick screen ──────────────────────────────── */
   function animateGame() {
-    gsap.from('.game-bar', { opacity:0, y:-22, duration:.4, ease:E });
+    safefrom('.game-bar', { opacity:0, y:-22, duration:.4, ease:E });
     setTimeout(function () {
-      gsap.from('.s-heading', { opacity:0, y:20, duration:.45, ease:E });
-      gsap.from('.s-box',     { opacity:0, y:14, duration:.4,  ease:E, delay:.09 });
+      safefrom('.s-heading', { opacity:0, y:20, duration:.45, ease:E });
+      safefrom('.s-box',     { opacity:0, y:14, duration:.4,  ease:E, delay:.09 });
       var btns = q('.c-btn');
-      if (btns.length) gsap.from(btns, { opacity:0, x:-20, duration:.45, ease:E, stagger:.09, delay:.15 });
+      if (btns.length) safefrom(btns, { opacity:0, x:-20, duration:.45, ease:E, stagger:.09, delay:.15 });
     }, 55);
   }
 
   /* ── Tutorial ────────────────────────────────────────────── */
   function animateTutorial() {
-    gsap.from('.ghost-num',   { opacity:0, scale:1.3, duration:.55, ease:E, delay:.05 });
-    gsap.from('.tut-heading', { opacity:0, y:20, duration:.5, ease:E, delay:.12 });
-    gsap.from('.tut-text',    { opacity:0, y:14, duration:.4, ease:E, stagger:.08, delay:.2 });
+    safefrom('.ghost-num',   { opacity:0, scale:1.3, duration:.55, ease:E, delay:.05 });
+    safefrom('.tut-heading', { opacity:0, y:20, duration:.5,  ease:E, delay:.12 });
+    safefrom('.tut-text',    { opacity:0, y:14, duration:.4,  ease:E, stagger:.08, delay:.2 });
   }
 
   /* ── Add Players ─────────────────────────────────────────── */
