@@ -965,7 +965,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="data.js?v=29"></script>
-<script src="script.js?v=52"></script>
+<script src="script.js?v=53"></script>
 
 <!-- ── GSAP — professional animation engine (vanilla JS, no framework) ── -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -1087,19 +1087,22 @@
 
   /* ── Add Players ─────────────────────────────────────────── */
   function animateAddPlayers() {
-    gsap.from('.ap-heading', { opacity:0, y:20, duration:.45, ease:E, delay:.05 });
-    gsap.from('.ap-sub',     { opacity:0, y:14, duration:.4,  ease:E, delay:.12 });
-    gsap.from('.p-row',      { opacity:0, x:-16, duration:.4, ease:E, stagger:.07, delay:.2 });
+    safefrom('.ap-heading', { opacity:0, y:20, duration:.45, ease:E, delay:.05 });
+    safefrom('.ap-sub',     { opacity:0, y:14, duration:.4,  ease:E, delay:.12 });
+    safefrom('.p-row',      { opacity:0, x:-16, duration:.4, ease:E, stagger:.07, delay:.2 });
   }
 
   /* ── Multiplayer Host/Join ───────────────────────────────── */
   function animateMP() {
-    gsap.from('.mp-code-big', { opacity:0, scale:.88, duration:.6, ease:EB, delay:.1 });
-    gsap.from('.mp-instr',    { opacity:0, y:14, duration:.4, ease:E, delay:.28 });
-    /* Glow pulse on room code */
+    /* Use safefrom so clearProps runs on complete — room code can never get stuck invisible */
+    safefrom('.mp-code-big', { opacity:0, scale:.88, duration:.6, ease:EB, delay:.1 });
+    safefrom('.mp-instr',    { opacity:0, y:14, duration:.4, ease:E, delay:.28 });
+    /* Hard failsafe — always visible after 2 s regardless of animation state */
+    setTimeout(function () { gsap.set('.mp-code-big', { clearProps:'all' }); }, 2000);
+    /* Glow pulse AFTER entry animation finishes */
     gsap.to('.mp-code-big', {
-      boxShadow:'0 0 60px rgba(0,176,255,.5), 0 0 0 2px rgba(0,176,255,.4)',
-      duration:2, repeat:-1, yoyo:true, ease:'power1.inOut', delay:.5
+      boxShadow:'0 0 70px rgba(0,176,255,.55), 0 0 0 2px rgba(0,176,255,.45)',
+      duration:2, repeat:-1, yoyo:true, ease:'power1.inOut', delay:.9
     });
   }
 
