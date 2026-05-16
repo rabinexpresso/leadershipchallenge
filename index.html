@@ -4,22 +4,39 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>The Leadership Challenge</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
   :root {
-    --bg: #080b12;
-    --card: #0f1421;
-    --card2: #161d2e;
-    --gold: #f5a623;
-    --gold-l: #fbbf24;
-    --gold-dim: rgba(245,166,35,0.13);
-    --gold-border: rgba(245,166,35,0.32);
-    --text: #eef1ff;
-    --body: #ced4e0;
-    --sub: #7a829a;
-    --border: rgba(255,255,255,0.07);
-    --border2: rgba(255,255,255,0.13);
-    --danger: #f87171;
+    /* ── Alaya brand palette ── */
+    --alaya-blue:   #00b0ff;   /* Care Blue  – primary accent  */
+    --alaya-red:    #ff0065;   /* Passion Red – drama / danger */
+    --alaya-green:  #42db66;   /* Oneness Green – success      */
+    --alaya-gold:   #ffc709;   /* Golden Sun – used sparingly  */
+    --midnight:     #000079;   /* Midnight Sky – navy anchor   */
+
+    /* ── Core backgrounds ── */
+    --bg:    #00001e;
+    --card:  rgba(0, 4, 55, 0.55);
+    --card2: rgba(0, 6, 75, 0.65);
+
+    /* ── Primary accent → Care Blue (replaces old gold) ── */
+    --gold:        #00b0ff;
+    --gold-l:      #40cbff;
+    --gold-dim:    rgba(0, 176, 255, 0.12);
+    --gold-border: rgba(0, 176, 255, 0.28);
+
+    /* ── Text hierarchy ── */
+    --text:  #ffffff;
+    --body:  rgba(255, 255, 255, 0.72);
+    --sub:   rgba(255, 255, 255, 0.42);
+
+    /* ── Borders ── */
+    --border:  rgba(255, 255, 255, 0.07);
+    --border2: rgba(255, 255, 255, 0.14);
+
+    /* ── States ── */
+    --danger: #ff0065;
+
     /* Spacing scale */
     --sp-chip:8px; --sp-card-x:12px; --sp-card:16px;
     --sp-gutter:22px; --sp-section:24px; --sp-hero:28px; --sp-screen:52px;
@@ -30,7 +47,30 @@
 
   *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
   html { scroll-behavior:smooth; }
-  body { background:var(--bg); color:var(--text); font-family:'Plus Jakarta Sans',sans-serif; min-height:100dvh; overflow-x:hidden; }
+
+  /* ── Aurora stage background ── */
+  body {
+    background:
+      radial-gradient(ellipse 70% 55% at 8% 12%,  rgba(0,176,255,0.10) 0%, transparent 55%),
+      radial-gradient(ellipse 55% 45% at 90% 78%,  rgba(255,0,101,0.09) 0%, transparent 52%),
+      radial-gradient(ellipse 45% 35% at 62% 2%,   rgba(66,219,102,0.07) 0%, transparent 48%),
+      radial-gradient(ellipse 50% 40% at 25% 95%,  rgba(0,0,121,0.55) 0%, transparent 55%),
+      #00001e;
+    color:var(--text);
+    font-family:'Poppins',sans-serif;
+    font-weight:300;
+    min-height:100dvh;
+    overflow-x:hidden;
+  }
+
+  /* ── Film-grain noise overlay (the premium secret ingredient) ── */
+  body::after {
+    content:'';
+    position:fixed; inset:0;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='250' height='250' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-repeat:repeat; background-size:200px 200px;
+    opacity:0.028; pointer-events:none; z-index:9998;
+  }
 
   .screen { display:none; flex-direction:column; min-height:100dvh; }
   /* Laptop: centre and constrain width */
@@ -45,8 +85,8 @@
      > 1920px   : 1320px centred (27"+ monitor)
   ──────────────────────────────────────────────────────────── */
   @media (min-width: 600px) {
-    body   { display:flex; justify-content:center; background:var(--bg); }
-    .screen { width:100%; max-width:640px; min-height:100dvh; position:relative; box-shadow:0 0 80px rgba(0,0,0,.5); }
+    body   { display:flex; justify-content:center; }
+    .screen { width:100%; max-width:640px; min-height:100dvh; position:relative; box-shadow:0 0 0 1px rgba(255,255,255,.05), 0 0 120px rgba(0,0,121,.4); }
   }
   @media (min-width: 960px) {
     .screen { max-width:860px; }
@@ -73,58 +113,65 @@
   .topbar {
     display:flex; align-items:center; gap:12px;
     padding:12px 16px;
-    border-bottom:1px solid var(--border);
-    background:rgba(8,11,18,0.96);
-    backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(255,255,255,.07);
+    background:rgba(0,0,30,0.82);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
     position:sticky; top:0; z-index:30;
     flex-shrink:0;
   }
   .back-btn {
     background:var(--card); border:1px solid var(--border2); color:var(--body);
-    font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:700;
+    font-family:'Poppins',sans-serif; font-size:13px; font-weight:700;
     padding:8px 14px; border-radius:100px; cursor:pointer;
     display:flex; align-items:center; gap:5px; transition:all .2s; flex-shrink:0;
   }
   .back-btn:hover { border-color:var(--gold-border); color:var(--gold); }
-  .topbar-center { font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:700; color:var(--sub); flex:1; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .topbar-center { font-family:'Poppins',sans-serif; font-size:13px; font-weight:700; color:var(--sub); flex:1; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .topbar-spacer { width:70px; flex-shrink:0; }
   .quit-btn {
     background:transparent; border:1px solid rgba(248,113,113,.2); color:#f87171;
-    font-family:'Bricolage Grotesque',sans-serif; font-size:12px; font-weight:700;
+    font-family:'Poppins',sans-serif; font-size:12px; font-weight:700;
     padding:7px 13px; border-radius:100px; cursor:pointer; transition:all .2s;
   }
   .quit-btn:hover { background:rgba(248,113,113,.1); }
 
   /* ─── SHARED ─── */
-  .eyebrow { font-family:'Bricolage Grotesque',sans-serif; font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--gold); }
+  .eyebrow { font-family:'Poppins',sans-serif; font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--gold); }
   .page-inner { flex:1; padding:28px 22px 52px; display:flex; flex-direction:column; }
 
-  .btn { display:flex; align-items:center; justify-content:center; gap:8px; font-family:'Bricolage Grotesque',sans-serif; font-weight:700; font-size:15px; padding:16px 28px; border-radius:100px; border:none; cursor:pointer; width:100%; transition:all .2s cubic-bezier(.22,1,.36,1); letter-spacing:.2px; }
+  .btn { display:flex; align-items:center; justify-content:center; gap:8px; font-family:'Poppins',sans-serif; font-weight:600; font-size:15px; padding:16px 28px; border-radius:100px; border:none; cursor:pointer; width:100%; transition:all .25s cubic-bezier(.22,1,.36,1); letter-spacing:.3px; }
   .btn:active { transform:scale(.97); }
-  .btn-gold { background:var(--gold); color:#07090d; position:relative; overflow:hidden; }
-  .btn-gold::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,.15) 0%,transparent 50%); pointer-events:none; }
-  .btn-gold:hover { transform:translateY(-2px); box-shadow:0 10px 32px rgba(245,166,35,.3); }
-  .btn-ghost { background:transparent; color:var(--body); border:1px solid var(--border2); }
-  .btn-ghost:hover { border-color:var(--gold-border); color:var(--gold); }
+  .btn-gold { background:linear-gradient(135deg, #00b0ff 0%, #0088dd 100%); color:#ffffff; position:relative; overflow:hidden; box-shadow:0 4px 24px rgba(0,176,255,.28); }
+  .btn-gold::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,.18) 0%,transparent 55%); pointer-events:none; }
+  .btn-gold:hover { transform:translateY(-2px); box-shadow:0 12px 40px rgba(0,176,255,.45); }
+  .btn-ghost { background:rgba(255,255,255,.04); color:var(--body); border:1px solid var(--border2); backdrop-filter:blur(8px); }
+  .btn-ghost:hover { border-color:var(--gold-border); color:var(--gold); background:rgba(0,176,255,.06); }
 
   /* ─── SPLASH ─── */
   #splash {
     align-items:center; justify-content:center; text-align:center;
     padding:52px 24px 48px; gap:0; position:relative; overflow:hidden;
-    background:radial-gradient(ellipse 90% 60% at 50% 10%, rgba(245,166,35,.11) 0%, transparent 65%), radial-gradient(ellipse 50% 35% at 50% 100%, rgba(245,166,35,.04) 0%, transparent 60%), var(--bg);
+    background:
+      radial-gradient(ellipse 80% 55% at 50% 5%,  rgba(0,176,255,.16) 0%, transparent 58%),
+      radial-gradient(ellipse 45% 30% at 90% 80%,  rgba(255,0,101,.10) 0%, transparent 52%),
+      radial-gradient(ellipse 35% 25% at 10% 85%,  rgba(66,219,102,.08) 0%, transparent 48%),
+      var(--bg);
   }
-  .splash-grid { position:absolute; inset:0; background-image:linear-gradient(rgba(245,166,35,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(245,166,35,.035) 1px,transparent 1px); background-size:44px 44px; pointer-events:none; }
-  .splash-pill { display:inline-block; font-family:'Bricolage Grotesque',sans-serif; font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--text); border:1px solid rgba(255,255,255,0.18); padding:7px 18px; border-radius:100px; margin-bottom:28px; background:rgba(255,255,255,0.07); position:relative; }
-  .splash-title { font-family:'Bricolage Grotesque',sans-serif; font-size:clamp(38px,11vw,54px); font-weight:800; line-height:1.05; letter-spacing:-2px; margin-bottom:18px; }
+  /* Premium dot-grid instead of line-grid */
+  .splash-grid { position:absolute; inset:0; background-image:radial-gradient(rgba(0,176,255,.18) 1px, transparent 1px); background-size:28px 28px; pointer-events:none; opacity:.5; }
+  .splash-pill { display:inline-block; font-family:'Poppins',sans-serif; font-size:10px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:var(--text); border:1px solid rgba(0,176,255,0.35); padding:7px 20px; border-radius:100px; margin-bottom:28px; background:rgba(0,176,255,0.08); backdrop-filter:blur(8px); position:relative; box-shadow:0 0 20px rgba(0,176,255,.12); }
+  .splash-title { font-family:'Poppins',sans-serif; font-size:clamp(36px,10vw,52px); font-weight:800; line-height:1.05; letter-spacing:-2px; margin-bottom:18px; }
   .splash-title .hl { color:var(--gold); display:inline; }
-  .splash-sub { font-size:15px; color:var(--body); line-height:1.65; max-width:280px; margin:0 auto 28px; }
-  .splash-tagline { font-family:'Bricolage Grotesque',sans-serif; font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--sub); margin-top:16px; }
+  .splash-sub { font-size:15px; color:var(--body); line-height:1.7; max-width:280px; margin:0 auto 28px; font-weight:300; }
+  .splash-tagline { font-family:'Poppins',sans-serif; font-size:10px; font-weight:600; letter-spacing:2.5px; text-transform:uppercase; color:var(--sub); margin-top:16px; }
   .dim-tags { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:40px; }
-  .dim-tag { font-size:13px; font-weight:600; padding:7px 14px; border-radius:100px; background:var(--card); border:1px solid var(--border); color:var(--body); }
-  .dim-tag-t { border-color:rgba(96,165,250,.35); color:#93c5fd; }
-  .dim-tag-p { border-color:rgba(16,185,129,.35); color:#6ee7b7; }
-  .dim-tag-e { border-color:rgba(245,166,35,.35); color:var(--gold); }
-  .dim-tag-a { border-color:rgba(167,139,250,.35); color:#c4b5fd; }
+  /* Alaya brand-colour dimension tags */
+  .dim-tag { font-size:13px; font-weight:500; padding:7px 14px; border-radius:100px; background:rgba(255,255,255,.04); border:1px solid var(--border); color:var(--body); backdrop-filter:blur(8px); }
+  .dim-tag-t { border-color:rgba(0,176,255,.40);  color:#00b0ff; }   /* Trust → Care Blue     */
+  .dim-tag-p { border-color:rgba(66,219,102,.40); color:#42db66; }   /* Proactivity → Green   */
+  .dim-tag-e { border-color:rgba(255,199,9,.40);  color:#ffc709; }   /* Empowerment → Gold    */
+  .dim-tag-a { border-color:rgba(255,0,101,.40);  color:#ff0065; }   /* Adaptability → Red    */
   .splash-actions { display:flex; flex-direction:column; gap:10px; width:100%; max-width:280px; }
   .splash-meta { margin-top:20px; font-size:13px; color:var(--sub); position:relative; }
 
@@ -132,69 +179,69 @@
   .tut-inner { flex:1; padding:24px 22px 32px; display:flex; flex-direction:column; overflow:hidden; }
   .tut-slide { display:none; flex-direction:column; flex:1; overflow-y:auto; }
   .tut-slide.active { display:flex; animation:fadeUp .3s ease; }
-  .ghost-num { font-family:'Bricolage Grotesque',sans-serif; font-size:80px; font-weight:800; color:rgba(245,166,35,.07); line-height:1; margin-bottom:-18px; user-select:none; }
-  .tut-heading { font-family:'Bricolage Grotesque',sans-serif; font-size:26px; font-weight:700; line-height:1.15; margin-bottom:14px; }
+  .ghost-num { font-family:'Poppins',sans-serif; font-size:80px; font-weight:800; color:rgba(0,176,255,.09); line-height:1; margin-bottom:-18px; user-select:none; letter-spacing:-3px; }
+  .tut-heading { font-family:'Poppins',sans-serif; font-size:26px; font-weight:700; line-height:1.15; margin-bottom:14px; }
   .tut-text { font-size:15px; color:var(--body); line-height:1.8; margin-bottom:20px; }
   .tut-nav { display:flex; align-items:center; gap:10px; padding:16px 0 0; flex-shrink:0; }
   .tut-dots { display:flex; gap:6px; flex:1; justify-content:center; }
   .tut-dot { width:6px; height:6px; border-radius:50%; background:var(--border2); transition:all .25s; }
   .tut-dot.on { background:var(--gold); width:20px; border-radius:3px; }
-  .t-prev { font-family:'Bricolage Grotesque',sans-serif; font-size:14px; font-weight:700; padding:12px 20px; border-radius:100px; background:var(--card2); color:var(--text); border:1px solid var(--border2); cursor:pointer; transition:all .2s; flex:1; }
+  .t-prev { font-family:'Poppins',sans-serif; font-size:14px; font-weight:700; padding:12px 20px; border-radius:100px; background:var(--card2); color:var(--text); border:1px solid var(--border2); cursor:pointer; transition:all .2s; flex:1; }
   .t-prev:hover { color:var(--gold); border-color:var(--gold-border); }
-  .t-next { font-family:'Bricolage Grotesque',sans-serif; font-size:14px; font-weight:700; padding:12px 20px; border-radius:100px; background:var(--gold); color:#07090d; border:none; cursor:pointer; transition:all .2s; flex:1; }
-  .t-next:hover { transform:translateY(-1px); box-shadow:0 6px 20px rgba(245,166,35,.3); }
+  .t-next { font-family:'Poppins',sans-serif; font-size:14px; font-weight:600; padding:12px 20px; border-radius:100px; background:linear-gradient(135deg, #00b0ff 0%, #0088dd 100%); color:#ffffff; border:none; cursor:pointer; transition:all .2s; flex:1; box-shadow:0 4px 18px rgba(0,176,255,.3); }
+  .t-next:hover { transform:translateY(-1px); box-shadow:0 8px 28px rgba(0,176,255,.45); }
 
   .dim-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
-  .dim-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:15px 13px; }
+  .dim-card { background:var(--card); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border:1px solid rgba(255,255,255,.08); border-radius:14px; padding:15px 13px; }
   .dim-icon-big { font-size:22px; margin-bottom:6px; }
-  .dim-title { font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:700; color:var(--text); margin-bottom:3px; }
+  .dim-title { font-family:'Poppins',sans-serif; font-size:13px; font-weight:700; color:var(--text); margin-bottom:3px; }
   .dim-desc-sm { font-size:14px; color:var(--body); line-height:1.55; }
   .dim-source { font-size:12px; color:var(--sub); font-style:italic; margin-top:4px; }
 
   .fw-item { display:flex; gap:12px; margin-bottom:16px; align-items:flex-start; }
   .fw-ico { font-size:22px; flex-shrink:0; margin-top:2px; }
-  .fw-name { font-family:'Bricolage Grotesque',sans-serif; font-size:14px; font-weight:700; color:var(--text); margin-bottom:2px; }
+  .fw-name { font-family:'Poppins',sans-serif; font-size:14px; font-weight:700; color:var(--text); margin-bottom:2px; }
   .fw-desc { font-size:13px; color:var(--body); line-height:1.55; }
   .fw-src { font-size:11.5px; color:var(--sub); font-style:italic; }
 
-  .info-box { background:rgba(245,166,35,0.04); border:1px solid var(--gold-border); border-radius:12px; padding:14px 16px; margin-top:16px; }
+  .info-box { background:rgba(0,176,255,0.06); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid rgba(0,176,255,.22); border-radius:12px; padding:14px 16px; margin-top:16px; box-shadow:0 0 24px rgba(0,176,255,.06); }
   .info-box p { font-size:13px; color:var(--body); line-height:1.65; }
   .info-box strong { color:var(--text); }
 
   /* ─── ADD PLAYERS ─── */
-  .ap-heading { font-family:'Bricolage Grotesque',sans-serif; font-size:26px; font-weight:700; margin-bottom:8px; }
+  .ap-heading { font-family:'Poppins',sans-serif; font-size:26px; font-weight:700; margin-bottom:8px; }
   .ap-sub { font-size:15px; color:var(--body); line-height:1.65; margin-bottom:28px; }
   .player-list { display:flex; flex-direction:column; gap:10px; margin-bottom:16px; }
   .p-row { display:flex; align-items:center; gap:10px; }
   .p-dot { width:12px; height:12px; border-radius:50%; flex-shrink:0; }
-  .p-input { flex:1; background:var(--card); border:1px solid var(--border2); color:var(--text); font-family:'Plus Jakarta Sans',sans-serif; font-size:15px; padding:14px 16px; border-radius:12px; outline:none; transition:border-color .2s; }
+  .p-input { flex:1; background:var(--card); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid var(--border2); color:var(--text); font-family:'Poppins',sans-serif; font-size:15px; font-weight:400; padding:14px 16px; border-radius:12px; outline:none; transition:border-color .2s, box-shadow .2s; }
   .p-input::placeholder { color:var(--sub); }
-  .p-input:focus { border-color:var(--gold-border); }
+  .p-input:focus { border-color:var(--gold-border); box-shadow:0 0 0 3px rgba(0,176,255,.12); }
   .p-remove { background:none; border:none; color:var(--sub); font-size:20px; cursor:pointer; padding:6px; transition:color .2s; flex-shrink:0; line-height:1; }
   .p-remove:hover { color:#f87171; }
-  .add-p-btn { display:flex; align-items:center; justify-content:center; gap:8px; background:transparent; border:1px dashed var(--border2); color:var(--sub); font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:700; padding:14px; border-radius:12px; cursor:pointer; transition:all .2s; width:100%; margin-bottom:24px; }
+  .add-p-btn { display:flex; align-items:center; justify-content:center; gap:8px; background:transparent; border:1px dashed var(--border2); color:var(--sub); font-family:'Poppins',sans-serif; font-size:13px; font-weight:700; padding:14px; border-radius:12px; cursor:pointer; transition:all .2s; width:100%; margin-bottom:24px; }
   .add-p-btn:hover { border-color:var(--gold-border); color:var(--gold); }
   .ap-note { font-size:13px; color:var(--sub); text-align:center; margin-bottom:20px; }
 
   /* ─── GAME ─── */
   .game-bar {
     position:sticky; top:0; z-index:20;
-    background:rgba(8,11,18,.97); backdrop-filter:blur(16px);
+    background:rgba(0,0,30,0.85); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
     border-bottom:1px solid rgba(255,255,255,.07);
-    box-shadow:0 2px 28px rgba(0,0,0,.4);
+    box-shadow:0 2px 32px rgba(0,0,60,.5);
     padding:12px 18px;
     flex-shrink:0;
   }
   .gb-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
-  .gb-label { font-family:'Bricolage Grotesque',sans-serif; font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--gold); }
+  .gb-label { font-family:'Poppins',sans-serif; font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--gold); }
   .prog-track { height:4px; background:rgba(255,255,255,.07); border-radius:10px; overflow:hidden; margin-bottom:8px; }
   .prog-fill { height:100%; background:linear-gradient(90deg, var(--gold), var(--gold-l)); border-radius:10px; transition:width 1s linear; }
   .prog-fill.warn  { background:linear-gradient(90deg,#f59e0b,#fbbf24); }
   .prog-fill.urgent{ background:linear-gradient(90deg,#ef4444,#f87171); }
   /* Game bar timer */
   .gb-timer-row { display:flex; align-items:baseline; gap:7px; }
-  .gb-timer-num { font-family:'Bricolage Grotesque',sans-serif; font-size:20px; font-weight:800; color:var(--text); transition:color .4s; letter-spacing:-1px; }
-  .gb-timer-label { font-family:'Bricolage Grotesque',sans-serif; font-size:9px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--sub); }
+  .gb-timer-num { font-family:'Poppins',sans-serif; font-size:20px; font-weight:800; color:var(--text); transition:color .4s; letter-spacing:-1px; }
+  .gb-timer-label { font-family:'Poppins',sans-serif; font-size:9px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--sub); }
   .gb-timer-num.warn   { color:#fbbf24; }
   .gb-timer-num.urgent { color:var(--danger); animation:gbPulse 1s ease-in-out infinite; }
   @keyframes gbPulse { 0%,100%{opacity:1} 50%{opacity:.45} }
@@ -204,19 +251,19 @@
 
   /* Pick phase */
   .game-body { padding:24px 22px 52px; }
-  .player-badge { display:inline-flex; align-items:center; gap:8px; padding:7px 15px; border-radius:100px; font-family:'Bricolage Grotesque',sans-serif; font-size:12px; font-weight:700; margin-bottom:18px; border:1px solid; }
+  .player-badge { display:inline-flex; align-items:center; gap:8px; padding:7px 15px; border-radius:100px; font-family:'Poppins',sans-serif; font-size:12px; font-weight:700; margin-bottom:18px; border:1px solid; }
   .player-badge-dot { width:8px; height:8px; border-radius:50%; }
   .s-tag { margin-bottom:10px; }
-  .s-heading { font-family:'Bricolage Grotesque',sans-serif; font-size:25px; font-weight:700; line-height:1.15; letter-spacing:-0.3px; margin-bottom:16px; }
-  .s-box { font-size:15px; color:var(--body); line-height:1.85; background:rgba(245,166,35,0.04); border:1px solid var(--gold-border); border-radius:12px; padding:18px 20px; margin-bottom:26px; box-shadow:0 0 0 1px rgba(245,166,35,.08) inset, 0 4px 24px rgba(245,166,35,.05); }
-  .choices-label { font-family:'Bricolage Grotesque',sans-serif; font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:rgba(245,166,35,.65); margin-bottom:14px; }
-  .c-btn { width:100%; background:var(--card); border:1px solid var(--border2); border-radius:var(--r-card); padding:17px 18px; text-align:left; cursor:pointer; margin-bottom:10px; transition:all .22s cubic-bezier(.22,1,.36,1); display:flex; gap:14px; align-items:flex-start; color:var(--text); font-family:'Plus Jakarta Sans',sans-serif; }
-  .c-btn:hover { border-color:var(--gold-border); background:var(--card2); transform:translateX(4px); box-shadow:0 6px 28px rgba(0,0,0,.35); }
+  .s-heading { font-family:'Poppins',sans-serif; font-size:25px; font-weight:700; line-height:1.15; letter-spacing:-0.3px; margin-bottom:16px; }
+  .s-box { font-size:15px; color:var(--body); line-height:1.85; font-weight:300; background:rgba(0,176,255,0.05); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid rgba(0,176,255,.22); border-radius:14px; padding:18px 20px; margin-bottom:26px; box-shadow:0 0 0 1px rgba(0,176,255,.06) inset, 0 6px 28px rgba(0,0,60,.3); }
+  .choices-label { font-family:'Poppins',sans-serif; font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:rgba(0,176,255,.65); margin-bottom:14px; }
+  .c-btn { width:100%; background:var(--card); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border:1px solid var(--border2); border-radius:var(--r-card); padding:17px 18px; text-align:left; cursor:pointer; margin-bottom:10px; transition:all .22s cubic-bezier(.22,1,.36,1); display:flex; gap:14px; align-items:flex-start; color:var(--text); font-family:'Poppins',sans-serif; }
+  .c-btn:hover { border-color:var(--gold-border); background:var(--card2); transform:translateX(4px); box-shadow:0 8px 32px rgba(0,0,60,.4), 0 0 16px rgba(0,176,255,.08); }
   .c-btn:active { transform:scale(.97); }
-  .c-btn.sel { border-color:var(--gold); background:rgba(245,166,35,0.09); pointer-events:none; box-shadow:0 0 0 1px rgba(245,166,35,.28), 0 6px 28px rgba(245,166,35,.1); }
+  .c-btn.sel { border-color:var(--gold); background:rgba(0,176,255,0.10); pointer-events:none; box-shadow:0 0 0 1px rgba(0,176,255,.32), 0 8px 32px rgba(0,176,255,.18); }
   .c-btn.sel .c-alpha { background:var(--gold); color:#07090d; border-color:var(--gold); }
   .c-btn.dim { opacity:.3; pointer-events:none; }
-  .c-alpha { font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:800; color:var(--gold); background:var(--gold-dim); border:1px solid var(--gold-border); border-radius:var(--r-chip); width:32px; height:32px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; transition:all .2s; }
+  .c-alpha { font-family:'Poppins',sans-serif; font-size:13px; font-weight:800; color:var(--gold); background:var(--gold-dim); border:1px solid var(--gold-border); border-radius:var(--r-chip); width:32px; height:32px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; transition:all .2s; }
   .c-text { font-size:14.5px; line-height:1.7; color:var(--body); }
 
   /* Locked phase */
@@ -224,76 +271,77 @@
   #game-locked.vis { display:flex; }
   #game-pick.hidden { display:none; }
   .locked-check { font-size:60px; margin-bottom:20px; animation:popIn .4s cubic-bezier(.22,1,.36,1); }
-  .locked-h { font-family:'Bricolage Grotesque',sans-serif; font-size:26px; font-weight:700; margin-bottom:10px; }
+  .locked-h { font-family:'Poppins',sans-serif; font-size:26px; font-weight:700; margin-bottom:10px; }
   .locked-sub { font-size:16px; color:var(--body); line-height:1.65; max-width:280px; margin:0 auto 32px; }
-  .next-badge { display:inline-flex; align-items:center; gap:8px; padding:10px 20px; border-radius:100px; font-family:'Bricolage Grotesque',sans-serif; font-size:14px; font-weight:700; margin-bottom:32px; border:2px solid; }
+  .next-badge { display:inline-flex; align-items:center; gap:8px; padding:10px 20px; border-radius:100px; font-family:'Poppins',sans-serif; font-size:14px; font-weight:700; margin-bottom:32px; border:2px solid; }
   .next-badge-dot { width:9px; height:9px; border-radius:50%; }
 
   /* ─── REVEAL ─── */
-  .rv-body { padding:28px 22px 52px; flex:1; background:radial-gradient(ellipse 90% 30% at 50% 0%, rgba(245,166,35,.08) 0%, transparent 55%); }
-  .rv-heading { font-family:'Bricolage Grotesque',sans-serif; font-size:32px; font-weight:800; line-height:1.05; letter-spacing:-0.5px; margin-bottom:8px; }
+  .rv-body { padding:28px 22px 52px; flex:1; background:radial-gradient(ellipse 90% 30% at 50% 0%, rgba(0,176,255,.08) 0%, transparent 55%); }
+  .rv-heading { font-family:'Poppins',sans-serif; font-size:32px; font-weight:800; line-height:1.05; letter-spacing:-0.5px; margin-bottom:8px; }
   .rv-sub { font-size:14px; color:var(--sub); margin-bottom:28px; line-height:1.5; letter-spacing:0.2px; }
   .rv-cards { display:flex; flex-direction:column; gap:12px; margin-bottom:28px; }
-  .rv-card { display:flex; align-items:flex-start; gap:16px; background:var(--card); border:1px solid var(--border); border-radius:var(--r-card); padding:20px 18px; animation:revealIn .45s cubic-bezier(.22,1,.36,1) both; box-shadow:0 6px 32px rgba(0,0,0,.4); }
+  .rv-card { display:flex; align-items:flex-start; gap:16px; background:var(--card); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,.09); border-radius:var(--r-card); padding:20px 18px; animation:revealIn .45s cubic-bezier(.22,1,.36,1) both; box-shadow:0 6px 40px rgba(0,0,60,.5), 0 0 0 1px rgba(255,255,255,.04) inset; }
   .rv-player-info { flex:1; min-width:0; }
   .rv-header-row { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
-  .rv-pname { font-family:'Bricolage Grotesque',sans-serif; font-size:16px; font-weight:700; }
-  .rv-chose { font-size:10px; color:var(--sub); font-family:'Bricolage Grotesque',sans-serif; letter-spacing:1.5px; text-transform:uppercase; font-weight:700; }
+  .rv-pname { font-family:'Poppins',sans-serif; font-size:16px; font-weight:700; }
+  .rv-chose { font-size:10px; color:var(--sub); font-family:'Poppins',sans-serif; letter-spacing:1.5px; text-transform:uppercase; font-weight:700; }
   .rv-choice-text { font-size:14px; color:var(--body); line-height:1.6; }
-  .rv-letter { font-family:'Bricolage Grotesque',sans-serif; font-size:16px; font-weight:800; width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0; background:rgba(245,166,35,.1); color:var(--gold); border:1px solid var(--gold-border); box-shadow:0 0 14px rgba(245,166,35,.15); }
-  .rv-stat { font-family:'Bricolage Grotesque',sans-serif; font-size:14px; font-weight:700; padding:12px 20px; border-radius:14px; background:rgba(245,166,35,.07); border:1px solid rgba(245,166,35,.28); color:var(--gold); margin-bottom:28px; display:block; text-align:center; box-shadow:0 0 24px rgba(245,166,35,.07); }
+  .rv-letter { font-family:'Poppins',sans-serif; font-size:16px; font-weight:800; width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0; background:rgba(0,176,255,.1); color:var(--gold); border:1px solid var(--gold-border); box-shadow:0 0 14px rgba(0,176,255,.15); }
+  .rv-stat { font-family:'Poppins',sans-serif; font-size:14px; font-weight:700; padding:12px 20px; border-radius:14px; background:rgba(0,176,255,.07); border:1px solid rgba(0,176,255,.28); color:var(--gold); margin-bottom:28px; display:block; text-align:center; box-shadow:0 0 24px rgba(0,176,255,.07); }
 
   /* ─── CONSEQUENCE ─── */
-  .cq-body { padding:22px 22px 52px; flex:1; }
-  .cq-tag { margin-bottom:8px; }
-  .cq-heading { font-family:'Bricolage Grotesque',sans-serif; font-size:24px; font-weight:700; line-height:1.15; margin-bottom:20px; }
-  .cq-outcome-block { margin-bottom:22px; }
-  .cq-choice-header { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
-  .cq-choice-alpha { font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:800; width:32px; height:32px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-  .cq-who-picked { font-family:'Bricolage Grotesque',sans-serif; font-size:12px; font-weight:700; color:var(--sub); }
-  .cq-choice-text { font-size:14px; font-style:italic; color:var(--body); background:var(--card2); border-radius:8px; padding:10px 14px; line-height:1.65; margin-bottom:14px; }
-  .cq-explanation { font-size:15px; color:var(--body); line-height:1.8; margin-bottom:16px; }
-  .cq-chips { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:4px; }
-  .cq-chip { font-family:'Bricolage Grotesque',sans-serif; font-size:12px; font-weight:700; padding:5px 11px; border-radius:100px; }
-  .cq-chip.pos { background:var(--gold-dim); border:1px solid var(--gold-border); color:var(--gold); }
-  .cq-chip.zero { background:var(--card); border:1px solid var(--border); color:var(--sub); }
-  .cq-divider { height:1px; background:var(--border); margin:20px 0; }
-.cq-situation { font-size:14px; color:var(--body); line-height:1.7; background:var(--card); border:1px solid var(--border); border-left:3px solid var(--gold); border-radius:0 10px 10px 0; padding:13px 16px; margin-bottom:8px; font-style:italic; }
-.cq-scoring-note { font-size:12px; color:var(--sub); line-height:1.6; padding:8px 4px 16px; }
-  .cq-players-who { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:8px; }
-  .cq-player-chip { display:flex; align-items:center; gap:6px; padding:5px 12px; border-radius:100px; background:var(--card2); border:1px solid var(--border2); }
+  .cq-body { padding:24px 22px 56px; flex:1; }
+  .cq-tag { margin-bottom:10px; }
+  .cq-heading { font-family:'Poppins',sans-serif; font-size:26px; font-weight:700; line-height:1.15; margin-bottom:24px; letter-spacing:-0.3px; }
+  .cq-outcome-block { margin-bottom:8px; background:var(--card); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border:1px solid rgba(255,255,255,.08); border-radius:var(--r-hero); padding:20px 18px; box-shadow:0 4px 24px rgba(0,0,60,.35); }
+  .cq-choice-header { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+  .cq-choice-alpha { font-family:'Poppins',sans-serif; font-size:13px; font-weight:700; width:34px; height:34px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .cq-who-picked { font-family:'Poppins',sans-serif; font-size:11px; font-weight:600; color:var(--sub); letter-spacing:0.5px; }
+  .cq-choice-text { font-size:14px; font-style:italic; color:var(--body); background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.07); border-radius:10px; padding:12px 16px; line-height:1.7; margin-bottom:16px; }
+  .cq-explanation { font-size:14.5px; color:var(--body); line-height:1.85; margin-bottom:16px; font-weight:300; }
+  .cq-chips { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:6px; }
+  .cq-chip { font-family:'Poppins',sans-serif; font-size:12px; font-weight:600; padding:5px 12px; border-radius:100px; }
+  .cq-chip.pos { background:var(--gold-dim); border:1px solid var(--gold-border); color:var(--gold); box-shadow:0 0 12px rgba(0,176,255,.1); }
+  .cq-chip.zero { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); color:var(--sub); }
+  .cq-divider { height:1px; background:rgba(255,255,255,.06); margin:12px 0; }
+  /* Situation callout — full border, no side stripe */
+  .cq-situation { font-size:14px; color:var(--body); line-height:1.75; background:rgba(0,176,255,.06); border:1px solid rgba(0,176,255,.18); border-radius:12px; padding:14px 18px; margin-bottom:8px; font-style:italic; box-shadow:0 0 20px rgba(0,176,255,.06); }
+  .cq-scoring-note { font-size:12px; color:var(--sub); line-height:1.65; padding:8px 4px 16px; font-weight:300; }
+  .cq-players-who { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:10px; }
+  .cq-player-chip { display:flex; align-items:center; gap:6px; padding:5px 13px; border-radius:100px; background:rgba(255,255,255,.05); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,.1); }
   .cq-pdot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
-  .cq-pname { font-family:'Bricolage Grotesque',sans-serif; font-size:12px; font-weight:700; color:var(--body); }
+  .cq-pname { font-family:'Poppins',sans-serif; font-size:12px; font-weight:600; color:var(--body); }
 
   /* ─── SCOREBOARD (hidden — removed from flow, CSS kept for legacy) ─── */
   .sb-body { padding:22px 22px 52px; flex:1; overflow-y:auto; }
 
   /* ─── FINAL ─── */
-  .final-hero { background:radial-gradient(ellipse 110% 80% at 50% 0%, rgba(245,166,35,.14) 0%, transparent 58%), var(--bg); padding:48px 24px 32px; text-align:center; border-bottom:1px solid var(--border); flex-shrink:0; }
-  .final-title { font-family:'Bricolage Grotesque',sans-serif; font-size:clamp(32px,9vw,46px); font-weight:800; line-height:1.05; letter-spacing:-1.5px; margin-bottom:10px; }
+  .final-hero { background:radial-gradient(ellipse 110% 70% at 50% 0%, rgba(0,176,255,.18) 0%, transparent 58%), radial-gradient(ellipse 60% 30% at 80% 100%, rgba(255,0,101,.07) 0%, transparent 50%), var(--bg); padding:48px 24px 32px; text-align:center; border-bottom:1px solid rgba(255,255,255,.07); flex-shrink:0; }
+  .final-title { font-family:'Poppins',sans-serif; font-size:clamp(32px,9vw,46px); font-weight:800; line-height:1.05; letter-spacing:-1.5px; margin-bottom:10px; }
   .final-title span { color:var(--gold); }
   .final-sub { font-size:15px; color:var(--body); margin:0 auto; line-height:1.65; }
   .final-body { padding:26px 22px 52px; flex:1; }
-  .pr-card { background:var(--card); border:1px solid rgba(245,166,35,.18); border-radius:var(--r-hero); padding:26px 22px; margin-bottom:16px; animation:fadeUp .45s cubic-bezier(.22,1,.36,1) both; box-shadow:0 8px 40px rgba(0,0,0,.45); }
+  .pr-card { background:var(--card); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); border:1px solid rgba(0,176,255,.18); border-radius:var(--r-hero); padding:26px 22px; margin-bottom:16px; animation:fadeUp .45s cubic-bezier(.22,1,.36,1) both; box-shadow:0 8px 48px rgba(0,0,60,.55), 0 0 0 1px rgba(255,255,255,.04) inset; }
   .pr-header { display:flex; align-items:center; gap:10px; margin-bottom:20px; }
   .pr-dot { width:12px; height:12px; border-radius:50%; flex-shrink:0; }
-  .pr-name { font-family:'Bricolage Grotesque',sans-serif; font-size:17px; font-weight:700; flex:1; }
+  .pr-name { font-family:'Poppins',sans-serif; font-size:17px; font-weight:700; flex:1; }
   .pr-emoji { font-size:46px; line-height:1; }
-  .pr-profile { font-family:'Bricolage Grotesque',sans-serif; font-size:28px; font-weight:800; color:var(--gold); margin-bottom:12px; letter-spacing:-0.8px; line-height:1.1; }
+  .pr-profile { font-family:'Poppins',sans-serif; font-size:28px; font-weight:800; color:var(--gold); margin-bottom:12px; letter-spacing:-0.8px; line-height:1.1; }
   .pr-desc { font-size:14px; color:var(--body); line-height:1.8; margin-bottom:22px; }
-  .pr-insight-label { font-family:'Bricolage Grotesque',sans-serif; font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--sub); margin-bottom:12px; }
+  .pr-insight-label { font-family:'Poppins',sans-serif; font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--sub); margin-bottom:12px; }
   .pr-insight { background:var(--card2); border:1px solid var(--border); border-radius:14px; padding:16px; margin-bottom:10px; }
-  .pr-insight-dim { font-family:'Bricolage Grotesque',sans-serif; font-size:11px; font-weight:800; color:var(--gold); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:5px; display:flex; align-items:center; gap:6px; }
+  .pr-insight-dim { font-family:'Poppins',sans-serif; font-size:11px; font-weight:800; color:var(--gold); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:5px; display:flex; align-items:center; gap:6px; }
   .pr-insight-pct { font-size:11px; font-weight:700; color:var(--sub); }
-  .pr-insight-from { font-size:12px; color:var(--gold); font-family:'Bricolage Grotesque',sans-serif; font-weight:600; margin-bottom:10px; opacity:0.75; }
+  .pr-insight-from { font-size:12px; color:var(--gold); font-family:'Poppins',sans-serif; font-weight:600; margin-bottom:10px; opacity:0.75; }
   .pr-insight-text { font-size:14px; color:var(--body); line-height:1.75; margin-bottom:12px; }
-  .pr-insight-action { background:rgba(245,166,35,0.06); border:1px solid rgba(245,166,35,0.18); border-radius:10px; padding:12px 14px; font-size:13.5px; color:var(--body); line-height:1.7; }
-  .pr-insight-action-label { display:block; font-family:'Bricolage Grotesque',sans-serif; font-size:9px; font-weight:800; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold); margin-bottom:6px; }
+  .pr-insight-action { background:rgba(0,176,255,0.06); border:1px solid rgba(0,176,255,0.18); border-radius:10px; padding:12px 14px; font-size:13.5px; color:var(--body); line-height:1.7; }
+  .pr-insight-action-label { display:block; font-family:'Poppins',sans-serif; font-size:9px; font-weight:800; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold); margin-bottom:6px; }
   .pr-bars { margin-bottom:20px; }
   /* Accordion toggle */
   .pr-insights-toggle { display:flex; align-items:center; justify-content:space-between; width:100%; background:var(--card2); border:1px solid var(--border2); border-radius:12px; padding:13px 16px; cursor:pointer; transition:all .2s; margin-top:4px; }
-  .pr-insights-toggle:hover { border-color:var(--gold-border); background:rgba(245,166,35,.05); }
-  .pr-insights-toggle-label { font-family:'Bricolage Grotesque',sans-serif; font-size:11px; font-weight:800; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold); display:flex; align-items:center; gap:8px; }
+  .pr-insights-toggle:hover { border-color:var(--gold-border); background:rgba(0,176,255,.05); }
+  .pr-insights-toggle-label { font-family:'Poppins',sans-serif; font-size:11px; font-weight:800; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold); display:flex; align-items:center; gap:8px; }
   .pr-insights-arrow { font-size:16px; color:var(--gold); transition:transform .3s cubic-bezier(.22,1,.36,1); flex-shrink:0; }
   .pr-insights-arrow.open { transform:rotate(180deg); }
   .pr-insights-body { overflow:hidden; max-height:0; opacity:0; transition:max-height .35s cubic-bezier(.22,1,.36,1), opacity .2s ease; padding-top:0; }
@@ -301,8 +349,8 @@
   /* Compare all options dropdown */
   .ao-wrap { margin-top:16px; margin-bottom:16px; }
   .ao-toggle { display:flex; align-items:center; justify-content:space-between; width:100%; background:var(--card2); border:1px solid var(--border2); border-radius:12px; padding:13px 16px; cursor:pointer; transition:all .2s; }
-  .ao-toggle:hover { border-color:var(--gold-border); background:rgba(245,166,35,.05); }
-  .ao-toggle-label { font-family:'Bricolage Grotesque',sans-serif; font-size:11px; font-weight:800; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold); }
+  .ao-toggle:hover { border-color:var(--gold-border); background:rgba(0,176,255,.05); }
+  .ao-toggle-label { font-family:'Poppins',sans-serif; font-size:11px; font-weight:800; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold); }
   .ao-arrow { font-size:16px; color:var(--gold); transition:transform .3s cubic-bezier(.22,1,.36,1); flex-shrink:0; }
   .ao-arrow.open { transform:rotate(180deg); }
   .ao-body { overflow:hidden; max-height:0; opacity:0; transition:max-height .35s cubic-bezier(.22,1,.36,1), opacity .2s ease; padding-top:0; }
@@ -310,45 +358,45 @@
   .sn-row { display:flex; align-items:flex-start; gap:8px; margin-bottom:10px; flex-wrap:wrap; }
   .sn-text { font-size:13px; color:var(--body); line-height:1.6; flex:1; min-width:150px; padding-top:3px; }
   .ao-item { border:1px solid var(--border2); border-radius:14px; padding:16px; margin-bottom:10px; }
-  .ao-item-chosen { border-color:var(--gold-border); background:rgba(245,166,35,.04); }
+  .ao-item-chosen { border-color:var(--gold-border); background:rgba(0,176,255,.04); }
   .ao-item-header { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
-  .ao-item-title { font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:700; color:var(--body); }
+  .ao-item-title { font-family:'Poppins',sans-serif; font-size:13px; font-weight:700; color:var(--body); }
   .ao-chosen-tag { background:var(--gold-dim); color:var(--gold); font-size:10px; font-weight:800; letter-spacing:1px; text-transform:uppercase; padding:3px 8px; border-radius:99px; }
   /* Share button */
-  .share-btn { display:inline-flex; align-items:center; gap:8px; background:var(--card); border:1px solid var(--border2); color:var(--body); font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:700; padding:10px 20px; border-radius:100px; cursor:pointer; transition:all .2s; margin-top:16px; }
+  .share-btn { display:inline-flex; align-items:center; gap:8px; background:var(--card); border:1px solid var(--border2); color:var(--body); font-family:'Poppins',sans-serif; font-size:13px; font-weight:700; padding:10px 20px; border-radius:100px; cursor:pointer; transition:all .2s; margin-top:16px; }
   .share-btn:hover { border-color:var(--gold-border); color:var(--gold); }
   /* Share modal */
   .share-modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); backdrop-filter:blur(6px); z-index:100; align-items:flex-end; justify-content:center; padding:0; }
   .share-modal-overlay.vis { display:flex; }
-  .share-modal-box { background:#111520; border:1px solid rgba(255,255,255,0.13); border-radius:24px 24px 0 0; padding:28px 22px 40px; width:100%; max-width:480px; animation:slideUp .3s cubic-bezier(.22,1,.36,1); }
+  .share-modal-box { background:rgba(0,4,55,0.92); backdrop-filter:blur(32px); -webkit-backdrop-filter:blur(32px); border:1px solid rgba(255,255,255,0.12); border-radius:24px 24px 0 0; padding:28px 22px 40px; width:100%; max-width:480px; animation:slideUp .3s cubic-bezier(.22,1,.36,1); }
   @keyframes slideUp { from{transform:translateY(100%);opacity:0} to{transform:translateY(0);opacity:1} }
-  .share-modal-title { font-family:'Bricolage Grotesque',sans-serif; font-size:18px; font-weight:800; margin-bottom:6px; }
+  .share-modal-title { font-family:'Poppins',sans-serif; font-size:18px; font-weight:800; margin-bottom:6px; }
   .share-modal-sub { font-size:14px; color:var(--body); margin-bottom:24px; }
   .share-options { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
   .share-option { display:flex; flex-direction:column; align-items:center; gap:8px; background:var(--card2); border:1px solid var(--border); border-radius:16px; padding:18px 12px; cursor:pointer; transition:all .2s; border:1px solid var(--border2); }
-  .share-option:hover { border-color:var(--gold-border); background:rgba(245,166,35,.05); }
+  .share-option:hover { border-color:var(--gold-border); background:rgba(0,176,255,.05); }
   .share-option-icon { font-size:28px; line-height:1; }
-  .share-option-label { font-family:'Bricolage Grotesque',sans-serif; font-size:12px; font-weight:700; color:var(--body); text-align:center; }
-  .share-close { width:100%; background:transparent; border:1px solid var(--border2); color:var(--sub); font-family:'Bricolage Grotesque',sans-serif; font-size:14px; font-weight:700; padding:14px; border-radius:100px; cursor:pointer; transition:all .2s; }
+  .share-option-label { font-family:'Poppins',sans-serif; font-size:12px; font-weight:700; color:var(--body); text-align:center; }
+  .share-close { width:100%; background:transparent; border:1px solid var(--border2); color:var(--sub); font-family:'Poppins',sans-serif; font-size:14px; font-weight:700; padding:14px; border-radius:100px; cursor:pointer; transition:all .2s; }
   .share-close:hover { color:var(--text); border-color:var(--border2); }
-  .share-toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:var(--gold); color:#07090d; font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:700; padding:12px 22px; border-radius:100px; z-index:200; opacity:0; pointer-events:none; transition:opacity .3s; white-space:nowrap; }
+  .share-toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:var(--gold); color:#07090d; font-family:'Poppins',sans-serif; font-size:13px; font-weight:700; padding:12px 22px; border-radius:100px; z-index:200; opacity:0; pointer-events:none; transition:opacity .3s; white-space:nowrap; }
   .pr-br { margin-bottom:10px; }
   .pr-bl { display:flex; justify-content:space-between; font-size:12px; margin-bottom:5px; }
   .pr-bl-name { color:var(--sub); }
-  .pr-bl-pct { color:var(--gold); font-weight:700; font-family:'Bricolage Grotesque',sans-serif; }
+  .pr-bl-pct { color:var(--gold); font-weight:700; font-family:'Poppins',sans-serif; }
   .pr-track { height:6px; background:rgba(255,255,255,.06); border-radius:100px; overflow:hidden; }
   .pr-fill { height:100%; background:linear-gradient(90deg, var(--gold), var(--gold-l)); border-radius:100px; width:0%; transition:width 1s cubic-bezier(.4,0,.2,1); }
   .final-cta { text-align:center; padding-top:4px; }
 
   /* ─── MULTIPLAYER ─── */
   .mp-screen-inner { flex:1; display:flex; flex-direction:column; padding:28px 22px 52px; }
-  .mp-code-big { font-family:'Bricolage Grotesque',sans-serif; font-size:52px; font-weight:800; color:var(--gold); letter-spacing:6px; text-align:center; padding:20px; background:var(--gold-dim); border:2px solid var(--gold-border); border-radius:20px; margin:12px 0 16px; }
+  .mp-code-big { font-family:'Poppins',sans-serif; font-size:52px; font-weight:800; color:var(--gold); letter-spacing:8px; text-align:center; padding:20px; background:rgba(0,176,255,.07); backdrop-filter:blur(12px); border:2px solid rgba(0,176,255,.32); border-radius:20px; margin:12px 0 16px; box-shadow:0 0 40px rgba(0,176,255,.15), 0 0 0 1px rgba(0,176,255,.08) inset; }
   .mp-instr { font-size:14px; color:var(--body); line-height:1.65; text-align:center; margin-bottom:20px; }
-  .mp-player-chip { display:flex; align-items:center; gap:10px; padding:12px 16px; background:var(--card); border:1px solid var(--border); border-radius:12px; margin-bottom:8px; animation:slideIn .3s ease both; }
-  .mp-chip-name { font-family:'Bricolage Grotesque',sans-serif; font-size:15px; font-weight:700; }
+  .mp-player-chip { display:flex; align-items:center; gap:10px; padding:12px 16px; background:var(--card); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border:1px solid rgba(255,255,255,.09); border-radius:12px; margin-bottom:8px; animation:slideIn .3s ease both; }
+  .mp-chip-name { font-family:'Poppins',sans-serif; font-size:15px; font-weight:700; }
   .mp-chip-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
-  .mp-join-input { width:100%; background:var(--card); border:1px solid var(--border2); color:var(--text); font-family:'Bricolage Grotesque',sans-serif; font-size:28px; font-weight:800; padding:16px; border-radius:12px; outline:none; transition:border-color .2s; text-align:center; letter-spacing:5px; text-transform:uppercase; margin-bottom:10px; }
-  .mp-join-input::placeholder { font-size:15px; letter-spacing:0; font-weight:400; font-family:'Plus Jakarta Sans',sans-serif; color:var(--sub); text-transform:none; }
+  .mp-join-input { width:100%; background:var(--card); border:1px solid var(--border2); color:var(--text); font-family:'Poppins',sans-serif; font-size:28px; font-weight:800; padding:16px; border-radius:12px; outline:none; transition:border-color .2s; text-align:center; letter-spacing:5px; text-transform:uppercase; margin-bottom:10px; }
+  .mp-join-input::placeholder { font-size:15px; letter-spacing:0; font-weight:400; font-family:'Poppins',sans-serif; color:var(--sub); text-transform:none; }
   .mp-join-input:focus { border-color:var(--gold-border); }
   .mp-wait-center { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:40px 24px; gap:10px; }
   /* QR code */
@@ -358,9 +406,9 @@
   #qr-overlay { position:fixed; inset:0; background:rgba(0,0,0,.88); backdrop-filter:blur(12px); z-index:200; display:none; align-items:center; justify-content:center; flex-direction:column; gap:16px; }
   #qr-overlay.vis { display:flex; }
   .mp-wait-emoji { font-size:52px; margin-bottom:6px; }
-  .mp-wait-heading { font-family:'Bricolage Grotesque',sans-serif; font-size:26px; font-weight:700; }
+  .mp-wait-heading { font-family:'Poppins',sans-serif; font-size:26px; font-weight:700; }
   .mp-wait-sub { font-size:15px; color:var(--body); line-height:1.65; max-width:260px; }
-  .mp-wait-code { font-family:'Bricolage Grotesque',sans-serif; font-size:13px; font-weight:700; color:var(--gold); margin-top:16px; padding:8px 18px; background:var(--gold-dim); border:1px solid var(--gold-border); border-radius:100px; }
+  .mp-wait-code { font-family:'Poppins',sans-serif; font-size:13px; font-weight:700; color:var(--gold); margin-top:16px; padding:8px 18px; background:var(--gold-dim); border:1px solid var(--gold-border); border-radius:100px; }
   .splash-divider { width:100%; height:1px; background:var(--border); margin:4px 0; }
 
   /* ─── ACCESSIBILITY ─── */
@@ -546,35 +594,35 @@
     <div class="topbar-space"></div>
   </div>
   <div class="page-inner">
-    <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-size:26px;font-weight:700;margin-bottom:8px">How long do you have?</h2>
+    <h2 style="font-family:'Poppins',sans-serif;font-size:26px;font-weight:700;margin-bottom:8px">How long do you have?</h2>
     <p style="font-size:15px;color:var(--body);line-height:1.65;margin-bottom:24px">Choose a mode based on your session time. All modes use a different random selection of scenarios each game.</p>
     <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px">
       <div onclick="startGameWithCount(5)" style="background:var(--card);border:1px solid var(--border2);border-radius:18px;padding:20px;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--gold-border)'" onmouseout="this.style.borderColor='var(--border2)'">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
           <span style="font-size:24px">&#x26A1;</span>
-          <div><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:700">Quick Round</div><div style="font-size:13px;color:var(--gold)">5 scenarios &middot; ~20 min</div></div>
+          <div><div style="font-family:'Poppins',sans-serif;font-size:18px;font-weight:700">Quick Round</div><div style="font-size:13px;color:var(--gold)">5 scenarios &middot; ~20 min</div></div>
         </div>
         <div style="font-size:13px;color:var(--body);line-height:1.6">Good for a warmup, a short break, or playing for the first time.</div>
       </div>
       <div onclick="startGameWithCount(8)" style="background:var(--card);border:1px solid var(--border2);border-radius:18px;padding:20px;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--gold-border)'" onmouseout="this.style.borderColor='var(--border2)'">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
           <span style="font-size:24px">&#x1F3AF;</span>
-          <div><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:700">Short Game</div><div style="font-size:13px;color:var(--gold)">8 scenarios &middot; ~35 min</div></div>
+          <div><div style="font-family:'Poppins',sans-serif;font-size:18px;font-weight:700">Short Game</div><div style="font-size:13px;color:var(--gold)">8 scenarios &middot; ~35 min</div></div>
         </div>
         <div style="font-size:13px;color:var(--body);line-height:1.6">Good for a team lunch or short workshop. Covers all four signals.</div>
       </div>
       <div onclick="startGameWithCount(12)" style="background:var(--card);border:1px solid var(--border2);border-radius:18px;padding:20px;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--gold-border)'" onmouseout="this.style.borderColor='var(--border2)'">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
           <span style="font-size:24px">&#x1F3C6;</span>
-          <div><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:700">Long Game</div><div style="font-size:13px;color:var(--gold)">12 scenarios &middot; ~55 min</div></div>
+          <div><div style="font-family:'Poppins',sans-serif;font-size:18px;font-weight:700">Long Game</div><div style="font-size:13px;color:var(--gold)">12 scenarios &middot; ~55 min</div></div>
         </div>
         <div style="font-size:13px;color:var(--body);line-height:1.6">For a longer leadership session. A broader look at all four signals.</div>
       </div>
       <div onclick="startGameWithCount(15)" style="background:var(--card);border:1px solid var(--gold-border);border-radius:18px;padding:20px;cursor:pointer;transition:all .2s;position:relative" onmouseover="this.style.background='var(--card2)'" onmouseout="this.style.background='var(--card)'">
-        <div style="position:absolute;top:-1px;right:16px;font-family:'Bricolage Grotesque',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--bg);background:var(--gold);padding:4px 10px;border-radius:0 0 8px 8px">RECOMMENDED</div>
+        <div style="position:absolute;top:-1px;right:16px;font-family:'Poppins',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--bg);background:var(--gold);padding:4px 10px;border-radius:0 0 8px 8px">RECOMMENDED</div>
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
           <span style="font-size:24px">&#x1F3AA;</span>
-          <div><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:700">The Full Works</div><div style="font-size:13px;color:var(--gold)">15 scenarios &middot; ~90 min</div></div>
+          <div><div style="font-family:'Poppins',sans-serif;font-size:18px;font-weight:700">The Full Works</div><div style="font-size:13px;color:var(--gold)">15 scenarios &middot; ~90 min</div></div>
         </div>
         <div style="font-size:13px;color:var(--body);line-height:1.6">Every scenario including Alaya-specific situations. The complete leadership experience.</div>
       </div>
@@ -647,11 +695,11 @@
           <circle cx="45" cy="45" r="40" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="5"/>
           <circle id="timer-prog" cx="45" cy="45" r="40" fill="none" stroke="#f5a623" stroke-width="5" stroke-dasharray="283" stroke-dashoffset="0" stroke-linecap="round" style="transition:stroke-dashoffset .5s linear"/>
         </svg>
-        <div id="timer-num" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:800;color:#f5a623">2:30</div>
+        <div id="timer-num" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-size:18px;font-weight:800;color:#f5a623">2:30</div>
       </div>
     </div>
     <div class="eyebrow" id="discuss-tag" style="margin-bottom:10px"></div>
-    <h3 id="discuss-heading" style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:700;line-height:1.2;margin-bottom:12px"></h3>
+    <h3 id="discuss-heading" style="font-family:'Poppins',sans-serif;font-size:20px;font-weight:700;line-height:1.2;margin-bottom:12px"></h3>
     <p id="discuss-situation" style="font-size:14.5px;color:var(--body);line-height:1.7;margin-bottom:16px"></p>
     <div style="background:var(--card);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:0 14px 14px 0;padding:16px 18px;margin-bottom:14px">
       <p id="discuss-prompt" style="font-size:16px;color:var(--text);line-height:1.75;font-style:italic"></p>
@@ -659,11 +707,11 @@
     <div id="discuss-recap" style="margin-bottom:14px"></div>
     <div id="discuss-not-chosen" style="margin-bottom:14px"></div>
     <div style="background:var(--gold-dim);border:1px solid var(--gold-border);border-radius:12px;padding:14px 16px;margin-bottom:14px">
-      <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:6px">Hand on heart</div>
+      <div style="font-family:'Poppins',sans-serif;font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:6px">Hand on heart</div>
       <p style="font-size:14px;color:var(--body);line-height:1.65">Is this what you would actually do &#8212; or what you know you should do?</p>
     </div>
     <div id="discuss-split" style="display:none;background:var(--card2);border:1px solid var(--border2);border-radius:12px;padding:14px 16px;margin-bottom:20px">
-      <div style="font-family:'Bricolage Grotesque',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--sub);margin-bottom:6px">You did not all see it the same way</div>
+      <div style="font-family:'Poppins',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--sub);margin-bottom:6px">You did not all see it the same way</div>
       <p id="discuss-split-text" style="font-size:13.5px;color:var(--body);line-height:1.65"></p>
     </div>
     <div style="display:flex;gap:10px;flex-shrink:0;margin-top:auto;padding-top:16px">
@@ -751,7 +799,7 @@
     <div class="mp-code-big" id="hl-code">----</div>
     <div style="text-align:center;margin:12px 0 8px">
       <div id="hl-qr" onclick="openQROverlay()" title="Tap to enlarge"></div>
-      <p style="font-size:11px;color:var(--sub);margin-top:8px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;letter-spacing:2px;text-transform:uppercase;">Tap to enlarge · scan to join</p>
+      <p style="font-size:11px;color:var(--sub);margin-top:8px;font-family:'Poppins',sans-serif;font-weight:700;letter-spacing:2px;text-transform:uppercase;">Tap to enlarge · scan to join</p>
     </div>
     <p class="mp-instr">Players scan the QR with their camera to join instantly — or open this site and tap <strong style="color:var(--text)">Join a Game</strong> and enter the code manually.</p>
     <div class="eyebrow" style="margin-bottom:10px">Players in room</div>
@@ -805,7 +853,7 @@
   <div class="game-bar">
     <div class="gb-top">
       <span class="gb-label" id="pg-label">Scenario 1</span>
-      <span id="pg-player-name" style="font-family:'Bricolage Grotesque',sans-serif;font-size:12px;font-weight:700;padding:4px 12px;border-radius:100px;border:1px solid var(--gold-border);background:var(--gold-dim);color:var(--gold)"></span>
+      <span id="pg-player-name" style="font-family:'Poppins',sans-serif;font-size:12px;font-weight:700;padding:4px 12px;border-radius:100px;border:1px solid var(--gold-border);background:var(--gold-dim);color:var(--gold)"></span>
     </div>
     <div class="prog-track"><div class="prog-fill" id="pg-prog-fill" style="width:0%"></div></div>
   </div>
@@ -817,11 +865,11 @@
 <div id="quit-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);z-index:100;align-items:center;justify-content:center;padding:24px;">
   <div style="background:#0f1421;border:1px solid rgba(255,255,255,0.13);border-radius:20px;padding:28px 24px;max-width:320px;width:100%;text-align:center;">
     <div style="font-size:36px;margin-bottom:14px;">⚠️</div>
-    <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:700;margin-bottom:10px;color:#eef1ff;">Quit the game?</h3>
+    <h3 style="font-family:'Poppins',sans-serif;font-size:20px;font-weight:700;margin-bottom:10px;color:#eef1ff;">Quit the game?</h3>
     <p style="font-size:14px;color:#ced4e0;line-height:1.65;margin-bottom:24px;">All progress and scores will be lost. This can't be undone.</p>
     <div style="display:flex;flex-direction:column;gap:10px;">
-      <button onclick="doQuit()" style="background:#f5a623;color:#07090d;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:15px;padding:14px;border-radius:100px;border:none;cursor:pointer;">Yes, quit</button>
-      <button onclick="closeQuitModal()" style="background:transparent;color:#9ca3af;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:14px;padding:12px;border-radius:100px;border:1px solid rgba(255,255,255,0.13);cursor:pointer;">Keep playing</button>
+      <button onclick="doQuit()" style="background:#f5a623;color:#07090d;font-family:'Poppins',sans-serif;font-weight:700;font-size:15px;padding:14px;border-radius:100px;border:none;cursor:pointer;">Yes, quit</button>
+      <button onclick="closeQuitModal()" style="background:transparent;color:#9ca3af;font-family:'Poppins',sans-serif;font-weight:700;font-size:14px;padding:12px;border-radius:100px;border:1px solid rgba(255,255,255,0.13);cursor:pointer;">Keep playing</button>
     </div>
   </div>
 </div>
@@ -831,13 +879,13 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 <!-- QR overlay — fullscreen tap-to-enlarge -->
 <div id="qr-overlay" onclick="closeQROverlay()">
-  <p style="font-family:'Bricolage Grotesque',sans-serif;font-size:13px;font-weight:700;color:var(--gold);letter-spacing:3px;text-transform:uppercase;" id="qr-overlay-code"></p>
+  <p style="font-family:'Poppins',sans-serif;font-size:13px;font-weight:700;color:var(--gold);letter-spacing:3px;text-transform:uppercase;" id="qr-overlay-code"></p>
   <div id="qr-overlay-inner" style="background:#fff;padding:16px;border-radius:16px;"></div>
-  <p style="font-size:13px;color:rgba(255,255,255,.45);font-family:'Plus Jakarta Sans',sans-serif;margin-top:4px;">Tap anywhere to close</p>
+  <p style="font-size:13px;color:rgba(255,255,255,.45);font-family:'Poppins',sans-serif;margin-top:4px;">Tap anywhere to close</p>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="data.js?v=29"></script>
-<script src="script.js?v=48"></script>
+<script src="script.js?v=49"></script>
 </body>
 </html>
