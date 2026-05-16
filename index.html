@@ -281,7 +281,7 @@
   .rv-heading { font-family:'Poppins',sans-serif; font-size:32px; font-weight:800; line-height:1.05; letter-spacing:-0.5px; margin-bottom:8px; }
   .rv-sub { font-size:14px; color:var(--sub); margin-bottom:28px; line-height:1.5; letter-spacing:0.2px; }
   .rv-cards { display:flex; flex-direction:column; gap:12px; margin-bottom:28px; }
-  .rv-card { display:flex; align-items:flex-start; gap:16px; background:var(--card); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,.09); border-radius:var(--r-card); padding:20px 18px; animation:revealIn .45s cubic-bezier(.22,1,.36,1) both; box-shadow:0 6px 40px rgba(0,0,60,.5), 0 0 0 1px rgba(255,255,255,.04) inset; }
+  .rv-card { display:flex; align-items:flex-start; gap:16px; background:var(--card); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,.09); border-radius:var(--r-card); padding:20px 18px; box-shadow:0 6px 40px rgba(0,0,60,.5), 0 0 0 1px rgba(255,255,255,.04) inset; }
   .rv-player-info { flex:1; min-width:0; }
   .rv-header-row { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
   .rv-pname { font-family:'Poppins',sans-serif; font-size:16px; font-weight:700; }
@@ -322,7 +322,7 @@
   .final-title span { color:var(--gold); }
   .final-sub { font-size:15px; color:var(--body); margin:0 auto; line-height:1.65; }
   .final-body { padding:26px 22px 52px; flex:1; }
-  .pr-card { background:var(--card); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); border:1px solid rgba(0,176,255,.18); border-radius:var(--r-hero); padding:26px 22px; margin-bottom:16px; animation:fadeUp .45s cubic-bezier(.22,1,.36,1) both; box-shadow:0 8px 48px rgba(0,0,60,.55), 0 0 0 1px rgba(255,255,255,.04) inset; }
+  .pr-card { background:var(--card); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); border:1px solid rgba(0,176,255,.18); border-radius:var(--r-hero); padding:26px 22px; margin-bottom:16px; box-shadow:0 8px 48px rgba(0,0,60,.55), 0 0 0 1px rgba(255,255,255,.04) inset; }
   .pr-header { display:flex; align-items:center; gap:10px; margin-bottom:20px; }
   .pr-dot { width:12px; height:12px; border-radius:50%; flex-shrink:0; }
   .pr-name { font-family:'Poppins',sans-serif; font-size:17px; font-weight:700; flex:1; }
@@ -385,7 +385,7 @@
   .pr-bl-name { color:var(--sub); }
   .pr-bl-pct { color:var(--gold); font-weight:700; font-family:'Poppins',sans-serif; }
   .pr-track { height:6px; background:rgba(255,255,255,.06); border-radius:100px; overflow:hidden; }
-  .pr-fill { height:100%; background:linear-gradient(90deg, var(--gold), var(--gold-l)); border-radius:100px; width:0%; transition:width 1s cubic-bezier(.4,0,.2,1); }
+  .pr-fill { height:100%; background:linear-gradient(90deg, var(--gold), var(--gold-l)); border-radius:100px; width:0%; }
   .final-cta { text-align:center; padding-top:4px; }
 
   /* ─── MULTIPLAYER ─── */
@@ -886,6 +886,152 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="data.js?v=29"></script>
-<script src="script.js?v=49"></script>
+<script src="script.js?v=50"></script>
+
+<!-- ── GSAP — professional animation engine (vanilla JS, no framework) ── -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+(function () {
+  'use strict';
+  const E  = 'power3.out';
+  const EB = 'back.out(1.5)';
+
+  /* ── helpers ─────────────────────────────────────────────── */
+  function q(sel, ctx) { return Array.from((ctx || document).querySelectorAll(sel)); }
+
+  /* ── SPLASH entrance (fires once — splash is already .active on load) ── */
+  function animateSplash() {
+    const tl = gsap.timeline({ delay: 0.1 });
+    tl.from('.splash-pill',          { opacity:0, y:-20, duration:.5, ease:E })
+      .from('.splash-title',         { opacity:0, y:30,  duration:.65, ease:E },  '-=.32')
+      .from('.splash-sub',           { opacity:0, y:18,  duration:.5,  ease:E },  '-=.32')
+      .from('.dim-tag',              { opacity:0, y:14, scale:.9, duration:.4, ease:E, stagger:.07 }, '-=.25')
+      .from('.splash-actions .btn',  { opacity:0, y:16, duration:.45, ease:E, stagger:.1 }, '-=.18')
+      .from('.splash-tagline',       { opacity:0, duration:.4 }, '-=.08');
+  }
+
+  /* ── Primary CTA breathing glow pulse ────────────────────── */
+  function startCTAGlow() {
+    gsap.to('.btn-gold', {
+      boxShadow: '0 16px 56px rgba(0,176,255,.65), 0 4px 24px rgba(0,176,255,.35)',
+      duration: 2, repeat: -1, yoyo: true, ease: 'power1.inOut'
+    });
+  }
+
+  /* ── Reveal screen ───────────────────────────────────────── */
+  function animateReveal() {
+    gsap.from('.rv-heading', { opacity:0, y:24, duration:.5, ease:E, delay:.05 });
+    gsap.from('.rv-sub',     { opacity:0, y:16, duration:.4, ease:E, delay:.14 });
+    setTimeout(function () {
+      var cards = q('.rv-card');
+      if (cards.length) gsap.from(cards, { opacity:0, y:36, scale:.93, duration:.6, ease:EB, stagger:.12 });
+      var stat = document.querySelector('.rv-stat');
+      if (stat) gsap.from(stat, { opacity:0, y:18, duration:.45, ease:E, delay:.35 });
+      var nextBtn = document.querySelector('#reveal .next-btn, #reveal .btn');
+      if (nextBtn) gsap.from(nextBtn, { opacity:0, y:12, duration:.4, ease:E, delay:.5 });
+    }, 60);
+  }
+
+  /* ── Final / Results screen ──────────────────────────────── */
+  function animateFinal() {
+    gsap.from('.final-title', { opacity:0, y:28, duration:.65, ease:E, delay:.08 });
+    gsap.from('.final-sub',   { opacity:0, y:18, duration:.5,  ease:E, delay:.2  });
+    setTimeout(function () {
+      var cards = q('.pr-card');
+      if (cards.length) {
+        gsap.from(cards, { opacity:0, y:48, scale:.94, duration:.7, ease:EB, stagger:.2, delay:.05 });
+        /* Score bars fill after cards land */
+        setTimeout(function () {
+          q('.pr-fill').forEach(function (fill) {
+            var target = fill.style.width || '0%';
+            gsap.fromTo(fill, { width:'0%' }, { width:target, duration:1.4, ease:'power2.out' });
+          });
+        }, 550);
+      }
+    }, 80);
+  }
+
+  /* ── Consequence screen ──────────────────────────────────── */
+  function animateConsequence() {
+    gsap.from('.cq-heading', { opacity:0, y:22, duration:.5, ease:E, delay:.05 });
+    setTimeout(function () {
+      var blocks = q('.cq-outcome-block');
+      if (blocks.length) gsap.from(blocks, { opacity:0, y:28, duration:.55, ease:E, stagger:.14, delay:.05 });
+    }, 60);
+  }
+
+  /* ── Scenario / Pick screen ──────────────────────────────── */
+  function animateGame() {
+    gsap.from('.game-bar', { opacity:0, y:-22, duration:.4, ease:E });
+    setTimeout(function () {
+      gsap.from('.s-heading', { opacity:0, y:20, duration:.45, ease:E });
+      gsap.from('.s-box',     { opacity:0, y:14, duration:.4,  ease:E, delay:.09 });
+      var btns = q('.c-btn');
+      if (btns.length) gsap.from(btns, { opacity:0, x:-20, duration:.45, ease:E, stagger:.09, delay:.15 });
+    }, 55);
+  }
+
+  /* ── Tutorial ────────────────────────────────────────────── */
+  function animateTutorial() {
+    gsap.from('.ghost-num',   { opacity:0, scale:1.3, duration:.55, ease:E, delay:.05 });
+    gsap.from('.tut-heading', { opacity:0, y:20, duration:.5, ease:E, delay:.12 });
+    gsap.from('.tut-text',    { opacity:0, y:14, duration:.4, ease:E, stagger:.08, delay:.2 });
+  }
+
+  /* ── Add Players ─────────────────────────────────────────── */
+  function animateAddPlayers() {
+    gsap.from('.ap-heading', { opacity:0, y:20, duration:.45, ease:E, delay:.05 });
+    gsap.from('.ap-sub',     { opacity:0, y:14, duration:.4,  ease:E, delay:.12 });
+    gsap.from('.p-row',      { opacity:0, x:-16, duration:.4, ease:E, stagger:.07, delay:.2 });
+  }
+
+  /* ── Multiplayer Host/Join ───────────────────────────────── */
+  function animateMP() {
+    gsap.from('.mp-code-big', { opacity:0, scale:.88, duration:.6, ease:EB, delay:.1 });
+    gsap.from('.mp-instr',    { opacity:0, y:14, duration:.4, ease:E, delay:.28 });
+    /* Glow pulse on room code */
+    gsap.to('.mp-code-big', {
+      boxShadow:'0 0 60px rgba(0,176,255,.5), 0 0 0 2px rgba(0,176,255,.4)',
+      duration:2, repeat:-1, yoyo:true, ease:'power1.inOut', delay:.5
+    });
+  }
+
+  /* ── Screen transition watcher ───────────────────────────── */
+  var screenMap = {
+    'reveal':       animateReveal,
+    'final':        animateFinal,
+    'consequence':  animateConsequence,
+    'game':         animateGame,
+    'tutorial':     animateTutorial,
+    'add-players':  animateAddPlayers,
+    'host-lobby':   animateMP,
+    'join-screen':  animateMP,
+  };
+
+  function watchScreens() {
+    var obs = new MutationObserver(function (mutations) {
+      mutations.forEach(function (m) {
+        var old = m.oldValue || '';
+        var wasActive = old.split(' ').indexOf('active') !== -1;
+        var isActive  = m.target.classList.contains('active');
+        if (!wasActive && isActive && screenMap[m.target.id]) {
+          setTimeout(function () { screenMap[m.target.id](); }, 22);
+        }
+      });
+    });
+    q('.screen').forEach(function (el) {
+      obs.observe(el, { attributes:true, attributeFilter:['class'], attributeOldValue:true });
+    });
+  }
+
+  /* ── Init ────────────────────────────────────────────────── */
+  function init() { animateSplash(); startCTAGlow(); watchScreens(); }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
 </body>
 </html>
