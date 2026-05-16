@@ -372,8 +372,11 @@
   .ao-item-title { font-family:'Poppins',sans-serif; font-size:13px; font-weight:700; color:var(--body); }
   .ao-chosen-tag { background:var(--gold-dim); color:var(--gold); font-size:10px; font-weight:800; letter-spacing:1px; text-transform:uppercase; padding:3px 8px; border-radius:99px; }
   /* Share button */
-  .share-btn { display:inline-flex; align-items:center; gap:8px; background:var(--card); border:1px solid var(--border2); color:var(--body); font-family:'Poppins',sans-serif; font-size:13px; font-weight:700; padding:10px 20px; border-radius:100px; cursor:pointer; transition:all .2s; margin-top:16px; }
-  .share-btn:hover { border-color:var(--gold-border); color:var(--gold); }
+  .share-btn { display:flex; align-items:center; gap:10px; width:100%; background:rgba(0,176,255,.06); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid rgba(0,176,255,.22); color:var(--text); font-family:'Poppins',sans-serif; font-size:14px; font-weight:700; padding:14px 20px; border-radius:14px; cursor:pointer; transition:all .25s; }
+  .share-btn:hover { border-color:rgba(0,176,255,.55); background:rgba(0,176,255,.10); box-shadow:0 0 24px rgba(0,176,255,.15); transform:translateY(-1px); color:var(--text); }
+  .share-btn-icon { font-size:20px; flex-shrink:0; }
+  .share-btn-label { flex:1; text-align:left; }
+  .share-btn-arrow { color:rgba(0,176,255,.55); font-size:16px; }
   /* Share modal */
   .share-modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); backdrop-filter:blur(6px); z-index:100; align-items:flex-end; justify-content:center; padding:0; }
   .share-modal-overlay.vis { display:flex; }
@@ -388,6 +391,21 @@
   .share-option-label { font-family:'Poppins',sans-serif; font-size:12px; font-weight:700; color:var(--body); text-align:center; }
   .share-close { width:100%; background:transparent; border:1px solid var(--border2); color:var(--sub); font-family:'Poppins',sans-serif; font-size:14px; font-weight:700; padding:14px; border-radius:100px; cursor:pointer; transition:all .2s; }
   .share-close:hover { color:var(--text); border-color:var(--border2); }
+  /* Play Again confirmation modal */
+  .pa-modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.78); backdrop-filter:blur(6px); z-index:100; align-items:flex-end; justify-content:center; padding:0; }
+  .pa-modal-overlay.vis { display:flex; }
+  .pa-modal-box { background:rgba(0,4,55,.94); backdrop-filter:blur(32px); -webkit-backdrop-filter:blur(32px); border:1px solid rgba(255,255,255,.11); border-top:2px solid rgba(255,0,101,.38); border-radius:24px 24px 0 0; padding:28px 22px 40px; width:100%; max-width:480px; animation:slideUp .3s cubic-bezier(.22,1,.36,1); }
+  .pa-modal-warn { font-size:34px; margin-bottom:8px; }
+  .pa-modal-title { font-family:'Poppins',sans-serif; font-size:19px; font-weight:800; margin-bottom:8px; color:var(--text); }
+  .pa-modal-sub { font-size:14px; color:var(--body); margin-bottom:20px; line-height:1.6; }
+  .pa-modal-saves { display:flex; flex-direction:column; gap:8px; margin-bottom:20px; }
+  .pa-save-btn { display:flex; align-items:center; gap:10px; background:rgba(0,176,255,.06); border:1px solid rgba(0,176,255,.22); color:var(--text); font-family:'Poppins',sans-serif; font-size:13px; font-weight:700; padding:12px 16px; border-radius:12px; cursor:pointer; transition:all .2s; width:100%; text-align:left; }
+  .pa-save-btn:hover { border-color:rgba(0,176,255,.50); background:rgba(0,176,255,.10); }
+  .pa-modal-actions { display:flex; flex-direction:column; gap:10px; }
+  .pa-keep-btn { width:100%; background:transparent; border:1px solid var(--border2); color:var(--body); font-family:'Poppins',sans-serif; font-size:15px; font-weight:700; padding:14px; border-radius:100px; cursor:pointer; transition:all .2s; }
+  .pa-keep-btn:hover { color:var(--text); border-color:rgba(255,255,255,.25); }
+  .pa-go-btn { width:100%; background:rgba(255,0,101,.10); border:1px solid rgba(255,0,101,.32); color:#ff4d8a; font-family:'Poppins',sans-serif; font-size:15px; font-weight:700; padding:14px; border-radius:100px; cursor:pointer; transition:all .2s; }
+  .pa-go-btn:hover { background:rgba(255,0,101,.20); border-color:rgba(255,0,101,.55); color:#ff79a8; }
   .share-toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%); background:var(--gold); color:#07090d; font-family:'Poppins',sans-serif; font-size:13px; font-weight:700; padding:12px 22px; border-radius:100px; z-index:200; opacity:0; pointer-events:none; transition:opacity .3s; white-space:nowrap; }
   .pr-br { margin-bottom:10px; }
   .pr-bl { display:flex; justify-content:space-between; font-size:12px; margin-bottom:5px; }
@@ -856,15 +874,15 @@
     <div class="eyebrow" style="margin-bottom:10px;">Results</div>
     <h2 class="final-title">Leadership<br><span>Profiles</span></h2>
     <p class="final-sub" id="final-sub">Here's what your choices revealed about each player.</p>
-    <div style="display:flex;flex-direction:column;gap:10px;align-items:center;margin-top:4px">
-      <button class="share-btn" onclick="openAllOutcomesShareModal()">📋 Share All Questions Outcomes</button>
-      <button class="share-btn" onclick="openShareModal()">📤 Share Final Results</button>
+    <div style="display:flex;flex-direction:column;gap:10px;align-items:stretch;width:100%;max-width:380px;margin:4px auto 0">
+      <button class="share-btn" onclick="openAllOutcomesShareModal()"><span class="share-btn-icon">📋</span><span class="share-btn-label">Share All Questions Outcomes</span><span class="share-btn-arrow">›</span></button>
+      <button class="share-btn" onclick="openShareModal()"><span class="share-btn-icon">📤</span><span class="share-btn-label">Share Final Results</span><span class="share-btn-arrow">›</span></button>
     </div>
   </div>
   <div class="final-body">
     <div id="final-cards"></div>
     <div class="final-cta">
-      <button class="btn btn-ghost" onclick="playAgain()">↩ Play Again</button>
+      <button class="btn btn-gold" onclick="confirmPlayAgain()">↩ Play Again</button>
     </div>
   </div>
 </div>
@@ -893,6 +911,23 @@
       </div>
     </div>
     <button class="share-close" onclick="closeShareModal()">Close</button>
+  </div>
+</div>
+
+<!-- PLAY AGAIN CONFIRM MODAL -->
+<div id="pa-modal" class="pa-modal-overlay" onclick="handlePAOverlayClick(event)">
+  <div class="pa-modal-box">
+    <div class="pa-modal-warn">⚠️</div>
+    <h3 class="pa-modal-title">Before you play again…</h3>
+    <p class="pa-modal-sub">All player scores and choices will be cleared. Save the results first so nothing is lost.</p>
+    <div class="pa-modal-saves">
+      <button class="pa-save-btn" onclick="openAllOutcomesShareModal()">📋 Save All Questions Outcomes</button>
+      <button class="pa-save-btn" onclick="openShareModal()">📤 Save Final Results</button>
+    </div>
+    <div class="pa-modal-actions">
+      <button class="pa-keep-btn" onclick="closePlayAgainModal()">← Keep Results</button>
+      <button class="pa-go-btn" onclick="closePlayAgainModal();playAgain()">Play Again Anyway →</button>
+    </div>
   </div>
 </div>
 
@@ -1001,7 +1036,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="data.js?v=29"></script>
-<script src="script.js?v=60"></script>
+<script src="script.js?v=61"></script>
 
 <!-- ── GSAP — professional animation engine (vanilla JS, no framework) ── -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>

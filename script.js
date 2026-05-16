@@ -1549,6 +1549,16 @@ function downloadWord() {
   showToast('✓ Word doc downloaded!');
 }
 
+function confirmPlayAgain() {
+  document.getElementById('pa-modal').classList.add('vis');
+}
+function closePlayAgainModal() {
+  document.getElementById('pa-modal').classList.remove('vis');
+}
+function handlePAOverlayClick(e) {
+  if (e.target === e.currentTarget) closePlayAgainModal();
+}
+
 function playAgain() {
   clearState();
   if (MP.active && MP.isHost) {
