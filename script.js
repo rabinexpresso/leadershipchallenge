@@ -512,11 +512,11 @@ function showDiscuss() {
     const chosenIdxs = new Set(S.roundChoices.map(rc => rc.choiceIdx));
     const unchosen = scenario.choices.map((c, i) => ({ c, i })).filter(x => !chosenIdxs.has(x.i));
     if (unchosen.length > 0) {
-      notChosen.innerHTML = '<div style="font-family:\'Bricolage Grotesque\',sans-serif;font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--sub);margin-bottom:8px">Nobody picked</div>'
+      notChosen.innerHTML = '<div style="font-family:\'Poppins\',sans-serif;font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:8px">Nobody picked</div>'
         + unchosen.map(({c}) =>
-          '<div style="display:flex;align-items:flex-start;gap:12px;background:transparent;border:1px dashed var(--border2);border-radius:10px;padding:10px 14px;margin-bottom:8px;opacity:.75">'
-          + '<div style="flex-shrink:0;width:28px;height:28px;border-radius:8px;background:var(--card2);color:var(--sub);font-family:\'Bricolage Grotesque\',sans-serif;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:14px">' + c.letter + '</div>'
-          + '<div style="flex:1;min-width:0;font-size:13px;color:var(--sub);line-height:1.5">' + c.text + '</div>'
+          '<div style="display:flex;align-items:flex-start;gap:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:10px 14px;margin-bottom:8px;">'
+          + '<div style="flex-shrink:0;width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,.07);color:rgba(255,255,255,.55);font-family:\'Poppins\',sans-serif;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:14px">' + c.letter + '</div>'
+          + '<div style="flex:1;min-width:0;font-size:13px;color:rgba(255,255,255,.65);line-height:1.5">' + c.text + '</div>'
           + '</div>').join('');
     } else {
       notChosen.innerHTML = '';
