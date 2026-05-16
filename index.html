@@ -72,7 +72,7 @@
     opacity:0.028; pointer-events:none; z-index:9998;
   }
 
-  .screen { display:none; flex-direction:column; min-height:100dvh; }
+  .screen { display:none; flex-direction:column; min-height:100dvh; overflow-x:hidden; }
   /* Laptop: centre and constrain width */
   /* ── Responsive layout ─────────────────────────────────── */
   /* ── Responsive layout ─────────────────────────────────────
@@ -186,7 +186,7 @@
 
   /* ─── TUTORIAL ─── */
   .tut-inner { flex:1; padding:24px 22px 32px; display:flex; flex-direction:column; overflow:hidden; }
-  .tut-slide { display:none; flex-direction:column; flex:1; overflow-y:auto; }
+  .tut-slide { display:none; flex-direction:column; flex:1; overflow-y:auto; overflow-x:hidden; }
   .tut-slide.active { display:flex; animation:fadeUp .3s ease; }
   .ghost-num { font-family:'Poppins',sans-serif; font-size:80px; font-weight:800; color:rgba(0,176,255,.09); line-height:1; margin-bottom:-18px; user-select:none; letter-spacing:-3px; }
   .tut-heading { font-family:'Poppins',sans-serif; font-size:26px; font-weight:700; line-height:1.15; margin-bottom:14px; }
@@ -1001,7 +1001,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="data.js?v=29"></script>
-<script src="script.js?v=58"></script>
+<script src="script.js?v=59"></script>
 
 <!-- ── GSAP — professional animation engine (vanilla JS, no framework) ── -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
