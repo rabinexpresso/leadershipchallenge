@@ -1907,9 +1907,9 @@ function renderPlayerGameScreen() {
 function submitPlayerAnswer(choiceIdx) {
   const scIdx = MP.scenarioOrder[MP.step];
   const choice = SCENARIOS[scIdx].choices[choiceIdx];
-  document.querySelectorAll('#player-game-body .c-btn').forEach((el, i) => {
-    el.classList.add(i === choiceIdx ? 'sel' : 'dim');
-  });
+  const pgBtns = document.querySelectorAll('#player-game-body .c-btn');
+  pgBtns.forEach((el, i) => { el.classList.add(i === choiceIdx ? 'sel' : 'dim'); });
+  if (pgBtns[choiceIdx]) fireShockwave(pgBtns[choiceIdx]);
   const playerRef = MP.gameRef.child('players/' + MP.playerId);
   playerRef.once('value', snap => {
     const p = snap.val() || {};
