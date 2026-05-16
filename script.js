@@ -346,6 +346,40 @@ function renderPickTurn(playerIdx) {
   startScenarioTimer();
 }
 
+/* ── Shockwave ripple on choice commit ─────────────────── */
+function fireShockwave(btnEl) {
+  if (!window.gsap) return;
+  var rect = btnEl.getBoundingClientRect();
+  var cx   = rect.left + rect.width  / 2;
+  var cy   = rect.top  + rect.height / 2;
+  var maxSize = Math.max(rect.width * 3, 220);
+  [
+    { color:'rgba(0,176,255,.85)', size:maxSize,        delay:0    },
+    { color:'rgba(0,176,255,.40)', size:maxSize * 1.38, delay:0.10 }
+  ].forEach(function(cfg) {
+    var sw = document.createElement('div');
+    document.body.appendChild(sw);
+    gsap.set(sw, {
+      position:'fixed', borderRadius:'50%',
+      border:'2px solid ' + cfg.color,
+      pointerEvents:'none', zIndex:50,
+      left:cx, top:cy, xPercent:-50, yPercent:-50,
+      width:10, height:10, opacity:1
+    });
+    gsap.to(sw, {
+      width:cfg.size, height:cfg.size, opacity:0,
+      duration:.72, delay:cfg.delay, ease:'power2.out',
+      onComplete:function(){ sw.parentNode && sw.parentNode.removeChild(sw); }
+    });
+  });
+  /* Flash glow on the selected card itself */
+  gsap.fromTo(btnEl,
+    { boxShadow:'0 0 0 2px rgba(0,176,255,.9), 0 0 40px rgba(0,176,255,.55)' },
+    { boxShadow:'0 0 0 0px rgba(0,176,255,0), 0 0 0px rgba(0,176,255,0)',
+      duration:.8, ease:'power2.out' }
+  );
+}
+
 function pick(choiceIdx) {
   const scIdx = S.scenarioOrder.length ? S.scenarioOrder[S.step] : S.step;
   const scenario = SCENARIOS[scIdx];
@@ -355,10 +389,10 @@ function pick(choiceIdx) {
   // Stop scenario timer when choice is made
   stopScenarioTimer();
 
-  // Visual feedback
-  document.querySelectorAll('.c-btn').forEach((el, i) => {
-    el.classList.add(i === choiceIdx ? 'sel' : 'dim');
-  });
+  // Visual feedback + shockwave
+  const btns = document.querySelectorAll('.c-btn');
+  btns.forEach((el, i) => { el.classList.add(i === choiceIdx ? 'sel' : 'dim'); });
+  if (btns[choiceIdx]) fireShockwave(btns[choiceIdx]);
 
   // Record choice + apply scores (reverse previous pick first if replaying)
   S.roundChoices.push({ playerIdx: S.pickerIdx, choiceIdx });

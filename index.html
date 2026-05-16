@@ -165,6 +165,15 @@
   .splash-title .hl { color:var(--gold); display:inline; }
   .splash-sub { font-size:15px; color:var(--body); line-height:1.7; max-width:280px; margin:0 auto 28px; font-weight:300; }
   .splash-tagline { font-family:'Poppins',sans-serif; font-size:10px; font-weight:600; letter-spacing:2.5px; text-transform:uppercase; color:var(--sub); margin-top:16px; }
+  /* ── Animated compass on splash ── */
+  .splash-compass { display:flex; justify-content:center; margin:0 auto 28px; }
+  .splash-compass svg { animation:compassGlow 4s ease-in-out infinite; }
+  @keyframes compassGlow {
+    0%,100% { filter:drop-shadow(0 0 8px rgba(0,176,255,.28)); }
+    50%      { filter:drop-shadow(0 0 26px rgba(0,176,255,.7)); }
+  }
+  .compass-ring-spin { animation:compassRingSpin 24s linear infinite; transform-origin:60px 60px; }
+  @keyframes compassRingSpin { to { transform:rotate(360deg); } }
   .dim-tags { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:40px; }
   /* Alaya brand-colour dimension tags */
   .dim-tag { font-size:13px; font-weight:500; padding:7px 14px; border-radius:100px; background:rgba(255,255,255,.04); border:1px solid var(--border); color:var(--body); backdrop-filter:blur(8px); }
@@ -515,6 +524,25 @@
 <div id="splash" class="screen active">
   <div class="splash-grid"></div>
   <div class="splash-pill">HLE / ALAYA · 2026</div>
+  <!-- Animated compass icon -->
+  <div class="splash-compass" aria-hidden="true">
+    <svg viewBox="0 0 120 120" width="88" height="88" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="60" cy="60" r="57" stroke="rgba(0,176,255,.10)" stroke-width="1"/>
+      <circle class="compass-ring-spin" cx="60" cy="60" r="51"
+              stroke="rgba(0,176,255,.22)" stroke-width="1" stroke-dasharray="4 10"/>
+      <circle cx="60" cy="60" r="44" fill="rgba(0,3,44,.78)" stroke="rgba(0,176,255,.28)" stroke-width="1.5"/>
+      <line x1="60" y1="17" x2="60" y2="25" stroke="rgba(0,176,255,.75)" stroke-width="2" stroke-linecap="round"/>
+      <line x1="60" y1="95" x2="60" y2="103" stroke="rgba(255,255,255,.18)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="17" y1="60" x2="25" y2="60" stroke="rgba(255,255,255,.18)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="95" y1="60" x2="103" y2="60" stroke="rgba(255,255,255,.18)" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M60 27 L63.5 57 L60 63 L56.5 57 Z" fill="#00b0ff" opacity="0.92"/>
+      <path d="M60 93 L63.5 63 L60 57 L56.5 63 Z" fill="rgba(255,255,255,.20)"/>
+      <circle cx="60" cy="60" r="6" fill="rgba(0,3,44,.95)" stroke="rgba(0,176,255,.55)" stroke-width="1.5"/>
+      <circle cx="60" cy="60" r="2.8" fill="#00b0ff" opacity="0.88"/>
+      <text x="60" y="13" text-anchor="middle" fill="rgba(0,176,255,.75)"
+            font-size="8" font-family="Poppins,sans-serif" font-weight="700">N</text>
+    </svg>
+  </div>
   <h1 class="splash-title">The <span class="hl">Leadership</span> Challenge</h1>
   <p class="splash-sub">15 real leadership situations.<br>No perfect answers. Just yours.</p>
   <div class="dim-tags">
@@ -973,7 +1001,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="data.js?v=29"></script>
-<script src="script.js?v=57"></script>
+<script src="script.js?v=58"></script>
 
 <!-- ── GSAP — professional animation engine (vanilla JS, no framework) ── -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -999,8 +1027,9 @@
   /* ── SPLASH entrance ─────────────────────────────────────── */
   /* Uses explicit delays (not chained timeline) — more reliable  */
   function animateSplash() {
-    safefrom('.splash-pill',         { opacity:0, y:-20, duration:.5,  ease:E, delay:.12 });
-    safefrom('.splash-title',        { opacity:0, y:30,  duration:.65, ease:E, delay:.28 });
+    safefrom('.splash-compass',      { opacity:0, scale:.72, duration:.65, ease:EB, delay:.05 });
+    safefrom('.splash-pill',         { opacity:0, y:-20, duration:.5,  ease:E, delay:.18 });
+    safefrom('.splash-title',        { opacity:0, y:30,  duration:.65, ease:E, delay:.34 });
     safefrom('.splash-sub',          { opacity:0, y:18,  duration:.5,  ease:E, delay:.50 });
     safefrom('.dim-tag',             { opacity:0, y:14, scale:.9, duration:.4, ease:E, stagger:.07, delay:.70 });
     safefrom('.splash-actions .btn', { opacity:0, y:16,  duration:.5,  ease:E, stagger:.1, delay:1.05 });
@@ -1032,33 +1061,66 @@
     }, 60);
   }
 
-  /* ── Final / Results screen ──────────────────────────────── */
+  /* ── Final / Results screen — cinematic reveal ───────────── */
   function animateFinal() {
-    safefrom('.final-title', { opacity:0, y:28, duration:.65, ease:E, delay:.08 });
-    safefrom('.final-sub',   { opacity:0, y:18, duration:.5,  ease:E, delay:.2  });
-    setTimeout(function () {
+    /* 1. Dark curtain flash — "lights off, spotlight on" */
+    var flash = document.createElement('div');
+    flash.style.cssText = 'position:fixed;inset:0;background:#000010;pointer-events:none;z-index:90;opacity:0;';
+    document.body.appendChild(flash);
+    gsap.to(flash, { opacity:.88, duration:.22, ease:'power2.in', onComplete:function() {
+      gsap.to(flash, { opacity:0, duration:.6, ease:'power2.out',
+        onComplete:function() { flash.parentNode && flash.parentNode.removeChild(flash); }
+      });
+    }});
+
+    /* 2. Title + sub enter after flash clears */
+    safefrom('.final-title', { opacity:0, y:30, scale:.95, duration:.75, ease:EB, delay:.38 });
+    safefrom('.final-sub',   { opacity:0, y:18, duration:.5,  ease:E,  delay:.62 });
+
+    /* 3. Cards + typewriter + bars */
+    setTimeout(function() {
       var cards = q('.pr-card');
-      if (cards.length) {
-        safefrom(cards, { opacity:0, y:48, scale:.94, duration:.7, ease:EB, stagger:.2, delay:.05 });
-        setTimeout(function () {
-          /* Score bars fill with GSAP */
-          q('.pr-fill').forEach(function (fill) {
-            var target = fill.style.width || '0%';
-            gsap.fromTo(fill, { width:'0%' }, { width:target, duration:1.4, ease:'power2.out' });
+      if (!cards.length) return;
+
+      /* Cards slide up with stagger */
+      safefrom(cards, { opacity:0, y:64, scale:.91, duration:.82, ease:EB, stagger:.26, delay:.05 });
+
+      /* Profile emoji pop-in after each card */
+      q('.pr-emoji').forEach(function(el, idx) {
+        safefrom([el], { opacity:0, scale:0, duration:.45, ease:'back.out(2)',
+          delay: 0.05 + idx * 0.26 + 0.55, clearProps:'opacity,transform,scale' });
+      });
+
+      /* Typewriter on the big profile name, starts after card is fully in */
+      q('.pr-profile').forEach(function(el, idx) {
+        var text = el.textContent;
+        el.textContent = '';
+        setTimeout(function() {
+          var j = 0;
+          (function type() {
+            if (j < text.length) { el.textContent += text[j++]; setTimeout(type, 36 + Math.random()*16); }
+          })();
+        }, (0.05 + idx * 0.26 + 0.95) * 1000);
+      });
+
+      /* Score bars + tickers after first card is visible */
+      setTimeout(function() {
+        q('.pr-fill').forEach(function(fill) {
+          var pct    = fill.getAttribute('data-pct');
+          var target = pct ? pct + '%' : (fill.style.width || '0%');
+          gsap.fromTo(fill, { width:'0%' }, { width:target, duration:1.6, ease:'power2.out' });
+        });
+        q('.pr-bl-pct').forEach(function(el) {
+          var raw = parseInt(el.textContent);
+          if (isNaN(raw) || raw === 0) return;
+          var obj = { v:0 };
+          el.textContent = '0%';
+          gsap.to(obj, { v:raw, ease:'power2.out', duration:1.6,
+            onUpdate:function() { el.textContent = Math.round(obj.v) + '%'; }
           });
-          /* Number ticker — counts percentage up from 0 */
-          q('.pr-bl-pct').forEach(function (el) {
-            var raw = parseInt(el.textContent);
-            if (isNaN(raw) || raw === 0) return;
-            var obj = { v: 0 };
-            el.textContent = '0%';
-            gsap.to(obj, { v:raw, ease:'power2.out', duration:1.4,
-              onUpdate: function() { el.textContent = Math.round(obj.v) + '%'; }
-            });
-          });
-        }, 600);
-      }
-    }, 80);
+        });
+      }, 870);
+    }, 100);
   }
 
   /* ── Consequence screen ──────────────────────────────────── */
