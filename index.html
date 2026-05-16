@@ -439,8 +439,8 @@
   /* 3 ── Cursor spotlight (follows mouse via JS CSS vars) ── */
   body::before {
     content:''; position:fixed; inset:0;
-    background:radial-gradient(650px circle at var(--mx,50%) var(--my,50%), rgba(0,176,255,.07), transparent 45%);
-    pointer-events:none; z-index:2;
+    background:radial-gradient(700px circle at var(--mx,50%) var(--my,50%), rgba(0,176,255,.11), transparent 45%);
+    pointer-events:none; z-index:40;
   }
 
   /* 4 ── Magic card inner glow — follows cursor inside each card ── */
@@ -471,7 +471,7 @@
 
   /* 6 ── Meteor / shooting-star streaks ── */
   .meteor-streak {
-    position:fixed; pointer-events:none; z-index:1;
+    position:fixed; pointer-events:none; z-index:40;
     height:1.5px; border-radius:100px;
     background:linear-gradient(90deg, rgba(0,176,255,.9), rgba(255,255,255,.75), rgba(66,219,102,.5), transparent);
     will-change:transform,opacity;
@@ -965,7 +965,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="data.js?v=29"></script>
-<script src="script.js?v=53"></script>
+<script src="script.js?v=54"></script>
 
 <!-- ── GSAP — professional animation engine (vanilla JS, no framework) ── -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
