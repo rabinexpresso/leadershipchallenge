@@ -411,6 +411,85 @@
   .mp-wait-code { font-family:'Poppins',sans-serif; font-size:13px; font-weight:700; color:var(--gold); margin-top:16px; padding:8px 18px; background:var(--gold-dim); border:1px solid var(--gold-border); border-radius:100px; }
   .splash-divider { width:100%; height:1px; background:var(--border); margin:4px 0; }
 
+  /* ══════════════════════════════════════════════════════════
+     ── PREMIUM $10K EFFECTS ─────────────────────────────────
+     ══════════════════════════════════════════════════════════ */
+
+  /* 1 ── Shimmer light sweep on primary CTA button ── */
+  @keyframes shimmerSweep { 0%{left:-150%} 100%{left:260%} }
+  .btn-gold::before {
+    content:''; position:absolute; top:0; left:-150%;
+    width:60%; height:100%;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.24),transparent);
+    transform:skewX(-20deg);
+    animation:shimmerSweep 3s cubic-bezier(.4,0,.6,1) infinite;
+    pointer-events:none; z-index:1;
+  }
+
+  /* 2 ── Flowing brand gradient on "Leadership" ── */
+  @keyframes gradientFlow { 0%{background-position:0% 50%} 100%{background-position:300% 50%} }
+  .splash-title .hl {
+    background:linear-gradient(135deg,#00b0ff 0%,#ff0065 28%,#42db66 56%,#ffc709 80%,#00b0ff 100%);
+    background-size:300% 100%;
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    background-clip:text;
+    animation:gradientFlow 5s linear infinite;
+  }
+
+  /* 3 ── Cursor spotlight (follows mouse via JS CSS vars) ── */
+  body::before {
+    content:''; position:fixed; inset:0;
+    background:radial-gradient(650px circle at var(--mx,50%) var(--my,50%), rgba(0,176,255,.07), transparent 45%);
+    pointer-events:none; z-index:2;
+  }
+
+  /* 4 ── Magic card inner glow — follows cursor inside each card ── */
+  .rv-card { position:relative; }
+  .rv-card::after {
+    content:''; position:absolute; inset:0; border-radius:inherit;
+    background:radial-gradient(circle at var(--gx,50%) var(--gy,50%), rgba(0,176,255,.16), transparent 65%);
+    pointer-events:none; opacity:0; transition:opacity .3s;
+  }
+  .rv-card:hover::after { opacity:1; }
+
+  .pr-card { position:relative; }
+  .pr-card::after {
+    content:''; position:absolute; inset:0; border-radius:inherit;
+    background:radial-gradient(circle at var(--gx,50%) var(--gy,50%), rgba(0,176,255,.13), transparent 65%);
+    pointer-events:none; opacity:0; transition:opacity .3s;
+  }
+  .pr-card:hover::after { opacity:1; }
+
+  /* 5 ── Choice button inner glow + enable pseudo-element ── */
+  .c-btn { position:relative; overflow:hidden; }
+  .c-btn::after {
+    content:''; position:absolute; inset:0; border-radius:inherit;
+    background:radial-gradient(circle at var(--gx,50%) var(--gy,50%), rgba(0,176,255,.12), transparent 60%);
+    pointer-events:none; opacity:0; transition:opacity .22s;
+  }
+  .c-btn:hover:not(.sel):not(.dim)::after { opacity:1; }
+
+  /* 6 ── Meteor / shooting-star streaks ── */
+  .meteor-streak {
+    position:fixed; pointer-events:none; z-index:1;
+    height:1.5px; border-radius:100px;
+    background:linear-gradient(90deg, rgba(0,176,255,.9), rgba(255,255,255,.75), rgba(66,219,102,.5), transparent);
+    will-change:transform,opacity;
+  }
+
+  /* 7 ── Border beam: pulsing glow border on pr-card ── */
+  @keyframes beamPulse {
+    0%,100% { box-shadow:0 8px 48px rgba(0,0,60,.55), 0 0 0 1px rgba(0,176,255,.12) inset; }
+    50%      { box-shadow:0 8px 48px rgba(0,0,60,.55), 0 0 0 1px rgba(0,176,255,.45) inset, 0 0 28px rgba(0,176,255,.15); }
+  }
+  .pr-card { animation:beamPulse 3.5s ease-in-out infinite; }
+
+  /* 8 ── Score bar gradient (more dramatic) ── */
+  .pr-fill { background:linear-gradient(90deg, #00b0ff, #42db66, #ffc709); }
+
+  /* 9 ── Number ticker: tabular nums ── */
+  .pr-bl-pct { font-variant-numeric:tabular-nums; }
+
   /* ─── ACCESSIBILITY ─── */
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
@@ -886,7 +965,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="data.js?v=29"></script>
-<script src="script.js?v=51"></script>
+<script src="script.js?v=52"></script>
 
 <!-- ── GSAP — professional animation engine (vanilla JS, no framework) ── -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -954,9 +1033,20 @@
       if (cards.length) {
         safefrom(cards, { opacity:0, y:48, scale:.94, duration:.7, ease:EB, stagger:.2, delay:.05 });
         setTimeout(function () {
+          /* Score bars fill with GSAP */
           q('.pr-fill').forEach(function (fill) {
             var target = fill.style.width || '0%';
             gsap.fromTo(fill, { width:'0%' }, { width:target, duration:1.4, ease:'power2.out' });
+          });
+          /* Number ticker — counts percentage up from 0 */
+          q('.pr-bl-pct').forEach(function (el) {
+            var raw = parseInt(el.textContent);
+            if (isNaN(raw) || raw === 0) return;
+            var obj = { v: 0 };
+            el.textContent = '0%';
+            gsap.to(obj, { v:raw, ease:'power2.out', duration:1.4,
+              onUpdate: function() { el.textContent = Math.round(obj.v) + '%'; }
+            });
           });
         }, 600);
       }
@@ -977,7 +1067,12 @@
     safefrom('.game-bar', { opacity:0, y:-22, duration:.4, ease:E });
     setTimeout(function () {
       safefrom('.s-heading', { opacity:0, y:20, duration:.45, ease:E });
-      safefrom('.s-box',     { opacity:0, y:14, duration:.4,  ease:E, delay:.09 });
+      /* Fade + curtain-reveal the scenario text box */
+      safefrom('.s-box', { opacity:0, y:14, duration:.4, ease:E, delay:.09 });
+      gsap.fromTo('.s-box',
+        { clipPath:'inset(0 0 100% 0 round 14px)' },
+        { clipPath:'inset(0 0 0% 0 round 14px)', duration:.65, ease:'power2.inOut', delay:.12, clearProps:'clipPath' }
+      );
       var btns = q('.c-btn');
       if (btns.length) safefrom(btns, { opacity:0, x:-20, duration:.45, ease:E, stagger:.09, delay:.15 });
     }, 55);
@@ -1036,8 +1131,92 @@
     });
   }
 
+  /* ── Cursor spotlight + magic card tilt + button glow ────── */
+  function initInteractions() {
+    /* Single mousemove handler — event delegation for performance */
+    document.addEventListener('mousemove', function (e) {
+      /* 1. Spotlight: set CSS vars on body */
+      document.body.style.setProperty('--mx', e.clientX + 'px');
+      document.body.style.setProperty('--my', e.clientY + 'px');
+
+      if (!e.target || !e.target.closest) return;
+
+      /* 2. Magic card tilt + inner glow */
+      var card = e.target.closest('.rv-card,.pr-card');
+      if (card) {
+        var r = card.getBoundingClientRect();
+        var xP = (e.clientX - r.left) / r.width;
+        var yP = (e.clientY - r.top)  / r.height;
+        card.style.setProperty('--gx', (xP * 100) + '%');
+        card.style.setProperty('--gy', (yP * 100) + '%');
+        gsap.to(card, {
+          rotationY: (xP - 0.5) * 10,
+          rotationX: -(yP - 0.5) * 6,
+          transformPerspective: 900,
+          ease: 'power2.out', duration: 0.3, overwrite: 'auto'
+        });
+      }
+
+      /* 3. Choice button inner glow position */
+      var btn = e.target.closest('.c-btn');
+      if (btn) {
+        var r = btn.getBoundingClientRect();
+        btn.style.setProperty('--gx', ((e.clientX - r.left) / r.width * 100) + '%');
+        btn.style.setProperty('--gy', ((e.clientY - r.top)  / r.height * 100) + '%');
+      }
+    });
+
+    /* Reset card tilt on mouse leave */
+    document.addEventListener('mouseout', function (e) {
+      if (!e.target || !e.target.closest) return;
+      var card = e.target.closest('.rv-card,.pr-card');
+      if (card && !card.contains(e.relatedTarget)) {
+        gsap.to(card, {
+          rotationY: 0, rotationX: 0,
+          ease: 'power2.out', duration: 0.55, overwrite: 'auto',
+          onComplete: function () { gsap.set(card, { clearProps: 'transform' }); }
+        });
+      }
+    });
+  }
+
+  /* ── Meteor / shooting-star streaks ─────────────────────── */
+  function launchMeteor() {
+    var m = document.createElement('div');
+    m.className = 'meteor-streak';
+    var len   = 90 + Math.random() * 130;
+    var angle = 18 + Math.random() * 28;
+    m.style.cssText = 'width:' + len + 'px;top:' + (Math.random() * 60) + '%;left:-' + len + 'px;transform:rotate(' + angle + 'deg);';
+    document.body.appendChild(m);
+    var dur = 1.0 + Math.random() * 0.9;
+    gsap.fromTo(m,
+      { left:'-12%', opacity:0 },
+      { left:'115%', opacity:1, duration:dur, ease:'power1.in',
+        onComplete:function(){ m.parentNode && m.parentNode.removeChild(m); }
+      }
+    );
+    /* Fade tail out near end */
+    gsap.to(m, { opacity:0, duration:0.3, delay: dur * 0.7 });
+  }
+
+  function startMeteors() {
+    function next() {
+      launchMeteor();
+      /* Occasionally fire a second meteor shortly after */
+      if (Math.random() > 0.65) setTimeout(launchMeteor, 180 + Math.random() * 300);
+      setTimeout(next, 2200 + Math.random() * 5000);
+    }
+    setTimeout(next, 1800);
+  }
+
   /* ── Init ────────────────────────────────────────────────── */
-  function init() { animateSplash(); startCTAGlow(); watchScreens(); }
+  function init() {
+    animateSplash();
+    startCTAGlow();
+    watchScreens();
+    startMeteors();
+    initInteractions();
+  }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
