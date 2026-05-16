@@ -247,7 +247,19 @@ function startGameWithCount(count) {
       S.scenarioOrder = buildScenarioOrder(count);
       S.step = 0; S.roundChoices = []; S.pickerIdx = 0;
       S.MAX = getMaxForScenarios(S.scenarioOrder);
-      MP.gameRef.update({ status:'playing', step:0, scenarioOrder:S.scenarioOrder, mode:count, MAX:S.MAX });
+      // Atomic start: reset every player's scores/choices in the SAME update
+      // that flips status to 'playing'. Prevents leftover scores from a prior
+      // game in this room from inflating Quick Round percentages to 100%.
+      const updates = {
+        status: 'playing', step: 0, scenarioOrder: S.scenarioOrder,
+        mode: count, MAX: S.MAX, roundChoices: null
+      };
+      Object.keys(fbPlayers).forEach(id => {
+        updates['players/' + id + '/scores']   = { T:0, P:0, E:0, A:0 };
+        updates['players/' + id + '/choices']  = {};
+        updates['players/' + id + '/answered'] = false;
+      });
+      MP.gameRef.update(updates);
       renderPickTurn(0);
       go('game');
       listenHostAnswers();
@@ -1923,10 +1935,21 @@ function submitPlayerAnswer(choiceIdx) {
   const playerRef = MP.gameRef.child('players/' + MP.playerId);
   playerRef.once('value', snap => {
     const p = snap.val() || {};
-    const scores = p.scores || { T:0, P:0, E:0, A:0 };
     const choices = p.choices || {};
-    DIMS.forEach(d => { scores[d] = (scores[d] || 0) + (choice.scores[d] || 0); });
     choices[scIdx] = choiceIdx;
+    // Recompute scores from scratch — only count choices for THIS game's scenarios.
+    // Prevents stale scores from a previous game in the same room from leaking in.
+    const validScenarios = new Set((MP.scenarioOrder || []).map(Number));
+    const scores = { T:0, P:0, E:0, A:0 };
+    Object.entries(choices).forEach(([sIdx, cIdx]) => {
+      const sNum = parseInt(sIdx);
+      if (!validScenarios.has(sNum)) return;
+      const sc = SCENARIOS[sNum];
+      if (!sc) return;
+      const ch = sc.choices[cIdx];
+      if (!ch || !ch.scores) return;
+      DIMS.forEach(d => { scores[d] += (ch.scores[d] || 0); });
+    });
     playerRef.update({ scores, choices, answered: true });
     MP.gameRef.child('roundChoices/' + MP.playerId).set(choiceIdx);
   });
