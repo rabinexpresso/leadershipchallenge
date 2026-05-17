@@ -100,11 +100,11 @@ function renderTutSlide() {
   });
   // Prev button — always visible; slide 1 goes back to splash
   const prev = document.getElementById('tut-prev');
-  prev.textContent = '← Back';
+  prev.textContent = 'Back';
   // Next button — show slide position in label
   const next = document.getElementById('tut-next');
   const isLast = S.tutSlide === TOTAL_SLIDES - 1;
-  next.textContent = isLast ? 'Home →' : 'Next  ' + (S.tutSlide + 1) + ' / ' + TOTAL_SLIDES + ' →';
+  next.textContent = isLast ? 'Home' : 'Next  ' + (S.tutSlide + 1) + ' / ' + TOTAL_SLIDES;
 }
 
 function tutNav(dir) {
@@ -452,10 +452,10 @@ function showLocked(choiceIdx) {
         Pass to ${next.name}
       </div>
     `;
-    document.getElementById('locked-cta').textContent = `Hand it to ${next.name} →`;
+    document.getElementById('locked-cta').textContent = `Hand it to ${next.name}`;
   } else {
     wrap.innerHTML = `<div class="next-badge" style="color:var(--gold);border-color:var(--gold-border);">✓ All players have chosen!</div>`;
-    document.getElementById('locked-cta').textContent = 'Reveal all choices →';
+    document.getElementById('locked-cta').textContent = 'Reveal all choices';
   }
 }
 
@@ -749,9 +749,9 @@ function buildConsequenceScreen() {
 
   const _totalRounds = S.scenarioOrder.length || SCENARIOS.length;
   const isLastRound = S.step >= _totalRounds - 1;
-  const nextBtnLabel = isLastRound ? 'See Final Results →' : 'Next Scenario →';
+  const nextBtnLabel = isLastRound ? 'See Final Results' : 'Next Scenario';
   html += '<div style="height:16px"></div>' +
-    '<button class="btn btn-ghost" style="width:100%;margin-bottom:10px;padding:13px" onclick="openOutcomeShareModal()">📤 Share this outcome</button>' +
+    '<button class="btn btn-ghost" style="width:100%;margin-bottom:10px;padding:13px" onclick="openOutcomeShareModal()">Share this outcome</button>' +
     '<button class="btn btn-gold" style="width:100%" onclick="goToScoreboard()">' + nextBtnLabel + '</button>';
   body.innerHTML = html;
 }
@@ -774,7 +774,7 @@ function buildScoreboard() {
   document.getElementById('sb-eyebrow').textContent = `After Round ${S.step+1} of ${_total}`;
   const remaining = _total - S.step - 1;
   document.getElementById('sb-sub').textContent = isLast ? 'Final standings! See how everyone did.' : (remaining + ' scenario' + (remaining !== 1 ? 's' : '') + ' remaining.');
-  document.getElementById('sb-cta').textContent = isLast ? 'See Final Results →' : `Next Scenario →`;
+  document.getElementById('sb-cta').textContent = isLast ? 'See Final Results' : 'Next Scenario';
 
   // Sort players by average
   const sorted = [...S.players].sort((a,b) => avg4(b.scores, S.MAX) - avg4(a.scores, S.MAX));
@@ -1754,8 +1754,8 @@ function listenHostAnswers() {
       btn.style.opacity = canReveal ? '1' : '.4';
       btn.style.cursor = canReveal ? 'pointer' : 'not-allowed';
       btn.textContent = answered >= total
-        ? 'Reveal all choices →'
-        : 'Reveal (' + answered + '/' + total + ' answered) →';
+        ? 'Reveal all choices'
+        : 'Reveal (' + answered + '/' + total + ' answered)';
     }
   });
 }
@@ -1827,7 +1827,7 @@ function joinRoom() {
   const finish = () => {
     MP.joining = false;
     joinBtn.disabled = false; joinBtn.style.opacity = '1'; joinBtn.style.cursor = 'pointer';
-    joinBtn.textContent = 'Join Game →';
+    joinBtn.textContent = 'Join Game';
   };
   const timeoutId = setTimeout(() => {
     showJoinError('Connection timed out. Check your internet and try again.');
