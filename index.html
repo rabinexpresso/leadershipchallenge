@@ -88,6 +88,64 @@
     body   { display:flex; justify-content:center; }
     .screen { width:100%; max-width:640px; min-height:100dvh; position:relative; box-shadow:0 0 0 1px rgba(0,176,255,.10), 0 0 80px rgba(0,0,121,.55), 0 0 240px rgba(0,176,255,.08); }
   }
+
+  /* ── Aurora edge glow — desktop only ─────────────────────────
+     Two tall colour-band strips anchored to the left and right
+     edges of the panel, masked to fade inward, scrolling at
+     different speeds to create an organic northern-lights feel. */
+  @media (min-width:600px) {
+    .screen::before,
+    .screen::after {
+      content:''; position:absolute; width:72px;
+      pointer-events:none; z-index:6;
+    }
+    /* Left edge — blue → green → red bands, drifts slowly */
+    .screen::before {
+      top:-45%; left:0; height:200%;
+      background:linear-gradient(to bottom,
+        transparent           0%,
+        rgba(0,176,255,.92)   6%,   rgba(0,176,255,.30)  13%, transparent 20%,
+        rgba(66,219,102,.88) 27%,  rgba(66,219,102,.26)  34%, transparent 41%,
+        rgba(255,0,101,.84)  48%,  rgba(255,0,101,.24)   55%, transparent 62%,
+        rgba(0,176,255,.80)  69%,  rgba(0,176,255,.20)   76%, transparent 83%,
+        rgba(66,219,102,.72) 90%,  rgba(66,219,102,.16)  96%, transparent 100%
+      );
+      -webkit-mask:linear-gradient(to right, rgba(0,0,0,.95) 0%, rgba(0,0,0,.50) 35%, rgba(0,0,0,.10) 70%, transparent 100%);
+      mask:        linear-gradient(to right, rgba(0,0,0,.95) 0%, rgba(0,0,0,.50) 35%, rgba(0,0,0,.10) 70%, transparent 100%);
+      animation:auroraL 17s ease-in-out infinite;
+    }
+    /* Right edge — red → blue → green bands, different phase */
+    .screen::after {
+      top:-22%; right:0; height:200%;
+      background:linear-gradient(to bottom,
+        transparent           0%,
+        rgba(255,0,101,.90)   7%,   rgba(255,0,101,.28)  14%, transparent 21%,
+        rgba(0,176,255,.86)  28%,  rgba(0,176,255,.24)   35%, transparent 42%,
+        rgba(66,219,102,.88) 49%,  rgba(66,219,102,.26)  56%, transparent 63%,
+        rgba(255,0,101,.80)  70%,  rgba(255,0,101,.20)   77%, transparent 84%,
+        rgba(0,176,255,.74)  91%,  rgba(0,176,255,.16)   97%, transparent 100%
+      );
+      -webkit-mask:linear-gradient(to left, rgba(0,0,0,.95) 0%, rgba(0,0,0,.50) 35%, rgba(0,0,0,.10) 70%, transparent 100%);
+      mask:        linear-gradient(to left, rgba(0,0,0,.95) 0%, rgba(0,0,0,.50) 35%, rgba(0,0,0,.10) 70%, transparent 100%);
+      animation:auroraR 12s ease-in-out infinite;
+    }
+    @keyframes auroraL {
+      0%   { transform:translateY(0%) }
+      20%  { transform:translateY(-14%) }
+      45%  { transform:translateY(-6%) }
+      68%  { transform:translateY(-22%) }
+      88%  { transform:translateY(-10%) }
+      100% { transform:translateY(0%) }
+    }
+    @keyframes auroraR {
+      0%   { transform:translateY(-16%) }
+      25%  { transform:translateY(-4%) }
+      50%  { transform:translateY(-27%) }
+      74%  { transform:translateY(-9%) }
+      90%  { transform:translateY(-20%) }
+      100% { transform:translateY(-16%) }
+    }
+  }
   @media (min-width: 960px) {
     .screen { max-width:860px; }
   }
