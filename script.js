@@ -948,11 +948,13 @@ function buildFinal() {
     }).join('');
 
     const cardId = 'pc-' + player.name.replace(/\s+/g, '-');
+    const svgKey = profile.id.startsWith('steady') ? 'steady' : profile.id;
+    const profileIcon = (typeof PROFILE_SVG !== 'undefined' && PROFILE_SVG[svgKey]) ? PROFILE_SVG[svgKey] : profile.emoji;
     return '<div class="pr-card">'
       + '<div class="pr-header">'
       + '<div class="pr-dot" style="background:' + player.color + '"></div>'
       + '<div class="pr-name" style="color:' + player.color + '">' + player.name + '</div>'
-      + '<div class="pr-emoji">' + profile.emoji + '</div>'
+      + '<div class="pr-emoji">' + profileIcon + '</div>'
       + '</div>'
       + '<div class="pr-profile" style="color:var(--gold)">' + profileDisplayName(profile) + '</div>'
       + '<p class="pr-desc">' + profile.desc + '</p>'

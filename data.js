@@ -350,6 +350,38 @@ function _isSteadyHand(s, mx) {
   return !_isDualSpike(s,mx) && !_isSingleSpike(s,mx) && !(top3>=68 && _avg4(s,mx)>=60) && _avg4(s,mx)>44;
 }
 
+// ── PROFILE ICONS (SVG for HTML rendering; profile.emoji kept for text/Word sharing) ──
+var PROFILE_SVG = {
+  // ☀️  The Visionary — sun with 8 rays (gold = all-round excellence)
+  visionary:   '<svg viewBox="0 0 28 28" width="44" height="44" fill="none" stroke="#ffc709" stroke-width="1.6" stroke-linecap="round"><circle cx="14" cy="14" r="5.5"/><line x1="14" y1="2.5" x2="14" y2="5.5"/><line x1="14" y1="22.5" x2="14" y2="25.5"/><line x1="2.5" y1="14" x2="5.5" y2="14"/><line x1="22.5" y1="14" x2="25.5" y2="14"/><line x1="5.8" y1="5.8" x2="7.7" y2="7.7"/><line x1="20.3" y1="20.3" x2="22.2" y2="22.2"/><line x1="22.2" y1="5.8" x2="20.3" y2="7.7"/><line x1="7.7" y1="20.3" x2="5.8" y2="22.2"/></svg>',
+  // 🌱  The Rising Leader — sprout with two leaves + soil line (green = growth)
+  rising:      '<svg viewBox="0 0 28 28" width="44" height="44" fill="none" stroke="#42db66" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="14" y1="26" x2="14" y2="13"/><path d="M14 21 C13 19 10 17 7 17 C7 20.5 10 22.5 14 21Z"/><path d="M14 17 C15 15 18 13 21 13 C21 16.5 18 18.5 14 17Z"/><line x1="6" y1="26" x2="22" y2="26"/></svg>',
+  // 🔥  The Firefighter — flame outer + inner detail (red = reactive alarm)
+  firefighter: '<svg viewBox="0 0 28 28" width="44" height="44" fill="none" stroke="#ff0065" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4 C10 8 7 12 7 16.5 C7 21 10.1 24 14 24 C17.9 24 21 21 21 16.5 C21 12 18 8 14 4Z"/><path d="M12 19 C12 17 13 15 14 15 C14 17 15.5 18 15.5 19.5 C15.5 21.5 14.8 22.5 14 22.5 C13.2 22.5 12 21.5 12 19Z"/></svg>',
+  // 🛡️  The Protector — pentagon shield with checkmark (blue = trust)
+  protector:   '<svg viewBox="0 0 28 28" width="44" height="44" fill="none" stroke="#00b0ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3 L22 6.5 V14 C22 18.5 18.4 22.4 14 24 C9.6 22.4 6 18.5 6 14 V6.5 Z"/><path d="M10.5 14 L13 16.5 L18.5 10.5"/></svg>',
+  // 🧱  The Cornerstone — L-shaped foundation blocks (blue = trust + adaptability anchor)
+  cornerstone: '<svg viewBox="0 0 28 28" width="44" height="44" fill="none" stroke="#00b0ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="15" width="9" height="9" rx="1.5"/><rect x="15" y="15" width="9" height="9" rx="1.5"/><rect x="4" y="4" width="9" height="9" rx="1.5"/></svg>',
+  // 👁️  The Lookout — eye with iris and filled pupil (green = proactivity)
+  lookout:     '<svg viewBox="0 0 28 28" width="44" height="44" fill="none" stroke="#42db66" stroke-width="1.5" stroke-linecap="round"><path d="M2.5 14 C5.5 7.5 9.5 5 14 5 C18.5 5 22.5 7.5 25.5 14 C22.5 20.5 18.5 23 14 23 C9.5 23 5.5 20.5 2.5 14Z"/><circle cx="14" cy="14" r="4"/><circle cx="14" cy="14" r="1.5" fill="#42db66" stroke="none"/></svg>',
+  // ⚡  The Catalyst — lightning bolt (blue = trust+proactivity energy)
+  catalyst:    '<svg viewBox="0 0 28 28" width="44" height="44" fill="none" stroke="#00b0ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3 L8 16 H14 L11 25 L20 12 H14 Z"/></svg>',
+  // 🎯  The Builder — ladder (gold = empowerment, developing people upward)
+  builder:     '<svg viewBox="0 0 28 28" width="44" height="44" fill="none" stroke="#ffc709" stroke-width="1.5" stroke-linecap="round"><line x1="9" y1="4" x2="9" y2="24"/><line x1="19" y1="4" x2="19" y2="24"/><line x1="9" y1="9" x2="19" y2="9"/><line x1="9" y1="15" x2="19" y2="15"/><line x1="9" y1="21" x2="19" y2="21"/></svg>',
+  // 🧭  The Compass — circle with north needle filled, south faded (red = adaptability)
+  compass:     '<svg viewBox="0 0 28 28" width="44" height="44" fill="none" stroke="#ff0065" stroke-width="1.5" stroke-linecap="round"><circle cx="14" cy="14" r="11"/><path d="M14 5 L16.5 14 L14 17 L11.5 14 Z" fill="#ff0065" stroke="none"/><path d="M14 23 L16.5 14 L14 11 L11.5 14 Z" fill="#ff0065" stroke="none" opacity=".28"/></svg>',
+  // 🔑  The Enabler — key with bow and two teeth (blue = trust+empowerment)
+  enabler:     '<svg viewBox="0 0 28 28" width="44" height="44" fill="none" stroke="#00b0ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="12" r="6"/><circle cx="10" cy="12" r="2.5"/><path d="M15.2 12 H25"/><line x1="23" y1="12" x2="23" y2="15.5"/><line x1="20" y1="12" x2="20" y2="14.5"/></svg>',
+  // 🚀  The Driver — rocket with exhaust fins and porthole (green = proactivity+empowerment)
+  driver:      '<svg viewBox="0 0 28 28" width="44" height="44" fill="none" stroke="#42db66" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4 C18 7 19.5 12 19.5 17 L14 20.5 L8.5 17 C8.5 12 10 7 14 4Z"/><path d="M8.5 17 L6 24 L13 21.5"/><path d="M19.5 17 L22 24 L15 21.5"/><circle cx="14" cy="11" r="2"/></svg>',
+  // 🌊  The Pathfinder — double wave (green = proactivity+adaptability in motion)
+  pathfinder:  '<svg viewBox="0 0 28 28" width="44" height="44" fill="none" stroke="#42db66" stroke-width="1.5" stroke-linecap="round"><path d="M2 11 C4.5 8 7 8 9.5 11 C12 14 14.5 14 17 11 C19.5 8 22 8 26 11"/><path d="M2 18 C4.5 15 7 15 9.5 18 C12 21 14.5 21 17 18 C19.5 15 22 15 26 18"/></svg>',
+  // 🏛️  The Architect — three classical columns with pediment (gold = empowerment+adaptability)
+  architect:   '<svg viewBox="0 0 28 28" width="44" height="44" fill="none" stroke="#ffc709" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="22" x2="8" y2="11"/><line x1="14" y1="22" x2="14" y2="11"/><line x1="20" y1="22" x2="20" y2="11"/><path d="M5 22 H23"/><path d="M5 11 H23"/><path d="M5 8 L14 4 L23 8"/></svg>',
+  // 🤝  The Steady Hand — two hands meeting at centre (muted white = balanced, no dominant spike)
+  steady:      '<svg viewBox="0 0 28 28" width="44" height="44" fill="none" stroke="rgba(255,255,255,.65)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 16 L8 11 L11 12 L14 10 L17 12 L20 11 L25 16"/><path d="M3 16 C3 19 5 21 8 20 L14 18 L20 20 C23 21 25 19 25 16"/></svg>'
+};
+
 // ── PROFILES ─────────────────────────────────────────────────
 var PROFILES = [
   { id:"visionary", name:"The Visionary", emoji:"☀️",

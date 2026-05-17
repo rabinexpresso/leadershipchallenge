@@ -373,7 +373,7 @@
   .pr-header { display:flex; align-items:center; gap:10px; margin-bottom:20px; }
   .pr-dot { width:12px; height:12px; border-radius:50%; flex-shrink:0; }
   .pr-name { font-family:'Poppins',sans-serif; font-size:17px; font-weight:700; flex:1; }
-  .pr-emoji { font-size:46px; line-height:1; }
+  .pr-emoji { display:flex; align-items:center; justify-content:center; flex-shrink:0; }
   .pr-profile { font-family:'Poppins',sans-serif; font-size:28px; font-weight:800; color:var(--gold); margin-bottom:12px; letter-spacing:-0.8px; line-height:1.1; }
   .pr-desc { font-size:14px; color:var(--body); line-height:1.8; margin-bottom:22px; }
   .pr-insight-label { font-family:'Poppins',sans-serif; font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--sub); margin-bottom:12px; }
@@ -410,10 +410,10 @@
   .ao-item-title { font-family:'Poppins',sans-serif; font-size:13px; font-weight:700; color:var(--body); }
   .ao-chosen-tag { background:var(--gold-dim); color:var(--gold); font-size:10px; font-weight:800; letter-spacing:1px; text-transform:uppercase; padding:3px 8px; border-radius:99px; }
   /* Share button */
-  .share-btn { display:flex; align-items:center; gap:10px; width:100%; background:rgba(0,176,255,.06); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid rgba(0,176,255,.22); color:var(--text); font-family:'Poppins',sans-serif; font-size:14px; font-weight:700; padding:14px 20px; border-radius:14px; cursor:pointer; transition:all .25s; }
+  .share-btn { display:flex; align-items:center; justify-content:center; gap:10px; width:100%; background:rgba(0,176,255,.06); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid rgba(0,176,255,.22); color:var(--text); font-family:'Poppins',sans-serif; font-size:14px; font-weight:700; padding:14px 20px; border-radius:14px; cursor:pointer; transition:all .25s; }
   .share-btn:hover { border-color:rgba(0,176,255,.55); background:rgba(0,176,255,.10); box-shadow:0 0 24px rgba(0,176,255,.15); transform:translateY(-1px); color:var(--text); }
-  .share-btn-icon { font-size:20px; flex-shrink:0; }
-  .share-btn-label { flex:1; text-align:left; }
+  .share-btn-icon { display:flex; align-items:center; flex-shrink:0; }
+  .share-btn-label { text-align:center; }
   .share-btn-arrow { color:rgba(0,176,255,.55); font-size:16px; }
   /* Share modal */
   .share-modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); backdrop-filter:blur(6px); z-index:100; align-items:flex-end; justify-content:center; padding:0; }
@@ -1077,8 +1077,8 @@
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script src="data.js?v=30"></script>
-<script src="script.js?v=68"></script>
+<script src="data.js?v=31"></script>
+<script src="script.js?v=69"></script>
 
 <!-- ── GSAP — professional animation engine (vanilla JS, no framework) ── -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
