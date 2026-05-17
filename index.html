@@ -147,6 +147,18 @@
   .btn-gold:hover { transform:translateY(-2px); box-shadow:0 12px 40px rgba(0,176,255,.45); }
   .btn-ghost { background:rgba(255,255,255,.04); color:var(--body); border:1px solid var(--border2); backdrop-filter:blur(8px); }
   .btn-ghost:hover { border-color:var(--gold-border); color:var(--gold); background:rgba(0,176,255,.06); }
+  /* ── Alaya Green button (Join a Game) ── */
+  .btn-green { background:linear-gradient(135deg, #42db66 0%, #28b84d 100%); color:#001a08; position:relative; overflow:hidden; box-shadow:0 4px 24px rgba(66,219,102,.28); animation:btnGreenGlow 2s ease-in-out infinite; }
+  .btn-green::before { content:''; position:absolute; top:0; left:-150%; width:60%; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,.28),transparent); transform:skewX(-20deg); animation:shimmerSweep 3s cubic-bezier(.4,0,.6,1) infinite; animation-delay:.4s; pointer-events:none; z-index:1; }
+  .btn-green::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,.20) 0%,transparent 55%); pointer-events:none; }
+  .btn-green:hover { transform:translateY(-2px); box-shadow:0 12px 40px rgba(66,219,102,.50); }
+  @keyframes btnGreenGlow { 0%,100%{box-shadow:0 4px 24px rgba(66,219,102,.28)} 50%{box-shadow:0 16px 56px rgba(66,219,102,.62),0 4px 24px rgba(66,219,102,.32)} }
+  /* ── Alaya Pink button (Tutorial) ── */
+  .btn-pink { background:linear-gradient(135deg, #ff0065 0%, #cc004f 100%); color:#ffffff; position:relative; overflow:hidden; box-shadow:0 4px 24px rgba(255,0,101,.28); animation:btnPinkGlow 2s ease-in-out infinite; animation-delay:.8s; }
+  .btn-pink::before { content:''; position:absolute; top:0; left:-150%; width:60%; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,.24),transparent); transform:skewX(-20deg); animation:shimmerSweep 3s cubic-bezier(.4,0,.6,1) infinite; animation-delay:.9s; pointer-events:none; z-index:1; }
+  .btn-pink::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,.18) 0%,transparent 55%); pointer-events:none; }
+  .btn-pink:hover { transform:translateY(-2px); box-shadow:0 12px 40px rgba(255,0,101,.50); }
+  @keyframes btnPinkGlow { 0%,100%{box-shadow:0 4px 24px rgba(255,0,101,.28)} 50%{box-shadow:0 16px 56px rgba(255,0,101,.62),0 4px 24px rgba(255,0,101,.32)} }
 
   /* ─── SPLASH ─── */
   #splash {
@@ -167,12 +179,27 @@
   .splash-tagline { font-family:'Poppins',sans-serif; font-size:10px; font-weight:600; letter-spacing:2.5px; text-transform:uppercase; color:var(--sub); margin-top:16px; }
   /* ── Animated compass on splash ── */
   .splash-compass { display:flex; justify-content:center; margin:0 auto 28px; }
-  .splash-compass svg { animation:compassGlow 4s ease-in-out infinite; }
+  .splash-compass svg { animation:compassGlow 2.5s ease-in-out infinite; }
   @keyframes compassGlow {
-    0%,100% { filter:drop-shadow(0 0 8px rgba(0,176,255,.28)); }
-    50%      { filter:drop-shadow(0 0 26px rgba(0,176,255,.7)); }
+    0%,100% { filter:drop-shadow(0 0 10px rgba(0,176,255,.35)); }
+    50%      { filter:drop-shadow(0 0 28px rgba(0,176,255,.9)) drop-shadow(0 0 60px rgba(0,176,255,.22)); }
   }
   .compass-ring-spin { animation:compassRingSpin 24s linear infinite; transform-origin:60px 60px; }
+  /* Needle seek — settles on north like a magnet */
+  .compass-needle-seek { transform-origin:60px 60px; animation:needleSeek 7s ease-in-out infinite; }
+  @keyframes needleSeek {
+    0%   { transform:rotate(-2deg); }
+    25%  { transform:rotate(1.4deg); }
+    50%  { transform:rotate(-0.7deg); }
+    75%  { transform:rotate(0.3deg); }
+    90%, 100% { transform:rotate(0deg); }
+  }
+  /* North needle glows like it's locked onto the north star */
+  .compass-needle-n { animation:needleNorthGlow 2.5s ease-in-out infinite; }
+  @keyframes needleNorthGlow {
+    0%,100% { filter:drop-shadow(0 -3px 6px rgba(0,176,255,.55)); }
+    50%      { filter:drop-shadow(0 -5px 22px rgba(0,176,255,1)) drop-shadow(0 -2px 44px rgba(0,176,255,.38)); }
+  }
   @keyframes compassRingSpin { to { transform:rotate(360deg); } }
   .dim-tags { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:40px; }
   /* Alaya brand-colour dimension tags */
@@ -553,8 +580,10 @@
       <line x1="60" y1="95" x2="60" y2="103" stroke="rgba(255,255,255,.18)" stroke-width="1.5" stroke-linecap="round"/>
       <line x1="17" y1="60" x2="25" y2="60" stroke="rgba(255,255,255,.18)" stroke-width="1.5" stroke-linecap="round"/>
       <line x1="95" y1="60" x2="103" y2="60" stroke="rgba(255,255,255,.18)" stroke-width="1.5" stroke-linecap="round"/>
-      <path d="M60 27 L63.5 57 L60 63 L56.5 57 Z" fill="#00b0ff" opacity="0.92"/>
-      <path d="M60 93 L63.5 63 L60 57 L56.5 63 Z" fill="rgba(255,255,255,.20)"/>
+      <g class="compass-needle-seek">
+        <path class="compass-needle-n" d="M60 27 L63.5 57 L60 63 L56.5 57 Z" fill="#00b0ff" opacity="0.92"/>
+        <path d="M60 93 L63.5 63 L60 57 L56.5 63 Z" fill="rgba(255,255,255,.20)"/>
+      </g>
       <circle cx="60" cy="60" r="6" fill="rgba(0,3,44,.95)" stroke="rgba(0,176,255,.55)" stroke-width="1.5"/>
       <circle cx="60" cy="60" r="2.8" fill="#00b0ff" opacity="0.88"/>
       <text x="60" y="13" text-anchor="middle" fill="rgba(0,176,255,.75)"
@@ -570,11 +599,11 @@
     <div class="dim-tag dim-tag-a">🔄 Adaptability</div>
   </div>
   <div class="splash-actions">
-    <button class="btn btn-gold" onclick="goMultiplayer()">🎮 Host Multiplayer</button>
-    <button class="btn btn-ghost" onclick="goJoin()">Join a Game →</button>
-    <button class="btn btn-ghost" onclick="go('tutorial')">Tutorial →</button>
+    <button class="btn btn-gold" onclick="goMultiplayer()">Host Multiplayer</button>
+    <button class="btn btn-green" onclick="goJoin()">Join a Game</button>
+    <button class="btn btn-pink" onclick="go('tutorial')">Tutorial</button>
   </div>
-  <p class="splash-tagline">— A SELF-ASSESSMENT TOOL · NOT A CLINICAL TEST —</p>
+  <p class="splash-tagline">A SELF-ASSESSMENT TOOL · NOT A CLINICAL TEST</p>
 </div>
 
 
@@ -1036,7 +1065,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="data.js?v=29"></script>
-<script src="script.js?v=62"></script>
+<script src="script.js?v=63"></script>
 
 <!-- ── GSAP — professional animation engine (vanilla JS, no framework) ── -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
