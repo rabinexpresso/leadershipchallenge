@@ -217,7 +217,7 @@
   .tut-slide { display:none; flex-direction:column; flex:1; overflow-y:auto; overflow-x:hidden; }
   .tut-slide.active { display:flex; animation:fadeUp .3s ease; }
   .ghost-num { font-family:'Poppins',sans-serif; font-size:80px; font-weight:800; color:rgba(0,176,255,.09); line-height:1; margin-bottom:-18px; user-select:none; letter-spacing:-3px; }
-  .tut-heading { font-family:'Poppins',sans-serif; font-size:26px; font-weight:700; line-height:1.15; margin-bottom:14px; }
+  .tut-heading { font-family:'Poppins',sans-serif; font-size:28px; font-weight:800; line-height:1.12; margin-bottom:16px; letter-spacing:-0.5px; }
   .tut-text { font-size:15px; color:var(--body); line-height:1.8; margin-bottom:20px; }
   .tut-nav { display:flex; align-items:center; gap:10px; padding:16px 0 0; flex-shrink:0; }
   .tut-dots { display:flex; gap:6px; flex:1; justify-content:center; }
@@ -229,26 +229,27 @@
   .t-next:hover { transform:translateY(-1px); box-shadow:0 8px 28px rgba(0,176,255,.45); }
 
   .dim-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
-  .dim-card { background:var(--card); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border:1px solid rgba(255,255,255,.08); border-radius:14px; padding:15px 13px; }
-  .dim-icon-big { margin-bottom:8px; }
-  .dim-icon-big svg { width:28px; height:28px; }
-  .dim-title { font-family:'Poppins',sans-serif; font-size:13px; font-weight:700; color:var(--text); margin-bottom:3px; }
-  .dim-desc-sm { font-size:14px; color:var(--body); line-height:1.55; }
-  .dim-source { font-size:12px; color:var(--sub); font-style:italic; margin-top:4px; }
+  .dim-card { background:var(--card); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border:1px solid rgba(255,255,255,.09); border-radius:16px; padding:18px 16px; }
+  .dim-icon-big { margin-bottom:14px; width:44px; height:44px; border-radius:12px; background:rgba(255,255,255,.055); border:1px solid rgba(255,255,255,.10); display:flex; align-items:center; justify-content:center; }
+  .dim-icon-big svg { width:26px; height:26px; }
+  .dim-title { font-family:'Poppins',sans-serif; font-size:14px; font-weight:700; color:var(--text); margin-bottom:4px; }
+  .dim-desc-sm { font-size:13px; color:var(--body); line-height:1.6; }
+  .dim-source { font-size:11.5px; color:var(--sub); font-style:italic; margin-top:6px; font-weight:500; }
 
-  .fw-item { display:flex; gap:12px; margin-bottom:16px; align-items:flex-start; }
-  .fw-ico { flex-shrink:0; margin-top:2px; }
-  .fw-ico svg { width:22px; height:22px; }
+  .fw-item { display:flex; gap:14px; margin-bottom:20px; align-items:flex-start; }
+  .fw-ico { width:40px; height:40px; border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0; background:rgba(255,255,255,.055); border:1px solid rgba(255,255,255,.10); }
+  .fw-ico svg { width:20px; height:20px; }
   /* ── SVG icon system ── */
   .dim-svg { display:inline-block; vertical-align:middle; flex-shrink:0; width:13px; height:13px; }
   .info-svg { display:inline-block; vertical-align:middle; width:15px; height:15px; margin-right:2px; }
   .warn-svg { display:inline-block; vertical-align:middle; width:15px; height:15px; margin-right:2px; }
-  .fw-name { font-family:'Poppins',sans-serif; font-size:14px; font-weight:700; color:var(--text); margin-bottom:2px; }
-  .fw-desc { font-size:13px; color:var(--body); line-height:1.55; }
+  .fw-name { font-family:'Poppins',sans-serif; font-size:15px; font-weight:700; color:var(--text); margin-bottom:4px; }
+  .fw-desc { font-size:13.5px; color:var(--body); line-height:1.65; }
+  .fw-step { font-family:'Poppins',sans-serif; font-size:9.5px; font-weight:800; letter-spacing:2px; text-transform:uppercase; opacity:.85; margin-bottom:3px; }
   .fw-src { font-size:11.5px; color:var(--sub); font-style:italic; }
 
-  .info-box { background:rgba(0,176,255,0.06); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid rgba(0,176,255,.22); border-radius:12px; padding:14px 16px; margin-top:16px; box-shadow:0 0 24px rgba(0,176,255,.06); }
-  .info-box p { font-size:13px; color:var(--body); line-height:1.65; }
+  .info-box { background:rgba(0,176,255,0.07); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid rgba(0,176,255,.25); border-radius:14px; padding:16px 18px; margin-top:auto; box-shadow:0 0 32px rgba(0,176,255,.08); }
+  .info-box p { font-size:13px; color:var(--body); line-height:1.7; }
   .info-box strong { color:var(--text); }
 
   /* ─── ADD PLAYERS ─── */
@@ -632,33 +633,29 @@
       <div class="tut-slide active">
         <div class="ghost-num">01</div>
         <h2 class="tut-heading">How to Set Up?</h2>
-        <p class="tut-text" style="margin-bottom:16px;">Pick the mode that fits. You can be on your first scenario in under two minutes.</p>
+        <p class="tut-text" style="margin-bottom:20px;">Three steps. The host runs from a laptop — players join on their own phones.</p>
         <div class="fw-item">
-          <div class="fw-ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="6" r="3.5"/><path d="M3 19 C3 15.5 6.1 13 10 13 S17 15.5 17 19"/></svg></div>
+          <div class="fw-ico" style="background:rgba(0,176,255,.12);border-color:rgba(0,176,255,.30)"><svg viewBox="0 0 20 20" fill="none" stroke="#00b0ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="16" height="11" rx="1.5"/><path d="M1 17 H19"/><path d="M7 17 L8.5 14 H11.5 L13 17"/></svg></div>
           <div>
-            <div class="fw-name">Solo</div>
-            <div class="fw-desc">Just you. Enter your name, choose how many scenarios, and go. Best for personal reflection at your own pace.</div>
+            <div class="fw-step" style="color:#00b0ff">Step 1 &middot; Host</div>
+            <div class="fw-name">Open the app on a laptop</div>
+            <div class="fw-desc">Tap <strong>Host Multiplayer</strong> on the home screen. A room code and QR code appear on screen — you're ready.</div>
           </div>
         </div>
         <div class="fw-item">
-          <div class="fw-ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="2" width="7" height="13" rx="1.5"/><path d="M9 13.5 h2"/><path d="M3.5 7.5 L1.5 9.5 L3.5 11.5"/><path d="M16.5 7.5 L18.5 9.5 L16.5 11.5"/></svg></div>
+          <div class="fw-ico" style="background:rgba(66,219,102,.12);border-color:rgba(66,219,102,.30)"><svg viewBox="0 0 20 20" fill="none" stroke="#42db66" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="18" height="12" rx="2"/><path d="M7 18 H13"/><path d="M10 16 V18"/><path d="M7 8.5 L9.5 11 L14 7"/></svg></div>
           <div>
-            <div class="fw-name">Pass-Device</div>
-            <div class="fw-desc">Add all player names. One phone gets passed around — each person picks privately, then hands it on to the next.</div>
+            <div class="fw-step" style="color:#42db66">Step 2 &middot; Host</div>
+            <div class="fw-name">Project onto a TV or screen</div>
+            <div class="fw-desc">Mirror or cast your laptop to a shared display so the whole room can see the QR code and game as it runs.</div>
           </div>
         </div>
-        <div class="fw-item">
-          <div class="fw-ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="11" r="1.5" fill="currentColor" stroke="none"/><path d="M6.8 14.2 Q4.5 11 6.8 7.8"/><path d="M13.2 14.2 Q15.5 11 13.2 7.8"/><path d="M4 16.5 Q0.5 11 4 5.5"/><path d="M16 16.5 Q19.5 11 16 5.5"/></svg></div>
+        <div class="fw-item" style="margin-bottom:0">
+          <div class="fw-ico" style="background:rgba(255,199,9,.12);border-color:rgba(255,199,9,.30)"><svg viewBox="0 0 20 20" fill="none" stroke="#ffc709" stroke-width="1.5" stroke-linecap="round"><rect x="6" y="2" width="8" height="14" rx="1.5"/><path d="M8.5 14 h3"/><path d="M3 5 h3 v3 H3 Z"/><path d="M3.5 5.5 h2 v2 h-2 Z" fill="#ffc709" stroke="none" opacity=".6"/></svg></div>
           <div>
-            <div class="fw-name">Online — Host</div>
-            <div class="fw-desc">Tap <strong>Host Multiplayer</strong> on the home screen. A room code appears — share it with your team. Everyone joins on their own phone and you control the start.</div>
-          </div>
-        </div>
-        <div class="fw-item">
-          <div class="fw-ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 3 H16 C17.1 3 18 3.9 18 5 V15 C18 16.1 17.1 17 16 17 H11"/><path d="M7 14 L3 10 L7 6"/><path d="M3 10 H13"/></svg></div>
-          <div>
-            <div class="fw-name">Online — Join</div>
-            <div class="fw-desc">Tap <strong>Join a Game</strong> on the home screen. Enter the room code and your name. A waiting screen appears until the host starts.</div>
+            <div class="fw-step" style="color:#ffc709">Step 3 &middot; Players</div>
+            <div class="fw-name">Scan the QR or enter the room code</div>
+            <div class="fw-desc">Players open the app on their own phone and scan the QR on screen — or tap <strong>Join a Game</strong> and type the room code. When everyone's in, the host taps <strong>Start Game</strong>.</div>
           </div>
         </div>
       </div>
@@ -670,7 +667,7 @@
         <p class="tut-text">You'll face <strong style="color:var(--text)">up to 15 real leadership situations</strong> drawn directly from conversations with leaders at HLE/Alaya — the exact problems they described facing day-to-day. You choose how many to play when you start.</p>
         <p class="tut-text">For each situation, you'll pick how you'd respond. After everyone picks, you'll see what actually happens as a result — and why.</p>
         <p class="tut-text">At the end, you'll get a <strong style="color:var(--text)">Leadership Profile</strong> showing your strengths and where to grow next.</p>
-        <div class="info-box"><p><svg class="info-svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="10" r="8"/><path d="M10 9 V14"/><circle cx="10" cy="6.5" r="0.75" fill="currentColor" stroke="none"/></svg> <strong>In multiplayer mode</strong> you have two options. <strong>Pass-device:</strong> everyone shares one screen — pass it around so each person picks privately, then reveal together. <strong>Online mode:</strong> the host starts a room and shares the code; each player joins on their own phone and picks simultaneously — no passing required.</p></div>
+        <div class="info-box"><p><svg class="info-svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="10" r="8"/><path d="M10 9 V14"/><circle cx="10" cy="6.5" r="0.75" fill="currentColor" stroke="none"/></svg> <strong>Playing with a group?</strong> The host runs the app on a laptop projected onto a screen. Each player joins on their own phone and picks simultaneously. Everyone's choice stays hidden until the host reveals them together.</p></div>
       </div>
 
       <!-- Slide 3 -->
@@ -679,27 +676,27 @@
         <h2 class="tut-heading">The 4 Dimensions</h2>
         <p class="tut-text" style="margin-bottom:16px;">Your choices are measured across four leadership dimensions. Each is based on real leadership research:</p>
         <div class="dim-grid">
-          <div class="dim-card">
-            <div class="dim-icon-big"><svg viewBox="0 0 20 20" fill="none" stroke="#00b0ff" stroke-width="1.8" stroke-linecap="round"><circle cx="7.5" cy="10" r="4.5"/><circle cx="12.5" cy="10" r="4.5"/></svg></div>
-            <div class="dim-title">Trust</div>
+          <div class="dim-card" style="border-color:rgba(0,176,255,.18)">
+            <div class="dim-icon-big" style="background:rgba(0,176,255,.12);border-color:rgba(0,176,255,.28)"><svg viewBox="0 0 20 20" fill="none" stroke="#00b0ff" stroke-width="1.8" stroke-linecap="round"><circle cx="7.5" cy="10" r="4.5"/><circle cx="12.5" cy="10" r="4.5"/></svg></div>
+            <div class="dim-title" style="color:#00b0ff">Trust</div>
             <div class="dim-desc-sm">Do people genuinely believe in you?</div>
             <div class="dim-source">Lencioni · Brené Brown</div>
           </div>
-          <div class="dim-card">
-            <div class="dim-icon-big"><svg viewBox="0 0 20 20" fill="none" stroke="#42db66" stroke-width="1.7" stroke-linecap="round"><circle cx="4" cy="10" r="1.5" fill="#42db66" stroke="none"/><path d="M8 7 Q11 10 8 13"/><path d="M12 4 Q17 10 12 16"/></svg></div>
-            <div class="dim-title">Proactivity</div>
+          <div class="dim-card" style="border-color:rgba(66,219,102,.18)">
+            <div class="dim-icon-big" style="background:rgba(66,219,102,.12);border-color:rgba(66,219,102,.28)"><svg viewBox="0 0 20 20" fill="none" stroke="#42db66" stroke-width="1.7" stroke-linecap="round"><circle cx="4" cy="10" r="1.5" fill="#42db66" stroke="none"/><path d="M8 7 Q11 10 8 13"/><path d="M12 4 Q17 10 12 16"/></svg></div>
+            <div class="dim-title" style="color:#42db66">Proactivity</div>
             <div class="dim-desc-sm">Do you catch problems before they escalate?</div>
             <div class="dim-source">Covey · Goleman EQ</div>
           </div>
-          <div class="dim-card">
-            <div class="dim-icon-big"><svg viewBox="0 0 20 20" fill="none" stroke="#ffc709" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="4.5" r="2.5"/><path d="M7 13 L10 10 L13 13"/><path d="M7 17 L10 14 L13 17"/></svg></div>
-            <div class="dim-title">Empowerment</div>
+          <div class="dim-card" style="border-color:rgba(255,199,9,.18)">
+            <div class="dim-icon-big" style="background:rgba(255,199,9,.12);border-color:rgba(255,199,9,.28)"><svg viewBox="0 0 20 20" fill="none" stroke="#ffc709" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="4.5" r="2.5"/><path d="M7 13 L10 10 L13 13"/><path d="M7 17 L10 14 L13 17"/></svg></div>
+            <div class="dim-title" style="color:#ffc709">Empowerment</div>
             <div class="dim-desc-sm">Are you developing others or creating dependency?</div>
             <div class="dim-source">Hersey &amp; Blanchard</div>
           </div>
-          <div class="dim-card">
-            <div class="dim-icon-big"><svg viewBox="0 0 20 20" fill="none" stroke="#ff0065" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10 18 V11"/><path d="M10 11 L5.5 5"/><path d="M10 11 L14.5 5"/></svg></div>
-            <div class="dim-title">Adaptability</div>
+          <div class="dim-card" style="border-color:rgba(255,0,101,.18)">
+            <div class="dim-icon-big" style="background:rgba(255,0,101,.12);border-color:rgba(255,0,101,.28)"><svg viewBox="0 0 20 20" fill="none" stroke="#ff0065" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10 18 V11"/><path d="M10 11 L5.5 5"/><path d="M10 11 L14.5 5"/></svg></div>
+            <div class="dim-title" style="color:#ff0065">Adaptability</div>
             <div class="dim-desc-sm">Do you lead change or get dragged by it?</div>
             <div class="dim-source">Kotter · McKinsey</div>
           </div>
@@ -711,56 +708,56 @@
         <div class="ghost-num">04</div>
         <h2 class="tut-heading">The Framework<br>Behind the Scores</h2>
         <div class="fw-item">
-          <div class="fw-ico"><svg viewBox="0 0 20 20" fill="none" stroke="#00b0ff" stroke-width="1.8" stroke-linecap="round"><circle cx="7.5" cy="10" r="4.5"/><circle cx="12.5" cy="10" r="4.5"/></svg></div>
+          <div class="fw-ico" style="background:rgba(0,176,255,.12);border-color:rgba(0,176,255,.28)"><svg viewBox="0 0 20 20" fill="none" stroke="#00b0ff" stroke-width="1.8" stroke-linecap="round"><circle cx="7.5" cy="10" r="4.5"/><circle cx="12.5" cy="10" r="4.5"/></svg></div>
           <div>
-            <div class="fw-name">Trust</div>
+            <div class="fw-name" style="color:#00b0ff">Trust</div>
             <div class="fw-desc">Based on Patrick Lencioni's <em>Five Dysfunctions of a Team</em> and Brené Brown's vulnerability-based trust research. The question: does your team feel safe enough to be honest with you?</div>
           </div>
         </div>
         <div class="fw-item">
-          <div class="fw-ico"><svg viewBox="0 0 20 20" fill="none" stroke="#42db66" stroke-width="1.7" stroke-linecap="round"><circle cx="4" cy="10" r="1.5" fill="#42db66" stroke="none"/><path d="M8 7 Q11 10 8 13"/><path d="M12 4 Q17 10 12 16"/></svg></div>
+          <div class="fw-ico" style="background:rgba(66,219,102,.12);border-color:rgba(66,219,102,.28)"><svg viewBox="0 0 20 20" fill="none" stroke="#42db66" stroke-width="1.7" stroke-linecap="round"><circle cx="4" cy="10" r="1.5" fill="#42db66" stroke="none"/><path d="M8 7 Q11 10 8 13"/><path d="M12 4 Q17 10 12 16"/></svg></div>
           <div>
-            <div class="fw-name">Proactivity</div>
+            <div class="fw-name" style="color:#42db66">Proactivity</div>
             <div class="fw-desc">Covey's "Be Proactive" habit combined with Goleman's Emotional Intelligence research — specifically social awareness: noticing what's happening in your team before anyone says it out loud.</div>
           </div>
         </div>
         <div class="fw-item">
-          <div class="fw-ico"><svg viewBox="0 0 20 20" fill="none" stroke="#ffc709" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="4.5" r="2.5"/><path d="M7 13 L10 10 L13 13"/><path d="M7 17 L10 14 L13 17"/></svg></div>
+          <div class="fw-ico" style="background:rgba(255,199,9,.12);border-color:rgba(255,199,9,.28)"><svg viewBox="0 0 20 20" fill="none" stroke="#ffc709" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="4.5" r="2.5"/><path d="M7 13 L10 10 L13 13"/><path d="M7 17 L10 14 L13 17"/></svg></div>
           <div>
-            <div class="fw-name">Empowerment</div>
-            <div class="fw-desc">Hersey & Blanchard's Situational Leadership model. Real delegation means transferring the <em>why</em>, not just the <em>what</em> — and trusting people to make it better than you would have.</div>
+            <div class="fw-name" style="color:#ffc709">Empowerment</div>
+            <div class="fw-desc">Hersey &amp; Blanchard's Situational Leadership model. Real delegation means transferring the <em>why</em>, not just the <em>what</em> — and trusting people to make it better than you would have.</div>
           </div>
         </div>
-        <div class="fw-item">
-          <div class="fw-ico"><svg viewBox="0 0 20 20" fill="none" stroke="#ff0065" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10 18 V11"/><path d="M10 11 L5.5 5"/><path d="M10 11 L14.5 5"/></svg></div>
+        <div class="fw-item" style="margin-bottom:0">
+          <div class="fw-ico" style="background:rgba(255,0,101,.12);border-color:rgba(255,0,101,.28)"><svg viewBox="0 0 20 20" fill="none" stroke="#ff0065" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10 18 V11"/><path d="M10 11 L5.5 5"/><path d="M10 11 L14.5 5"/></svg></div>
           <div>
-            <div class="fw-name">Adaptability</div>
+            <div class="fw-name" style="color:#ff0065">Adaptability</div>
             <div class="fw-desc">John Kotter's change leadership model and McKinsey's adaptive leadership research. The best leaders don't just survive change — they help their team move through it with momentum.</div>
           </div>
         </div>
-        <div class="info-box"><p><svg class="warn-svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2 L18 10 L10 18 L2 10 Z"/><path d="M10 8 V12"/><circle cx="10" cy="14.5" r="0.75" fill="currentColor" stroke="none"/></svg> <strong>No "perfect" score exists.</strong> Every scenario rewards different dimensions differently — and your maximum possible score scales with game length. Quick Round caps at 9 per dimension; Full Works goes much higher. Real leadership always involves tradeoffs — that's the point.</p></div>
+        <div class="info-box" style="margin-top:20px"><p><svg class="warn-svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2 L18 10 L10 18 L2 10 Z"/><path d="M10 8 V12"/><circle cx="10" cy="14.5" r="0.75" fill="currentColor" stroke="none"/></svg> <strong>No "perfect" score exists.</strong> Every scenario rewards different dimensions differently — and your maximum possible score scales with game length. Real leadership always involves tradeoffs — that's the point.</p></div>
       </div>
 
       <!-- Slide 5 -->
       <div class="tut-slide">
         <div class="ghost-num">05</div>
         <h2 class="tut-heading">How each round works</h2>
-        <p class="tut-text">Whether you're playing solo or with a group, every scenario follows the same flow:</p>
+        <p class="tut-text" style="margin-bottom:20px;">Every scenario follows the same four-step flow:</p>
         <div class="fw-item">
-          <div class="fw-ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="11" r="7.5"/><path d="M10 7.5 V11 L12.5 13"/><path d="M8 2 H12"/></svg></div>
-          <div><div class="fw-name">Step 1 — The clock is ticking</div><div class="fw-desc">A 2-minute timer starts at the top of the screen the moment a scenario loads. It's not enforced, but it keeps the energy honest — don't overthink it.</div></div>
+          <div class="fw-ico" style="background:rgba(0,176,255,.10);border-color:rgba(0,176,255,.25)"><svg viewBox="0 0 20 20" fill="none" stroke="#00b0ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="11" r="7.5"/><path d="M10 7.5 V11 L12.5 13"/><path d="M8 2 H12"/></svg></div>
+          <div><div class="fw-name">Step 1 — The clock is ticking</div><div class="fw-desc">A 2-minute timer starts the moment a scenario loads. It's not enforced, but it keeps the energy honest — don't overthink it.</div></div>
         </div>
         <div class="fw-item">
-          <div class="fw-ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="6" r="3.5"/><path d="M3 19 C3 15.5 6.1 13 10 13 S17 15.5 17 19"/></svg></div>
-          <div><div class="fw-name">Step 2 — Each player picks privately</div><div class="fw-desc">Solo? Just pick yours. In multiplayer, pass the device around (or everyone picks on their own phone). No peeking at what others chose.</div></div>
+          <div class="fw-ico" style="background:rgba(66,219,102,.10);border-color:rgba(66,219,102,.25)"><svg viewBox="0 0 20 20" fill="none" stroke="#42db66" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="6" r="3.5"/><path d="M3 19 C3 15.5 6.1 13 10 13 S17 15.5 17 19"/></svg></div>
+          <div><div class="fw-name">Step 2 — Each player picks privately</div><div class="fw-desc">Everyone picks on their own phone simultaneously. No peeking at what others chose — picks stay hidden until the host reveals them.</div></div>
         </div>
         <div class="fw-item">
-          <div class="fw-ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="10" height="13" rx="2"/><path d="M9 3 H16 C17.1 3 18 3.9 18 5 V16 C18 17.1 17.1 18 16 18 H14"/></svg></div>
-          <div><div class="fw-name">Step 3 — Reveal all at once</div><div class="fw-desc">After everyone picks, hit Reveal together. Seeing where your instincts differ — or align — is where the real discussion starts.</div></div>
+          <div class="fw-ico" style="background:rgba(255,199,9,.10);border-color:rgba(255,199,9,.25)"><svg viewBox="0 0 20 20" fill="none" stroke="#ffc709" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="10" height="13" rx="2"/><path d="M9 3 H16 C17.1 3 18 3.9 18 5 V16 C18 17.1 17.1 18 16 18 H14"/></svg></div>
+          <div><div class="fw-name">Step 3 — Reveal all at once</div><div class="fw-desc">The host hits Reveal. Seeing where instincts differ — or align — is where the real conversation begins.</div></div>
         </div>
-        <div class="fw-item">
-          <div class="fw-ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 6 H17"/><path d="M3 10 H17"/><path d="M3 14 H12"/></svg></div>
-          <div><div class="fw-name">Step 4 — Read the outcome, then next</div><div class="fw-desc">Each choice has a real consequence explained in full. Don't skip it — it's where the learning happens. Then move straight to the next scenario.</div></div>
+        <div class="fw-item" style="margin-bottom:0">
+          <div class="fw-ico" style="background:rgba(255,0,101,.10);border-color:rgba(255,0,101,.25)"><svg viewBox="0 0 20 20" fill="none" stroke="#ff0065" stroke-width="1.5" stroke-linecap="round"><path d="M3 6 H17"/><path d="M3 10 H17"/><path d="M3 14 H12"/></svg></div>
+          <div><div class="fw-name">Step 4 — Read the outcome, then next</div><div class="fw-desc">Each choice has a real consequence explained in full. Don't skip it — it's where the learning happens. Then straight to the next scenario.</div></div>
         </div>
       </div>
 
