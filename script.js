@@ -1852,7 +1852,7 @@ function joinRoom() {
     MP.gameRef.child('players/' + playerId).set({
       name, color, scores: { T:0, P:0, E:0, A:0 }, choices: {}, answered: false
     }).then(() => {
-      showPlayerWait("You're in!", 'Waiting for the host to start...');
+      showPlayerWait("You're in!", 'Waiting for the host to start...', PW_CHECK);
       listenAsPlayer();
       finish();
     }).catch(err => { showJoinError('Write failed. Try again.'); finish(); });
@@ -1875,30 +1875,40 @@ function showJoinError(msg) {
 
 function listenAsPlayer() {
   MP.gameRef.on('value', snap => {
-    if (!snap.exists()) { showPlayerWait('Room ended', 'The host ended the session. Taking you back…'); setTimeout(() => { resetMP(); go('splash'); }, 2500); return; }
+    if (!snap.exists()) { showPlayerWait('Room ended', 'The host ended the session. Taking you back…', PW_END); setTimeout(() => { resetMP(); go('splash'); }, 2500); return; }
     const game = snap.val();
     const status = game.status;
     MP.step = game.step || 0;
     MP.scenarioOrder = fbArr(game.scenarioOrder);
-    if      (status === 'lobby')       { showPlayerWait('Waiting...', 'The host will start the game soon.'); }
+    if      (status === 'lobby')       { showPlayerWait('Waiting...', 'The host will start the game soon.', PW_SPIN); }
     else if (status === 'playing') {
       const myPlayer = game.players && game.players[MP.playerId];
-      if (myPlayer && myPlayer.answered) { showPlayerWait('Locked in ✓', 'Waiting for others to answer...'); }
+      if (myPlayer && myPlayer.answered) { showPlayerWait('Locked in', 'Waiting for others to answer...', PW_CHECK); }
       else { renderPlayerGameScreen(); }
     }
-    else if (status === 'revealing')   { showPlayerWait('Results are in! 🎭', "The host is showing everyone's choices."); }
-    else if (status === 'discussing')  { showPlayerWait('Discussion time 💬', 'Talk through the scenario with your group.'); }
-    else if (status === 'consequence') { showPlayerWait('Outcome ⚡', 'The host is showing what happened.'); }
+    else if (status === 'revealing')   { showPlayerWait('Results are in', "The host is showing everyone's choices.", PW_EYE); }
+    else if (status === 'discussing')  { showPlayerWait('Discussion time', 'Talk through the scenario with your group.', PW_CHAT); }
+    else if (status === 'consequence') { showPlayerWait('Outcome', 'The host is showing what happened.', PW_BOLT); }
     // scoreboard removed — no mid-game standings shown
-    else if (status === 'final')       { showPlayerWait('Game complete! 🎉', 'Check the screen for your leadership profile.'); }
-    else if (status === 'ended')       { showPlayerWait('Session ended', 'The host has ended the game. Taking you back…'); setTimeout(() => { resetMP(); go('splash'); }, 2500); }
+    else if (status === 'final')       { showPlayerWait('Game complete', 'Check the screen for your leadership profile.', PW_STAR); }
+    else if (status === 'ended')       { showPlayerWait('Session ended', 'The host has ended the game. Taking you back…', PW_END); setTimeout(() => { resetMP(); go('splash'); }, 2500); }
   });
 }
 
-function showPlayerWait(heading, sub) {
+// ── Player-wait state icons ──────────────────────────────
+var PW_SPIN  = '<svg viewBox="0 0 56 56" width="56" height="56" fill="none"><circle cx="28" cy="28" r="24" stroke="rgba(0,176,255,0.15)" stroke-width="2.5"/><circle cx="28" cy="28" r="24" stroke="#00b0ff" stroke-width="2.5" stroke-dasharray="44 107" stroke-linecap="round" class="wait-ring"/></svg>';
+var PW_CHECK = '<svg viewBox="0 0 56 56" width="56" height="56" fill="none"><circle cx="28" cy="28" r="23" stroke="#42db66" stroke-width="2"/><path d="M17 28 L24 35 L39 20" stroke="#42db66" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+var PW_EYE   = '<svg viewBox="0 0 56 56" width="56" height="56" fill="none"><circle cx="28" cy="28" r="23" stroke="rgba(255,199,9,.4)" stroke-width="2"/><ellipse cx="28" cy="28" rx="14" ry="9" stroke="#ffc709" stroke-width="1.8" fill="none"/><circle cx="28" cy="28" r="4.5" stroke="#ffc709" stroke-width="1.8" fill="none"/></svg>';
+var PW_CHAT  = '<svg viewBox="0 0 56 56" width="56" height="56" fill="none"><circle cx="28" cy="28" r="23" stroke="rgba(0,176,255,.3)" stroke-width="2"/><rect x="17" y="20" width="22" height="14" rx="3" stroke="#00b0ff" stroke-width="1.8" fill="none"/><path d="M21 37 L25 34 H32" stroke="#00b0ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/><line x1="21" y1="25" x2="35" y2="25" stroke="#00b0ff" stroke-width="1.5" stroke-linecap="round"/><line x1="21" y1="29" x2="31" y2="29" stroke="#00b0ff" stroke-width="1.5" stroke-linecap="round"/></svg>';
+var PW_BOLT  = '<svg viewBox="0 0 56 56" width="56" height="56" fill="none"><circle cx="28" cy="28" r="23" stroke="rgba(245,166,35,.3)" stroke-width="2"/><path d="M30 16 L22 30 H28 L26 40 L34 26 H28 Z" stroke="#f5a623" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>';
+var PW_STAR  = '<svg viewBox="0 0 56 56" width="56" height="56" fill="none"><circle cx="28" cy="28" r="23" stroke="rgba(66,219,102,.4)" stroke-width="2"/><path d="M28 17 L31 24 L39 24.5 L33 30 L35 38 L28 34 L21 38 L23 30 L17 24.5 L25 24 Z" stroke="#42db66" stroke-width="1.8" stroke-linejoin="round" fill="none"/></svg>';
+var PW_END   = '<svg viewBox="0 0 56 56" width="56" height="56" fill="none"><circle cx="28" cy="28" r="23" stroke="rgba(255,255,255,.15)" stroke-width="2"/><path d="M22 22 L34 34 M34 22 L22 34" stroke="rgba(255,255,255,.4)" stroke-width="2" stroke-linecap="round"/></svg>';
+
+function showPlayerWait(heading, sub, iconSvg) {
   document.getElementById('pw-heading').textContent = heading;
   document.getElementById('pw-sub').textContent = sub;
   document.getElementById('pw-room-code').textContent = 'Room: ' + (MP.roomCode || '');
+  document.getElementById('pw-emoji').innerHTML = iconSvg || PW_SPIN;
   go('player-wait');
 }
 
