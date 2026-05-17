@@ -90,46 +90,45 @@
   }
 
   /* ── Aurora edge glow — desktop only ─────────────────────────
-     Strips sit in the side space outside the panel, masked so
-     the glow peaks at the panel edge and fades outward.
-     overflow-x:visible lets pseudo-elements escape the panel. */
+     Two strips centred on each panel edge, filter:blur spreads
+     the glow outward into the side space naturally. No mask —
+     gradient transparency + blur handles the falloff. */
   @media (min-width:600px) {
     /* Let aurora bleed outside panel into side space */
     .screen { overflow-x:visible; }
 
     .screen::before,
     .screen::after {
-      content:''; position:absolute; width:110px;
-      pointer-events:none; z-index:6;
+      content:''; position:absolute;
+      width:16px; pointer-events:none; z-index:8;
+      filter:blur(22px);
     }
-    /* Left edge — sits in left side space, glows toward panel */
+    /* Left edge — centred on the left panel border */
     .screen::before {
-      top:-45%; left:-110px; height:200%;
+      top:-50%; left:-8px; height:200%;
       background:linear-gradient(to bottom,
         transparent           0%,
-        rgba(0,176,255,.95)   6%,  rgba(0,176,255,.35)  13%, transparent 21%,
-        rgba(66,219,102,.90) 28%,  rgba(66,219,102,.28)  35%, transparent 43%,
-        rgba(255,0,101,.88)  50%,  rgba(255,0,101,.26)   57%, transparent 65%,
-        rgba(0,176,255,.82)  72%,  rgba(0,176,255,.22)   79%, transparent 87%,
-        rgba(66,219,102,.75) 93%,  rgba(66,219,102,.18)  98%, transparent 100%
+        rgba(0,176,255,1)     6%,   transparent 16%,
+        rgba(66,219,102,1)   25%,   transparent 35%,
+        rgba(255,0,101,1)    44%,   transparent 54%,
+        rgba(0,176,255,.95)  63%,   transparent 73%,
+        rgba(66,219,102,.90) 82%,   transparent 92%,
+        rgba(255,0,101,.85)  98%,   transparent 100%
       );
-      -webkit-mask:linear-gradient(to right, transparent 0%, rgba(0,0,0,.55) 55%, black 100%);
-      mask:        linear-gradient(to right, transparent 0%, rgba(0,0,0,.55) 55%, black 100%);
       animation:auroraL 17s ease-in-out infinite;
     }
-    /* Right edge — sits in right side space, glows toward panel */
+    /* Right edge — centred on the right panel border */
     .screen::after {
-      top:-22%; right:-110px; height:200%;
+      top:-25%; right:-8px; height:200%;
       background:linear-gradient(to bottom,
         transparent           0%,
-        rgba(255,0,101,.93)   7%,  rgba(255,0,101,.30)  14%, transparent 22%,
-        rgba(0,176,255,.88)  29%,  rgba(0,176,255,.26)   36%, transparent 44%,
-        rgba(66,219,102,.90) 51%,  rgba(66,219,102,.28)  58%, transparent 66%,
-        rgba(255,0,101,.84)  73%,  rgba(255,0,101,.22)   80%, transparent 88%,
-        rgba(0,176,255,.76)  94%,  rgba(0,176,255,.18)   99%, transparent 100%
+        rgba(255,0,101,1)     7%,   transparent 17%,
+        rgba(0,176,255,1)    26%,   transparent 36%,
+        rgba(66,219,102,1)   45%,   transparent 55%,
+        rgba(255,0,101,.95)  64%,   transparent 74%,
+        rgba(0,176,255,.90)  83%,   transparent 93%,
+        rgba(66,219,102,.85) 99%,   transparent 100%
       );
-      -webkit-mask:linear-gradient(to left, transparent 0%, rgba(0,0,0,.55) 55%, black 100%);
-      mask:        linear-gradient(to left, transparent 0%, rgba(0,0,0,.55) 55%, black 100%);
       animation:auroraR 12s ease-in-out infinite;
     }
     @keyframes auroraL {
