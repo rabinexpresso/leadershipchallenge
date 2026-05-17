@@ -26,6 +26,10 @@ var MP = {
 
 const ROOM_WORDS = ['LION','WOLF','BEAR','HAWK','DEER','JADE','PINE','SAGE','DUSK','DAWN','COVE','MESA','BOLT','FERN','GALE'];
 
+// Alaya brand colours per dimension — used for bars, labels, fills
+var DIM_COLORS = { T:'#00b0ff', P:'#42db66', E:'#ffc709', A:'#ff0065' };
+var DIM_FILL   = { T:'linear-gradient(90deg,#0078cc,#00b0ff)', P:'linear-gradient(90deg,#23913e,#42db66)', E:'linear-gradient(90deg,#b38700,#ffc709)', A:'linear-gradient(90deg,#cc0050,#ff0065)' };
+
 function fbArr(val) {
   if (!val) return [];
   return Array.isArray(val) ? val : Object.values(val);
@@ -929,9 +933,13 @@ function buildFinal() {
 
     const bars = DIMS.map(d => {
       const p = pct(player.scores[d], S.MAX[d]);
+      const col = DIM_COLORS[d];
       return '<div class="pr-br">'
-        + '<div class="pr-bl"><span class="pr-bl-name">' + DIM_SVG[d] + ' ' + DIM_LABELS[d] + '</span><span class="pr-bl-pct">' + p + '%</span></div>'
-        + '<div class="pr-track"><div class="pr-fill" data-pct="' + p + '"></div></div>'
+        + '<div class="pr-bl">'
+        + '<span class="pr-bl-name" style="color:' + col + '">' + DIM_SVG[d] + ' ' + DIM_LABELS[d] + '</span>'
+        + '<span class="pr-bl-pct" style="color:' + col + '">' + p + '%</span>'
+        + '</div>'
+        + '<div class="pr-track"><div class="pr-fill" style="background:' + DIM_FILL[d] + '" data-pct="' + p + '"></div></div>'
         + '</div>';
     }).join('');
 
@@ -940,7 +948,7 @@ function buildFinal() {
       const ins = getDimInsight(player, d, usedScenarios);
       usedScenarios.push(ins.scenarioIdx);
       return '<div class="pr-insight">'
-        + '<div class="pr-insight-dim">' + DIM_SVG[d] + ' ' + DIM_LABELS[d] + ' &nbsp;<span class="pr-insight-pct">' + pct(player.scores[d], S.MAX[d]) + '%</span></div>'
+        + '<div class="pr-insight-dim" style="color:' + DIM_COLORS[d] + '">' + DIM_SVG[d] + ' ' + DIM_LABELS[d] + ' &nbsp;<span class="pr-insight-pct" style="color:' + DIM_COLORS[d] + ';opacity:.7">' + pct(player.scores[d], S.MAX[d]) + '%</span></div>'
         + '<div class="pr-insight-from">From &ldquo;' + ins.scenarioTitle + '&rdquo; &mdash; Choice ' + ins.choiceLetter + '</div>'
         + '<p class="pr-insight-text">' + ins.insight + '</p>'
         + '<div class="pr-insight-action"><span class="pr-insight-action-label">Try this</span>' + ins.action + '</div>'
@@ -960,7 +968,7 @@ function buildFinal() {
       + '<p class="pr-desc">' + profile.desc + '</p>'
       + '<div class="pr-bars">' + bars + '</div>'
       + '<button class="pr-insights-toggle" onclick="toggleInsights(\'' + cardId + '\')">'
-      + '<span class="pr-insights-toggle-label">📈 Growth Insights &nbsp;(tap to expand)</span>'
+      + '<span class="pr-insights-toggle-label"><svg viewBox="0 0 20 20" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><polyline points="2,14 7,9 11,12 18,5"/><polyline points="14,5 18,5 18,9"/></svg>Growth Insights &nbsp;(tap to expand)</span>'
       + '<span class="pr-insights-arrow" id="arr-' + cardId + '">▼</span>'
       + '</button>'
       + '<div class="pr-insights-body" id="' + cardId + '">'
