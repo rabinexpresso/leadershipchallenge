@@ -175,6 +175,7 @@
   .splash-pill { display:inline-block; font-family:'Poppins',sans-serif; font-size:10px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:var(--text); border:1px solid rgba(0,176,255,0.35); padding:7px 20px; border-radius:100px; margin-bottom:28px; background:rgba(0,176,255,0.08); backdrop-filter:blur(8px); position:relative; box-shadow:0 0 20px rgba(0,176,255,.12); }
   .splash-title { font-family:'Poppins',sans-serif; font-size:clamp(36px,10vw,52px); font-weight:800; line-height:1.05; letter-spacing:-2px; margin-bottom:18px; }
   .splash-title .hl { color:var(--gold); display:inline; }
+  .title-word { display:inline-block; }
   .splash-sub { font-size:15px; color:var(--body); line-height:1.7; max-width:280px; margin:0 auto 28px; font-weight:300; }
   .splash-tagline { font-family:'Poppins',sans-serif; font-size:10px; font-weight:600; letter-spacing:2.5px; text-transform:uppercase; color:var(--sub); margin-top:16px; }
   /* ── Animated compass on splash ── */
@@ -605,7 +606,7 @@
             font-size="8" font-family="Poppins,sans-serif" font-weight="700">N</text>
     </svg>
   </div>
-  <h1 class="splash-title">The <span class="hl">Leadership</span> Challenge</h1>
+  <h1 class="splash-title"><span class="title-word">The</span> <span class="title-word hl">Leadership</span> <span class="title-word">Challenge</span></h1>
   <p class="splash-sub">15 real leadership situations.<br>No perfect answers. Just yours.</p>
   <div class="dim-tags">
     <div class="dim-tag dim-tag-t"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="7.5" cy="10" r="4.5"/><circle cx="12.5" cy="10" r="4.5"/></svg>Trust</div>
@@ -1137,16 +1138,18 @@
   /* Uses explicit delays (not chained timeline) — more reliable  */
   function animateSplash() {
     safefrom('.splash-compass',      { opacity:0, scale:.72, duration:.65, ease:EB, delay:.05 });
-    safefrom('.splash-pill',         { opacity:0, y:-20, duration:.5,  ease:E, delay:.18 });
-    safefrom('.splash-title',        { opacity:0, y:30,  duration:.65, ease:E, delay:.34 });
-    safefrom('.splash-sub',          { opacity:0, y:18,  duration:.5,  ease:E, delay:.50 });
-    safefrom('.dim-tag',             { opacity:0, y:14, scale:.9, duration:.4, ease:E, stagger:.07, delay:.70 });
-    safefrom('.splash-actions .btn', { opacity:0, y:16,  duration:.5,  ease:E, stagger:.1, delay:1.05 });
-    safefrom('.splash-tagline',      { opacity:0, duration:.4, delay:1.5, clearProps:'opacity' });
-    /* Hard failsafe — buttons always visible after 3 s */
+    safefrom('.splash-pill',         { opacity:0, y:-20,  duration:.5,  ease:E,  delay:.18 });
+    /* ── Title words drop in one by one with physics bounce ── */
+    safefrom('.title-word',          { opacity:0, y:-110, duration:.90, ease:'bounce.out', stagger:.20, delay:.36 });
+    /* ── Rest of entrance cascades after the last word lands ── */
+    safefrom('.splash-sub',          { opacity:0, y:18,   duration:.5,  ease:E,  delay:1.70 });
+    safefrom('.dim-tag',             { opacity:0, y:14, scale:.9, duration:.4, ease:E, stagger:.07, delay:1.88 });
+    safefrom('.splash-actions .btn', { opacity:0, y:16,   duration:.5,  ease:E,  stagger:.1, delay:2.18 });
+    safefrom('.splash-tagline',      { opacity:0, duration:.4, delay:2.65, clearProps:'opacity' });
+    /* Hard failsafe — buttons always visible after 4 s */
     setTimeout(function () {
       gsap.set('.splash-actions .btn', { clearProps:'all' });
-    }, 3000);
+    }, 4000);
   }
 
   /* ── Primary CTA breathing glow pulse ────────────────────── */
