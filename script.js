@@ -90,7 +90,7 @@ function doQuit() {
 //  TUTORIAL
 // ═══════════════════════════════════════════════════════
 
-const TOTAL_SLIDES = 4;
+const TOTAL_SLIDES = 5;
 
 function initTutorial() {
   S.tutSlide = 0;
