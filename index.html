@@ -203,7 +203,7 @@
   @keyframes compassRingSpin { to { transform:rotate(360deg); } }
   .dim-tags { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:40px; }
   /* Alaya brand-colour dimension tags */
-  .dim-tag { font-size:13px; font-weight:500; padding:7px 14px; border-radius:100px; background:rgba(255,255,255,.04); border:1px solid var(--border); color:var(--body); backdrop-filter:blur(8px); }
+  .dim-tag { display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:500; padding:7px 14px; border-radius:100px; background:rgba(255,255,255,.04); border:1px solid var(--border); color:var(--body); backdrop-filter:blur(8px); }
   .dim-tag-t { border-color:rgba(0,176,255,.40);  color:#00b0ff; }   /* Trust → Care Blue     */
   .dim-tag-p { border-color:rgba(66,219,102,.40); color:#42db66; }   /* Proactivity → Green   */
   .dim-tag-e { border-color:rgba(255,199,9,.40);  color:#ffc709; }   /* Empowerment → Gold    */
@@ -229,13 +229,19 @@
 
   .dim-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
   .dim-card { background:var(--card); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border:1px solid rgba(255,255,255,.08); border-radius:14px; padding:15px 13px; }
-  .dim-icon-big { font-size:22px; margin-bottom:6px; }
+  .dim-icon-big { margin-bottom:8px; }
+  .dim-icon-big svg { width:28px; height:28px; }
   .dim-title { font-family:'Poppins',sans-serif; font-size:13px; font-weight:700; color:var(--text); margin-bottom:3px; }
   .dim-desc-sm { font-size:14px; color:var(--body); line-height:1.55; }
   .dim-source { font-size:12px; color:var(--sub); font-style:italic; margin-top:4px; }
 
   .fw-item { display:flex; gap:12px; margin-bottom:16px; align-items:flex-start; }
-  .fw-ico { font-size:22px; flex-shrink:0; margin-top:2px; }
+  .fw-ico { flex-shrink:0; margin-top:2px; }
+  .fw-ico svg { width:22px; height:22px; }
+  /* ── SVG icon system ── */
+  .dim-svg { display:inline-block; vertical-align:middle; flex-shrink:0; width:13px; height:13px; }
+  .info-svg { display:inline-block; vertical-align:middle; width:15px; height:15px; margin-right:2px; }
+  .warn-svg { display:inline-block; vertical-align:middle; width:15px; height:15px; margin-right:2px; }
   .fw-name { font-family:'Poppins',sans-serif; font-size:14px; font-weight:700; color:var(--text); margin-bottom:2px; }
   .fw-desc { font-size:13px; color:var(--body); line-height:1.55; }
   .fw-src { font-size:11.5px; color:var(--sub); font-style:italic; }
@@ -282,7 +288,7 @@
   .gb-timer-num.urgent { color:var(--danger); animation:gbPulse 1s ease-in-out infinite; }
   @keyframes gbPulse { 0%,100%{opacity:1} 50%{opacity:.45} }
   .sp-row { display:flex; gap:6px; flex-wrap:wrap; }
-  .sp { font-size:11px; font-weight:600; padding:4px 10px; border-radius:100px; background:var(--card); border:1px solid var(--border); color:var(--sub); transition:all .3s; }
+  .sp { display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:600; padding:4px 10px; border-radius:100px; background:var(--card); border:1px solid var(--border); color:var(--sub); transition:all .3s; }
   .sp.lit { background:var(--gold-dim); border-color:var(--gold-border); color:var(--gold); }
 
   /* Pick phase */
@@ -306,7 +312,7 @@
   #game-locked { display:none; flex-direction:column; align-items:center; justify-content:center; flex:1; padding:40px 24px; text-align:center; }
   #game-locked.vis { display:flex; }
   #game-pick.hidden { display:none; }
-  .locked-check { font-size:60px; margin-bottom:20px; animation:popIn .4s cubic-bezier(.22,1,.36,1); }
+  .locked-check { margin-bottom:20px; animation:popIn .4s cubic-bezier(.22,1,.36,1); }
   .locked-h { font-family:'Poppins',sans-serif; font-size:26px; font-weight:700; margin-bottom:10px; }
   .locked-sub { font-size:16px; color:var(--body); line-height:1.65; max-width:280px; margin:0 auto 32px; }
   .next-badge { display:inline-flex; align-items:center; gap:8px; padding:10px 20px; border-radius:100px; font-family:'Poppins',sans-serif; font-size:14px; font-weight:700; margin-bottom:32px; border:2px solid; }
@@ -414,7 +420,8 @@
   .share-options { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
   .share-option { display:flex; flex-direction:column; align-items:center; gap:8px; background:var(--card2); border:1px solid var(--border); border-radius:16px; padding:18px 12px; cursor:pointer; transition:all .2s; border:1px solid var(--border2); }
   .share-option:hover { border-color:var(--gold-border); background:rgba(0,176,255,.05); }
-  .share-option-icon { font-size:28px; line-height:1; }
+  .share-option-icon { display:flex; align-items:center; justify-content:center; }
+  .share-option-icon svg { width:28px; height:28px; }
   .share-option-label { font-family:'Poppins',sans-serif; font-size:12px; font-weight:700; color:var(--body); text-align:center; }
   .share-close { width:100%; background:transparent; border:1px solid var(--border2); color:var(--sub); font-family:'Poppins',sans-serif; font-size:14px; font-weight:700; padding:14px; border-radius:100px; cursor:pointer; transition:all .2s; }
   .share-close:hover { color:var(--text); border-color:var(--border2); }
@@ -422,7 +429,7 @@
   .pa-modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.78); backdrop-filter:blur(6px); z-index:100; align-items:flex-end; justify-content:center; padding:0; }
   .pa-modal-overlay.vis { display:flex; }
   .pa-modal-box { background:rgba(0,4,55,.94); backdrop-filter:blur(32px); -webkit-backdrop-filter:blur(32px); border:1px solid rgba(255,255,255,.11); border-top:2px solid rgba(255,0,101,.38); border-radius:24px 24px 0 0; padding:28px 22px 40px; width:100%; max-width:480px; animation:slideUp .3s cubic-bezier(.22,1,.36,1); }
-  .pa-modal-warn { font-size:34px; margin-bottom:8px; }
+  .pa-modal-warn { margin-bottom:12px; }
   .pa-modal-title { font-family:'Poppins',sans-serif; font-size:19px; font-weight:800; margin-bottom:8px; color:var(--text); }
   .pa-modal-sub { font-size:14px; color:var(--body); margin-bottom:20px; line-height:1.6; }
   .pa-modal-saves { display:flex; flex-direction:column; gap:8px; margin-bottom:20px; }
@@ -459,7 +466,9 @@
   #hl-qr:active { transform:scale(.95); }
   #qr-overlay { position:fixed; inset:0; background:rgba(0,0,0,.88); backdrop-filter:blur(12px); z-index:200; display:none; align-items:center; justify-content:center; flex-direction:column; gap:16px; }
   #qr-overlay.vis { display:flex; }
-  .mp-wait-emoji { font-size:52px; margin-bottom:6px; }
+  .mp-wait-emoji { margin-bottom:6px; }
+  .wait-ring { transform-origin:28px 28px; animation:waitSpin 1.5s linear infinite; }
+  @keyframes waitSpin { to { transform:rotate(360deg); } }
   .mp-wait-heading { font-family:'Poppins',sans-serif; font-size:26px; font-weight:700; }
   .mp-wait-sub { font-size:15px; color:var(--body); line-height:1.65; max-width:260px; }
   .mp-wait-code { font-family:'Poppins',sans-serif; font-size:13px; font-weight:700; color:var(--gold); margin-top:16px; padding:8px 18px; background:var(--gold-dim); border:1px solid var(--gold-border); border-radius:100px; }
@@ -593,10 +602,10 @@
   <h1 class="splash-title">The <span class="hl">Leadership</span> Challenge</h1>
   <p class="splash-sub">15 real leadership situations.<br>No perfect answers. Just yours.</p>
   <div class="dim-tags">
-    <div class="dim-tag dim-tag-t">🛡️ Trust</div>
-    <div class="dim-tag dim-tag-p">👁️ Proactivity</div>
-    <div class="dim-tag dim-tag-e">🎯 Empowerment</div>
-    <div class="dim-tag dim-tag-a">🔄 Adaptability</div>
+    <div class="dim-tag dim-tag-t"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="7.5" cy="10" r="4.5"/><circle cx="12.5" cy="10" r="4.5"/></svg>Trust</div>
+    <div class="dim-tag dim-tag-p"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="4" cy="10" r="1.5" fill="currentColor" stroke="none"/><path d="M8 7 Q11 10 8 13"/><path d="M12 4 Q17 10 12 16"/></svg>Proactivity</div>
+    <div class="dim-tag dim-tag-e"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="4.5" r="2.5"/><path d="M7 13 L10 10 L13 13"/><path d="M7 17 L10 14 L13 17"/></svg>Empowerment</div>
+    <div class="dim-tag dim-tag-a"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 18 V11"/><path d="M10 11 L5.5 5"/><path d="M10 11 L14.5 5"/></svg>Adaptability</div>
   </div>
   <div class="splash-actions">
     <button class="btn btn-gold" onclick="goMultiplayer()">Host Multiplayer</button>
@@ -621,7 +630,7 @@
         <p class="tut-text">You'll face <strong style="color:var(--text)">up to 15 real leadership situations</strong> drawn directly from conversations with leaders at HLE/Alaya — the exact problems they described facing day-to-day. You choose how many to play when you start.</p>
         <p class="tut-text">For each situation, you'll pick how you'd respond. After everyone picks, you'll see what actually happens as a result — and why.</p>
         <p class="tut-text">At the end, you'll get a <strong style="color:var(--text)">Leadership Profile</strong> showing your strengths and where to grow next.</p>
-        <div class="info-box"><p>💡 <strong>In multiplayer mode</strong> you have two options. <strong>Pass-device:</strong> everyone shares one screen — pass it around so each person picks privately, then reveal together. <strong>Online mode:</strong> the host starts a room and shares the code; each player joins on their own phone and picks simultaneously — no passing required.</p></div>
+        <div class="info-box"><p><svg class="info-svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="10" r="8"/><path d="M10 9 V14"/><circle cx="10" cy="6.5" r="0.75" fill="currentColor" stroke="none"/></svg> <strong>In multiplayer mode</strong> you have two options. <strong>Pass-device:</strong> everyone shares one screen — pass it around so each person picks privately, then reveal together. <strong>Online mode:</strong> the host starts a room and shares the code; each player joins on their own phone and picks simultaneously — no passing required.</p></div>
       </div>
 
       <!-- Slide 2 -->
@@ -631,25 +640,25 @@
         <p class="tut-text" style="margin-bottom:16px;">Your choices are measured across four leadership dimensions. Each is based on real leadership research:</p>
         <div class="dim-grid">
           <div class="dim-card">
-            <div class="dim-icon-big">🛡️</div>
+            <div class="dim-icon-big"><svg viewBox="0 0 20 20" fill="none" stroke="#00b0ff" stroke-width="1.8" stroke-linecap="round"><circle cx="7.5" cy="10" r="4.5"/><circle cx="12.5" cy="10" r="4.5"/></svg></div>
             <div class="dim-title">Trust</div>
             <div class="dim-desc-sm">Do people genuinely believe in you?</div>
             <div class="dim-source">Lencioni · Brené Brown</div>
           </div>
           <div class="dim-card">
-            <div class="dim-icon-big">👁️</div>
+            <div class="dim-icon-big"><svg viewBox="0 0 20 20" fill="none" stroke="#42db66" stroke-width="1.7" stroke-linecap="round"><circle cx="4" cy="10" r="1.5" fill="#42db66" stroke="none"/><path d="M8 7 Q11 10 8 13"/><path d="M12 4 Q17 10 12 16"/></svg></div>
             <div class="dim-title">Proactivity</div>
             <div class="dim-desc-sm">Do you catch problems before they escalate?</div>
             <div class="dim-source">Covey · Goleman EQ</div>
           </div>
           <div class="dim-card">
-            <div class="dim-icon-big">🎯</div>
+            <div class="dim-icon-big"><svg viewBox="0 0 20 20" fill="none" stroke="#ffc709" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="4.5" r="2.5"/><path d="M7 13 L10 10 L13 13"/><path d="M7 17 L10 14 L13 17"/></svg></div>
             <div class="dim-title">Empowerment</div>
             <div class="dim-desc-sm">Are you developing others or creating dependency?</div>
             <div class="dim-source">Hersey &amp; Blanchard</div>
           </div>
           <div class="dim-card">
-            <div class="dim-icon-big">🔄</div>
+            <div class="dim-icon-big"><svg viewBox="0 0 20 20" fill="none" stroke="#ff0065" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10 18 V11"/><path d="M10 11 L5.5 5"/><path d="M10 11 L14.5 5"/></svg></div>
             <div class="dim-title">Adaptability</div>
             <div class="dim-desc-sm">Do you lead change or get dragged by it?</div>
             <div class="dim-source">Kotter · McKinsey</div>
@@ -662,34 +671,34 @@
         <div class="ghost-num">03</div>
         <h2 class="tut-heading">The Framework<br>Behind the Scores</h2>
         <div class="fw-item">
-          <div class="fw-ico">🛡️</div>
+          <div class="fw-ico"><svg viewBox="0 0 20 20" fill="none" stroke="#00b0ff" stroke-width="1.8" stroke-linecap="round"><circle cx="7.5" cy="10" r="4.5"/><circle cx="12.5" cy="10" r="4.5"/></svg></div>
           <div>
             <div class="fw-name">Trust</div>
             <div class="fw-desc">Based on Patrick Lencioni's <em>Five Dysfunctions of a Team</em> and Brené Brown's vulnerability-based trust research. The question: does your team feel safe enough to be honest with you?</div>
           </div>
         </div>
         <div class="fw-item">
-          <div class="fw-ico">👁️</div>
+          <div class="fw-ico"><svg viewBox="0 0 20 20" fill="none" stroke="#42db66" stroke-width="1.7" stroke-linecap="round"><circle cx="4" cy="10" r="1.5" fill="#42db66" stroke="none"/><path d="M8 7 Q11 10 8 13"/><path d="M12 4 Q17 10 12 16"/></svg></div>
           <div>
             <div class="fw-name">Proactivity</div>
             <div class="fw-desc">Covey's "Be Proactive" habit combined with Goleman's Emotional Intelligence research — specifically social awareness: noticing what's happening in your team before anyone says it out loud.</div>
           </div>
         </div>
         <div class="fw-item">
-          <div class="fw-ico">🎯</div>
+          <div class="fw-ico"><svg viewBox="0 0 20 20" fill="none" stroke="#ffc709" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="4.5" r="2.5"/><path d="M7 13 L10 10 L13 13"/><path d="M7 17 L10 14 L13 17"/></svg></div>
           <div>
             <div class="fw-name">Empowerment</div>
             <div class="fw-desc">Hersey & Blanchard's Situational Leadership model. Real delegation means transferring the <em>why</em>, not just the <em>what</em> — and trusting people to make it better than you would have.</div>
           </div>
         </div>
         <div class="fw-item">
-          <div class="fw-ico">🔄</div>
+          <div class="fw-ico"><svg viewBox="0 0 20 20" fill="none" stroke="#ff0065" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10 18 V11"/><path d="M10 11 L5.5 5"/><path d="M10 11 L14.5 5"/></svg></div>
           <div>
             <div class="fw-name">Adaptability</div>
             <div class="fw-desc">John Kotter's change leadership model and McKinsey's adaptive leadership research. The best leaders don't just survive change — they help their team move through it with momentum.</div>
           </div>
         </div>
-        <div class="info-box"><p>⚠️ <strong>No "perfect" score exists.</strong> Every scenario rewards different dimensions differently — and your maximum possible score scales with game length. Quick Round caps at 9 per dimension; Full Works goes much higher. Real leadership always involves tradeoffs — that's the point.</p></div>
+        <div class="info-box"><p><svg class="warn-svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2 L18 10 L10 18 L2 10 Z"/><path d="M10 8 V12"/><circle cx="10" cy="14.5" r="0.75" fill="currentColor" stroke="none"/></svg> <strong>No "perfect" score exists.</strong> Every scenario rewards different dimensions differently — and your maximum possible score scales with game length. Quick Round caps at 9 per dimension; Full Works goes much higher. Real leadership always involves tradeoffs — that's the point.</p></div>
       </div>
 
       <!-- Slide 4 -->
@@ -698,19 +707,19 @@
         <h2 class="tut-heading">How each round works</h2>
         <p class="tut-text">Whether you're playing solo or with a group, every scenario follows the same flow:</p>
         <div class="fw-item">
-          <div class="fw-ico">⏱️</div>
+          <div class="fw-ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="11" r="7.5"/><path d="M10 7.5 V11 L12.5 13"/><path d="M8 2 H12"/></svg></div>
           <div><div class="fw-name">Step 1 — The clock is ticking</div><div class="fw-desc">A 2-minute timer starts at the top of the screen the moment a scenario loads. It's not enforced, but it keeps the energy honest — don't overthink it.</div></div>
         </div>
         <div class="fw-item">
-          <div class="fw-ico">👤</div>
+          <div class="fw-ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="10" cy="6" r="3.5"/><path d="M3 19 C3 15.5 6.1 13 10 13 S17 15.5 17 19"/></svg></div>
           <div><div class="fw-name">Step 2 — Each player picks privately</div><div class="fw-desc">Solo? Just pick yours. In multiplayer, pass the device around (or everyone picks on their own phone). No peeking at what others chose.</div></div>
         </div>
         <div class="fw-item">
-          <div class="fw-ico">🎭</div>
+          <div class="fw-ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="10" height="13" rx="2"/><path d="M9 3 H16 C17.1 3 18 3.9 18 5 V16 C18 17.1 17.1 18 16 18 H14"/></svg></div>
           <div><div class="fw-name">Step 3 — Reveal all at once</div><div class="fw-desc">After everyone picks, hit Reveal together. Seeing where your instincts differ — or align — is where the real discussion starts.</div></div>
         </div>
         <div class="fw-item">
-          <div class="fw-ico">📖</div>
+          <div class="fw-ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 6 H17"/><path d="M3 10 H17"/><path d="M3 14 H12"/></svg></div>
           <div><div class="fw-name">Step 4 — Read the outcome, then next</div><div class="fw-desc">Each choice has a real consequence explained in full. Don't skip it — it's where the learning happens. Then move straight to the next scenario.</div></div>
         </div>
       </div>
@@ -718,8 +727,8 @@
     </div><!-- /tut-slides -->
 
     <div class="tut-nav">
-      <button class="t-prev" id="tut-prev" onclick="tutNav(-1)">← Back</button>
-      <button class="t-next" id="tut-next" onclick="tutNav(1)">Next →</button>
+      <button class="t-prev" id="tut-prev" onclick="tutNav(-1)">Back</button>
+      <button class="t-next" id="tut-next" onclick="tutNav(1)">Next</button>
     </div>
   </div>
 </div>
@@ -730,7 +739,7 @@
 ══════════════════════════════════ -->
 <div id="add-players" class="screen">
   <div class="topbar">
-    <button class="back-btn" id="ap-back-btn" onclick="go('tutorial')">← Back</button>
+    <button class="back-btn" id="ap-back-btn" onclick="go('tutorial')">Back</button>
     <div class="topbar-center">Players</div>
     <div class="topbar-spacer"></div>
   </div>
@@ -740,7 +749,7 @@
     <div class="player-list" id="player-list"></div>
     <button class="add-p-btn" id="add-p-btn" onclick="addPlayerRow()">+ Add player</button>
     <p class="ap-note" id="ap-note">Add at least 1 player to start</p>
-    <button class="btn btn-gold" id="start-btn" onclick="startGame()" disabled style="opacity:.4;cursor:not-allowed;">Start Game →</button>
+    <button class="btn btn-gold" id="start-btn" onclick="startGame()" disabled style="opacity:.4;cursor:not-allowed;">Start Game</button>
   </div>
 </div>
 
@@ -750,7 +759,7 @@
 ══════════════════════════════════ -->
 <div id="mode-select" class="screen">
   <div class="topbar">
-    <button class="back-btn" onclick="go('add-players')">&#8592; Back</button>
+    <button class="back-btn" onclick="go('add-players')">Back</button>
     <div class="topbar-center">Game Mode</div>
     <div class="topbar-space"></div>
   </div>
@@ -760,21 +769,21 @@
     <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px">
       <div onclick="startGameWithCount(5)" style="background:var(--card);border:1px solid var(--border2);border-radius:18px;padding:20px;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--gold-border)'" onmouseout="this.style.borderColor='var(--border2)'">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
-          <span style="font-size:24px">&#x26A1;</span>
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--gold)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 L5 13 H12 L11 22 L19 11 H12 Z"/></svg>
           <div><div style="font-family:'Poppins',sans-serif;font-size:18px;font-weight:700">Quick Round</div><div style="font-size:13px;color:var(--gold)">5 scenarios &middot; ~20 min</div></div>
         </div>
         <div style="font-size:13px;color:var(--body);line-height:1.6">Good for a warmup, a short break, or playing for the first time.</div>
       </div>
       <div onclick="startGameWithCount(8)" style="background:var(--card);border:1px solid var(--border2);border-radius:18px;padding:20px;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--gold-border)'" onmouseout="this.style.borderColor='var(--border2)'">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
-          <span style="font-size:24px">&#x1F3AF;</span>
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--gold)" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1.5" fill="var(--gold)" stroke="none"/></svg>
           <div><div style="font-family:'Poppins',sans-serif;font-size:18px;font-weight:700">Short Game</div><div style="font-size:13px;color:var(--gold)">8 scenarios &middot; ~35 min</div></div>
         </div>
         <div style="font-size:13px;color:var(--body);line-height:1.6">Good for a team lunch or short workshop. Covers all four signals.</div>
       </div>
       <div onclick="startGameWithCount(12)" style="background:var(--card);border:1px solid var(--border2);border-radius:18px;padding:20px;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--gold-border)'" onmouseout="this.style.borderColor='var(--border2)'">
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
-          <span style="font-size:24px">&#x1F3C6;</span>
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--gold)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20 H8 V13 H4 Z"/><path d="M10 20 H14 V8 H10 Z"/><path d="M16 20 H20 V3 H16 Z"/></svg>
           <div><div style="font-family:'Poppins',sans-serif;font-size:18px;font-weight:700">Long Game</div><div style="font-size:13px;color:var(--gold)">12 scenarios &middot; ~55 min</div></div>
         </div>
         <div style="font-size:13px;color:var(--body);line-height:1.6">For a longer leadership session. A broader look at all four signals.</div>
@@ -782,7 +791,7 @@
       <div onclick="startGameWithCount(15)" style="background:var(--card);border:1px solid var(--gold-border);border-radius:18px;padding:20px;cursor:pointer;transition:all .2s;position:relative" onmouseover="this.style.background='var(--card2)'" onmouseout="this.style.background='var(--card)'">
         <div style="position:absolute;top:-1px;right:16px;font-family:'Poppins',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--bg);background:var(--gold);padding:4px 10px;border-radius:0 0 8px 8px">RECOMMENDED</div>
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
-          <span style="font-size:24px">&#x1F3AA;</span>
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="var(--gold)" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="4" r="2.5"/><circle cx="12" cy="20" r="2.5"/><circle cx="4" cy="12" r="2.5"/><circle cx="20" cy="12" r="2.5"/><path d="M12 6.5 V17.5 M6.5 12 H17.5"/></svg>
           <div><div style="font-family:'Poppins',sans-serif;font-size:18px;font-weight:700">The Full Works</div><div style="font-size:13px;color:var(--gold)">15 scenarios &middot; ~90 min</div></div>
         </div>
         <div style="font-size:13px;color:var(--body);line-height:1.6">Every scenario including Alaya-specific situations. The complete leadership experience.</div>
@@ -811,11 +820,11 @@
 
   <!-- LOCKED PHASE -->
   <div id="game-locked">
-    <div class="locked-check">✅</div>
+    <div class="locked-check"><svg viewBox="0 0 52 52" width="60" height="60" fill="none"><circle cx="26" cy="26" r="23" stroke="#42db66" stroke-width="2"/><path d="M14 26 L22 34 L38 18" stroke="#42db66" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     <h2 class="locked-h" id="locked-heading">Choice Locked!</h2>
     <p class="locked-sub" id="locked-sub">Pass the device to the next player.</p>
     <div id="next-player-badge-wrap"></div>
-    <button class="btn btn-gold" style="max-width:280px;" id="locked-cta" onclick="lockedNext()">Hand it over →</button>
+    <button class="btn btn-gold" style="max-width:280px;" id="locked-cta" onclick="lockedNext()">Hand it over</button>
   </div>
 </div>
 
@@ -835,7 +844,7 @@
     <p class="rv-sub" id="rv-sub"></p>
     <div class="rv-cards" id="rv-cards"></div>
     <div id="rv-stat-wrap"></div>
-    <button class="btn btn-gold" onclick="showDiscuss()">Discuss first →</button>
+    <button class="btn btn-gold" onclick="showDiscuss()">Discuss first</button>
   </div>
 </div>
 
@@ -877,8 +886,8 @@
       <p id="discuss-split-text" style="font-size:13.5px;color:var(--body);line-height:1.65"></p>
     </div>
     <div style="display:flex;gap:10px;flex-shrink:0;margin-top:auto;padding-top:16px">
-      <button class="btn btn-ghost" style="flex:1;padding:14px 20px" onclick="skipDiscuss()">Skip &#8594;</button>
-      <button class="btn btn-gold" style="flex:2;padding:14px 20px" onclick="skipDiscuss()">See What Happened &#8594;</button>
+      <button class="btn btn-ghost" style="flex:1;padding:14px 20px" onclick="skipDiscuss()">Skip</button>
+      <button class="btn btn-gold" style="flex:2;padding:14px 20px" onclick="skipDiscuss()">See What Happened</button>
     </div>
   </div>
 </div>
@@ -904,14 +913,14 @@
     <h2 class="final-title">Leadership<br><span>Profiles</span></h2>
     <p class="final-sub" id="final-sub">Here's what your choices revealed about each player.</p>
     <div style="display:flex;flex-direction:column;gap:10px;align-items:stretch;width:100%;max-width:380px;margin:4px auto 0">
-      <button class="share-btn" onclick="openAllOutcomesShareModal()"><span class="share-btn-icon">📋</span><span class="share-btn-label">Share All Questions Outcomes</span><span class="share-btn-arrow">›</span></button>
-      <button class="share-btn" onclick="openShareModal()"><span class="share-btn-icon">📤</span><span class="share-btn-label">Share Final Results</span><span class="share-btn-arrow">›</span></button>
+      <button class="share-btn" onclick="openAllOutcomesShareModal()"><span class="share-btn-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="7" height="7" rx="1.5"/><rect x="11" y="2" width="7" height="7" rx="1.5"/><rect x="2" y="11" width="7" height="7" rx="1.5"/><rect x="11" y="11" width="7" height="7" rx="1.5"/></svg></span><span class="share-btn-label">Share All Questions Outcomes</span></button>
+      <button class="share-btn" onclick="openShareModal()"><span class="share-btn-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13 V3 M6.5 6.5 L10 3 L13.5 6.5"/><path d="M4 13 V16 C4 17.1 4.9 18 6 18 H14 C15.1 18 16 17.1 16 16 V13"/></svg></span><span class="share-btn-label">Share Final Results</span></button>
     </div>
   </div>
   <div class="final-body">
     <div id="final-cards"></div>
     <div class="final-cta">
-      <button class="btn btn-gold" onclick="confirmPlayAgain()">↩ Play Again</button>
+      <button class="btn btn-gold" onclick="confirmPlayAgain()">Play Again</button>
     </div>
   </div>
 </div>
@@ -923,19 +932,19 @@
     <p class="share-modal-sub" id="share-modal-sub">Send everyone their leadership profiles.</p>
     <div class="share-options">
       <div class="share-option" onclick="shareWhatsApp()">
-        <div class="share-option-icon">💬</div>
+        <div class="share-option-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 14.5 L2 18 L5.8 16.6 C7.1 17.5 8.5 18 10 18 C14.4 18 18 14.4 18 10 S14.4 2 10 2 S2 5.6 2 10 C2 11.8 2.6 13.3 3.5 14.5 Z"/></svg></div>
         <div class="share-option-label">WhatsApp</div>
       </div>
       <div class="share-option" onclick="shareEmail()">
-        <div class="share-option-icon">📧</div>
+        <div class="share-option-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="16" height="11" rx="2"/><path d="M2 7 L10 12 L18 7"/></svg></div>
         <div class="share-option-label">Email</div>
       </div>
       <div class="share-option" onclick="copyShareText()">
-        <div class="share-option-icon">📋</div>
+        <div class="share-option-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="1" width="11" height="13" rx="2"/><path d="M5 5 H3 C2 5 1 6 1 7 V17 C1 18 2 19 3 19 H13 C14 19 15 18 15 17 V15"/></svg></div>
         <div class="share-option-label">Copy Text</div>
       </div>
       <div class="share-option" onclick="downloadWord()">
-        <div class="share-option-icon">📄</div>
+        <div class="share-option-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1 H4 C3 1 2 2 2 3 V17 C2 18 3 19 4 19 H16 C17 19 18 18 18 17 V7 Z"/><path d="M12 1 V7 H18"/><path d="M6 12 H14 M6 15 H11"/></svg></div>
         <div class="share-option-label">Word Doc</div>
       </div>
     </div>
@@ -946,16 +955,16 @@
 <!-- PLAY AGAIN CONFIRM MODAL -->
 <div id="pa-modal" class="pa-modal-overlay" onclick="handlePAOverlayClick(event)">
   <div class="pa-modal-box">
-    <div class="pa-modal-warn">⚠️</div>
+    <div class="pa-modal-warn"><svg viewBox="0 0 20 20" width="34" height="34" fill="none" stroke="rgba(255,0,101,.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2 L18 10 L10 18 L2 10 Z"/><path d="M10 8 V12"/><circle cx="10" cy="14.5" r="0.75" fill="rgba(255,0,101,.8)" stroke="none"/></svg></div>
     <h3 class="pa-modal-title">Before you play again…</h3>
     <p class="pa-modal-sub">All player scores and choices will be cleared. Save the results first so nothing is lost.</p>
     <div class="pa-modal-saves">
-      <button class="pa-save-btn" onclick="openAllOutcomesShareModal()">📋 Save All Questions Outcomes</button>
-      <button class="pa-save-btn" onclick="openShareModal()">📤 Save Final Results</button>
+      <button class="pa-save-btn" onclick="openAllOutcomesShareModal()"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="7" height="7" rx="1.5"/><rect x="11" y="2" width="7" height="7" rx="1.5"/><rect x="2" y="11" width="7" height="7" rx="1.5"/><rect x="11" y="11" width="7" height="7" rx="1.5"/></svg> Save All Questions Outcomes</button>
+      <button class="pa-save-btn" onclick="openShareModal()"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13 V3 M6.5 6.5 L10 3 L13.5 6.5"/><path d="M4 13 V16 C4 17.1 4.9 18 6 18 H14 C15.1 18 16 17.1 16 16 V13"/></svg> Save Final Results</button>
     </div>
     <div class="pa-modal-actions">
-      <button class="pa-keep-btn" onclick="closePlayAgainModal()">← Keep Results</button>
-      <button class="pa-go-btn" onclick="closePlayAgainModal();playAgain()">Play Again Anyway →</button>
+      <button class="pa-keep-btn" onclick="closePlayAgainModal()">Keep Results</button>
+      <button class="pa-go-btn" onclick="closePlayAgainModal();playAgain()">Play Again Anyway</button>
     </div>
   </div>
 </div>
@@ -969,7 +978,7 @@
 ══════════════════════════════════ -->
 <div id="host-lobby" class="screen">
   <div class="topbar">
-    <button class="back-btn" onclick="cancelHostRoom()">← Cancel</button>
+    <button class="back-btn" onclick="cancelHostRoom()">Cancel</button>
     <div class="topbar-center">Host Game</div>
     <div class="topbar-spacer"></div>
   </div>
@@ -984,7 +993,7 @@
     <div class="eyebrow" style="margin-bottom:10px">Players in room</div>
     <div id="hl-player-list" style="margin-bottom:10px;min-height:40px"></div>
     <p id="hl-waiting" style="font-size:14px;color:var(--sub);text-align:center;margin-bottom:24px">Waiting for players to join...</p>
-    <button class="btn btn-gold" id="hl-start-btn" onclick="startMultiplayerGame()" disabled style="opacity:.4;cursor:not-allowed">Start Game →</button>
+    <button class="btn btn-gold" id="hl-start-btn" onclick="startMultiplayerGame()" disabled style="opacity:.4;cursor:not-allowed">Start Game</button>
   </div>
 </div>
 
@@ -994,7 +1003,7 @@
 ══════════════════════════════════ -->
 <div id="join-screen" class="screen">
   <div class="topbar">
-    <button class="back-btn" onclick="go('splash')">← Back</button>
+    <button class="back-btn" onclick="go('splash')">Back</button>
     <div class="topbar-center">Join Game</div>
     <div class="topbar-spacer"></div>
   </div>
@@ -1006,7 +1015,7 @@
     <div class="eyebrow" style="margin-bottom:8px;margin-top:6px">Your Name</div>
     <input class="p-input" id="join-name-input" placeholder="Enter your name" style="margin-bottom:20px;flex:none;">
     <p id="join-error" style="font-size:13px;color:#f87171;margin-bottom:16px;display:none;text-align:center"></p>
-    <button class="btn btn-gold" id="join-btn" onclick="joinRoom()">Join Game →</button>
+    <button class="btn btn-gold" id="join-btn" onclick="joinRoom()">Join Game</button>
   </div>
 </div>
 
@@ -1016,11 +1025,11 @@
 ══════════════════════════════════ -->
 <div id="player-wait" class="screen">
   <div class="mp-wait-center">
-    <div class="mp-wait-emoji" id="pw-emoji">⏳</div>
+    <div class="mp-wait-emoji" id="pw-emoji"><svg viewBox="0 0 56 56" width="56" height="56" fill="none"><circle cx="28" cy="28" r="24" stroke="rgba(0,176,255,0.15)" stroke-width="2.5"/><circle cx="28" cy="28" r="24" stroke="#00b0ff" stroke-width="2.5" stroke-dasharray="44 107" stroke-linecap="round" class="wait-ring"/></svg></div>
     <h2 class="mp-wait-heading" id="pw-heading">Waiting...</h2>
     <p class="mp-wait-sub" id="pw-sub">The host will start the game soon.</p>
     <div class="mp-wait-code" id="pw-room-code"></div>
-    <button class="btn btn-ghost" style="margin-top:24px;max-width:200px" onclick="leaveGame()">← Leave Game</button>
+    <button class="btn btn-ghost" style="margin-top:24px;max-width:200px" onclick="leaveGame()">Leave Game</button>
   </div>
 </div>
 
@@ -1043,7 +1052,7 @@
 <!-- QUIT MODAL -->
 <div id="quit-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);z-index:100;align-items:center;justify-content:center;padding:24px;">
   <div style="background:#0f1421;border:1px solid rgba(255,255,255,0.13);border-radius:20px;padding:28px 24px;max-width:320px;width:100%;text-align:center;">
-    <div style="font-size:36px;margin-bottom:14px;">⚠️</div>
+    <div style="margin-bottom:14px;display:flex;justify-content:center;"><svg viewBox="0 0 20 20" width="36" height="36" fill="none" stroke="rgba(255,199,9,.8)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2 L18 10 L10 18 L2 10 Z"/><path d="M10 8 V12"/><circle cx="10" cy="14.5" r="0.75" fill="rgba(255,199,9,.8)" stroke="none"/></svg></div>
     <h3 style="font-family:'Poppins',sans-serif;font-size:20px;font-weight:700;margin-bottom:10px;color:#eef1ff;">Quit the game?</h3>
     <p style="font-size:14px;color:#ced4e0;line-height:1.65;margin-bottom:24px;">All progress and scores will be lost. This can't be undone.</p>
     <div style="display:flex;flex-direction:column;gap:10px;">
@@ -1064,8 +1073,8 @@
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script src="data.js?v=29"></script>
-<script src="script.js?v=63"></script>
+<script src="data.js?v=30"></script>
+<script src="script.js?v=64"></script>
 
 <!-- ── GSAP — professional animation engine (vanilla JS, no framework) ── -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>

@@ -8,8 +8,15 @@ var MAX = { T:28, P:32, E:25, A:27 };
 
 // ── DIMENSIONS ───────────────────────────────────────────────
 var DIMS = ["T","P","E","A"];
-var DIM_ICONS  = { T:"🛡️", P:"👁️", E:"🎯", A:"🔄" };
+var DIM_ICONS  = { T:"🛡️", P:"👁️", E:"🎯", A:"🔄" }; // kept for text-sharing (WhatsApp/email)
 var DIM_LABELS = { T:"Trust", P:"Proactivity", E:"Empowerment", A:"Adaptability" };
+// SVG icons for visual HTML rendering (no emoji)
+var DIM_SVG = {
+  T: '<svg class="dim-svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="7.5" cy="10" r="4.5"/><circle cx="12.5" cy="10" r="4.5"/></svg>',
+  P: '<svg class="dim-svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="4" cy="10" r="1.5" fill="currentColor" stroke="none"/><path d="M8 7 Q11 10 8 13"/><path d="M12 4 Q17 10 12 16"/></svg>',
+  E: '<svg class="dim-svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="4.5" r="2.5"/><path d="M7 13 L10 10 L13 13"/><path d="M7 17 L10 14 L13 17"/></svg>',
+  A: '<svg class="dim-svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 18 V11"/><path d="M10 11 L5.5 5"/><path d="M10 11 L14.5 5"/></svg>'
+};
 var DIM_KEY_SCENARIOS = { T:[0,3], P:[7,10], E:[2,4], A:[5,8] };
 
 // ── COLOURS ──────────────────────────────────────────────────

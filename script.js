@@ -313,7 +313,7 @@ function renderPickTurn(playerIdx) {
     const p = S.players[0];
     spRow.innerHTML = DIMS.map(d => {
       const cls = p.scores[d] > 0 ? 'sp lit' : 'sp';
-      return '<span class="' + cls + '">' + DIM_ICONS[d] + ' ' + p.scores[d] + '</span>';
+      return '<span class="' + cls + '">' + DIM_SVG[d] + ' ' + p.scores[d] + '</span>';
     }).join('');
   } else {
     spRow.innerHTML = '<span class="sp" style="color:' + player.color + ';border-color:' + player.color + '40;">\u25cf ' + player.name + '\u2019s turn</span>';
@@ -670,7 +670,7 @@ function buildConsequenceScreen() {
   document.getElementById('cq-topbar-title').textContent = `${scenario.title} — Outcome`;
 
   const body = document.getElementById('cq-body');
-  const ICONS = DIM_ICONS;
+  const ICONS = DIM_SVG;
 
   // Group by choice
   const choiceGroups = {};
@@ -789,7 +789,7 @@ function buildScoreboard() {
       return `
         <div class="sb-br">
           <div class="sb-bl">
-            <span>${DIM_ICONS[d]} ${DIM_LABELS[d]}</span>
+            <span>${DIM_SVG[d]} ${DIM_LABELS[d]}</span>
             <span class="sb-bl-pct">${p}%</span>
           </div>
           <div class="sb-track"><div class="sb-fill" data-pct="${p}"></div></div>
@@ -930,7 +930,7 @@ function buildFinal() {
     const bars = DIMS.map(d => {
       const p = pct(player.scores[d], S.MAX[d]);
       return '<div class="pr-br">'
-        + '<div class="pr-bl"><span class="pr-bl-name">' + DIM_ICONS[d] + ' ' + DIM_LABELS[d] + '</span><span class="pr-bl-pct">' + p + '%</span></div>'
+        + '<div class="pr-bl"><span class="pr-bl-name">' + DIM_SVG[d] + ' ' + DIM_LABELS[d] + '</span><span class="pr-bl-pct">' + p + '%</span></div>'
         + '<div class="pr-track"><div class="pr-fill" data-pct="' + p + '"></div></div>'
         + '</div>';
     }).join('');
@@ -940,7 +940,7 @@ function buildFinal() {
       const ins = getDimInsight(player, d, usedScenarios);
       usedScenarios.push(ins.scenarioIdx);
       return '<div class="pr-insight">'
-        + '<div class="pr-insight-dim">' + DIM_ICONS[d] + ' ' + DIM_LABELS[d] + ' &nbsp;<span class="pr-insight-pct">' + pct(player.scores[d], S.MAX[d]) + '%</span></div>'
+        + '<div class="pr-insight-dim">' + DIM_SVG[d] + ' ' + DIM_LABELS[d] + ' &nbsp;<span class="pr-insight-pct">' + pct(player.scores[d], S.MAX[d]) + '%</span></div>'
         + '<div class="pr-insight-from">From &ldquo;' + ins.scenarioTitle + '&rdquo; &mdash; Choice ' + ins.choiceLetter + '</div>'
         + '<p class="pr-insight-text">' + ins.insight + '</p>'
         + '<div class="pr-insight-action"><span class="pr-insight-action-label">Try this</span>' + ins.action + '</div>'
@@ -1217,7 +1217,7 @@ function downloadAllOutcomesWord() {
 
       DIMS.forEach(function(d) {
         var v = choice.scores[d] || 0;
-        var label = DIM_ICONS[d] + ' ' + DIM_LABELS[d] + (v > 0 ? ' +' + v : ' 0');
+        var label = DIM_SVG[d] + ' ' + DIM_LABELS[d] + (v > 0 ? ' +' + v : ' 0');
         html += v > 0
           ? '<span class="chip">' + label + '</span>'
           : '<span class="chip-zero">' + label + '</span>';
@@ -1231,7 +1231,7 @@ function downloadAllOutcomesWord() {
         DIMS.forEach(function(d) {
           var v = choice.scores[d] || 0;
           var note = choice.signalNotes[d] || '';
-          var label = DIM_ICONS[d] + ' ' + DIM_LABELS[d] + (v > 0 ? ' +' + v : ' 0');
+          var label = DIM_SVG[d] + ' ' + DIM_LABELS[d] + (v > 0 ? ' +' + v : ' 0');
           html += '<div class="signal-note-row">'
             + '<span class="chip' + (v === 0 ? '-zero' : '') + '" style="white-space:nowrap">' + label + '</span>'
             + (note ? '<span class="signal-note-text"> &mdash; ' + note + '</span>' : '')
@@ -1466,7 +1466,7 @@ function downloadOutcomeWord() {
       + '<div class="chips">'
       + DIMS.map(d => {
           const v = choice.scores[d] || 0;
-          return '<span class="chip">' + DIM_ICONS[d] + ' ' + DIM_LABELS[d] + (v > 0 ? ' +' + v : ' 0') + '</span>';
+          return '<span class="chip">' + DIM_SVG[d] + ' ' + DIM_LABELS[d] + (v > 0 ? ' +' + v : ' 0') + '</span>';
         }).join('')
       + '</div>'
       + (choice.signalNotes ? (
@@ -1476,7 +1476,7 @@ function downloadOutcomeWord() {
               const v = choice.scores[d] || 0;
               const note = choice.signalNotes[d] || '';
               return '<div class="signal-note-row">'
-                + '<span class="chip">' + DIM_ICONS[d] + ' ' + DIM_LABELS[d] + ' ' + (v > 0 ? '+' + v : '0') + '</span>'
+                + '<span class="chip">' + DIM_SVG[d] + ' ' + DIM_LABELS[d] + ' ' + (v > 0 ? '+' + v : '0') + '</span>'
                 + '<span class="signal-note-text"> — ' + note + '</span>'
                 + '</div>';
             }).join('')
@@ -1534,7 +1534,7 @@ function downloadWord() {
     DIMS.forEach(d => {
       const p = pct(player.scores[d], S.MAX[d]);
       html += '<div class="bar-row">'
-        + '<span class="bar-label">' + DIM_ICONS[d] + ' ' + DIM_LABELS[d] + '</span>'
+        + '<span class="bar-label">' + DIM_ICONS[d] + ' ' + DIM_LABELS[d] + '</span>'
         + '<div class="bar-track"><div class="bar-fill" style="width:' + p + '%"></div></div>'
         + '<span class="bar-pct">' + p + '%</span></div>';
     });
