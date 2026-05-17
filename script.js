@@ -308,7 +308,7 @@ function renderPickTurn(playerIdx) {
   // Score pills
   const spRow = document.getElementById('sp-row');
   if (MP.active && MP.isHost) {
-    spRow.innerHTML = '<span class="sp" style="color:var(--gold);border-color:var(--gold-border);">\ud83c\udfae Host \u00b7 ' + S.players.length + ' players</span>';
+    spRow.innerHTML = '<span class="sp" style="color:var(--gold);border-color:var(--gold-border);display:inline-flex;align-items:center;gap:5px"><svg viewBox="0 0 20 20" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="7" r="2.8"/><path d="M2 17C2 14 4 12 7 12"/><circle cx="14" cy="7" r="2.3" opacity=".65"/><path d="M18 17C18 14 16 12 14 12" opacity=".65"/></svg>Host \u00b7 ' + S.players.length + ' players</span>';
   } else if (isSolo()) {
     const p = S.players[0];
     spRow.innerHTML = DIMS.map(d => {
@@ -690,7 +690,7 @@ function buildConsequenceScreen() {
     <div class="cq-tag eyebrow">What happened</div>
     <h2 class="cq-heading">${scenario.title}</h2>
     <div class="cq-situation">${scenario.situation}</div>
-    <div class="cq-scoring-note">💡 Different choices exercise different signals — a zero on one signal does not mean the choice was wrong. Each option reflects a genuine leadership approach; the signals show <em>which</em> leadership quality it demonstrates most.</div>
+    <div class="cq-scoring-note" style="display:flex;align-items:flex-start;gap:6px"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="flex-shrink:0;margin-top:1px;opacity:.7"><circle cx="10" cy="10" r="8"/><path d="M10 8.5 V13.5"/><circle cx="10" cy="6.5" r=".75" fill="currentColor" stroke="none"/></svg><span>Different choices exercise different signals; a zero does not mean the choice was wrong. Each option reflects a genuine leadership approach, and the signals show <em>which</em> quality it demonstrates most.</span></div>
   `;
 
   choiceKeys.forEach((key, i) => {
@@ -727,7 +727,7 @@ function buildConsequenceScreen() {
       + '<div class="cq-chips">' + chips + '</div>'
       + (choice.signalNotes ? (
           '<button class="ao-toggle" style="margin-top:12px" onclick="toggleAllOpts(\'' + whyId + '\')">'
-          + '<span class="ao-toggle-label">📊 Why these scores?</span>'
+          + '<span class="ao-toggle-label"><svg viewBox="0 0 20 20" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><line x1="3" y1="16" x2="3" y2="11"/><line x1="8" y1="16" x2="8" y2="7"/><line x1="13" y1="16" x2="13" y2="9"/><line x1="18" y1="16" x2="18" y2="5"/><line x1="1" y1="16" x2="19" y2="16"/></svg>Why these scores?</span>'
           + '<span class="ao-arrow" id="ao-arr-' + whyId + '">▼</span>'
           + '</button>'
           + '<div class="ao-body" id="' + whyId + '">'
@@ -751,7 +751,7 @@ function buildConsequenceScreen() {
   const isLastRound = S.step >= _totalRounds - 1;
   const nextBtnLabel = isLastRound ? 'See Final Results' : 'Next Scenario';
   html += '<div style="height:16px"></div>' +
-    '<button class="btn btn-ghost" style="width:100%;margin-bottom:10px;padding:13px" onclick="openOutcomeShareModal()">Share this outcome</button>' +
+    '<button class="btn btn-ghost" style="width:100%;margin-bottom:10px;padding:13px;display:flex;align-items:center;justify-content:center;gap:8px" onclick="openOutcomeShareModal()"><svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13 V3"/><path d="M6 7 L10 3 L14 7"/><path d="M5 12 V16 A1 1 0 0 0 6 17 H14 A1 1 0 0 0 15 16 V12"/></svg>Share this outcome</button>' +
     '<button class="btn btn-gold" style="width:100%" onclick="goToScoreboard()">' + nextBtnLabel + '</button>';
   body.innerHTML = html;
 }

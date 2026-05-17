@@ -208,6 +208,7 @@
   .dim-tag-p { border-color:rgba(66,219,102,.40); color:#42db66; }   /* Proactivity → Green   */
   .dim-tag-e { border-color:rgba(255,199,9,.40);  color:#ffc709; }   /* Empowerment → Gold    */
   .dim-tag-a { border-color:rgba(255,0,101,.40);  color:#ff0065; }   /* Adaptability → Red    */
+  .dim-tag svg { width:16px; height:16px; flex-shrink:0; }
   .splash-actions { display:flex; flex-direction:column; gap:10px; width:100%; max-width:280px; }
   .splash-meta { margin-top:20px; font-size:13px; color:var(--sub); position:relative; }
 
@@ -392,7 +393,7 @@
   .ao-wrap { margin-top:16px; margin-bottom:16px; }
   .ao-toggle { display:flex; align-items:center; justify-content:space-between; width:100%; background:var(--card2); border:1px solid var(--border2); border-radius:12px; padding:13px 16px; cursor:pointer; transition:all .2s; }
   .ao-toggle:hover { border-color:var(--gold-border); background:rgba(0,176,255,.05); }
-  .ao-toggle-label { font-family:'Poppins',sans-serif; font-size:11px; font-weight:800; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold); }
+  .ao-toggle-label { font-family:'Poppins',sans-serif; font-size:11px; font-weight:800; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold); display:inline-flex; align-items:center; gap:5px; }
   .ao-arrow { font-size:16px; color:var(--gold); transition:transform .3s cubic-bezier(.22,1,.36,1); flex-shrink:0; }
   .ao-arrow.open { transform:rotate(180deg); }
   .ao-body { overflow:hidden; max-height:0; opacity:0; transition:max-height .35s cubic-bezier(.22,1,.36,1), opacity .2s ease; padding-top:0; }
@@ -872,14 +873,14 @@
     <div class="eyebrow" id="discuss-tag" style="margin-bottom:10px"></div>
     <h3 id="discuss-heading" style="font-family:'Poppins',sans-serif;font-size:20px;font-weight:700;line-height:1.2;margin-bottom:12px"></h3>
     <p id="discuss-situation" style="font-size:14.5px;color:var(--body);line-height:1.7;margin-bottom:16px"></p>
-    <div style="background:var(--card);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:0 14px 14px 0;padding:16px 18px;margin-bottom:14px">
+    <div style="background:rgba(245,166,35,.06);border:1px solid rgba(245,166,35,.22);border-radius:14px;padding:16px 18px;margin-bottom:14px">
       <p id="discuss-prompt" style="font-size:16px;color:var(--text);line-height:1.75;font-style:italic"></p>
     </div>
     <div id="discuss-recap" style="margin-bottom:14px"></div>
     <div id="discuss-not-chosen" style="margin-bottom:14px"></div>
     <div style="background:var(--gold-dim);border:1px solid var(--gold-border);border-radius:12px;padding:14px 16px;margin-bottom:14px">
       <div style="font-family:'Poppins',sans-serif;font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:6px">Hand on heart</div>
-      <p style="font-size:14px;color:var(--body);line-height:1.65">Is this what you would actually do &#8212; or what you know you should do?</p>
+      <p style="font-size:14px;color:var(--body);line-height:1.65">Is this what you would actually do, or what you know you should do?</p>
     </div>
     <div id="discuss-split" style="display:none;background:var(--card2);border:1px solid var(--border2);border-radius:12px;padding:14px 16px;margin-bottom:20px">
       <div style="font-family:'Poppins',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--sub);margin-bottom:6px">You did not all see it the same way</div>
@@ -1074,7 +1075,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="data.js?v=30"></script>
-<script src="script.js?v=65"></script>
+<script src="script.js?v=66"></script>
 
 <!-- ── GSAP — professional animation engine (vanilla JS, no framework) ── -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
