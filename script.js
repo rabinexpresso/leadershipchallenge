@@ -765,6 +765,47 @@ function goToScoreboard() {
 }
 
 // ═══════════════════════════════════════════════════════
+//  CINEMATIC FINAL REVEAL
+// ═══════════════════════════════════════════════════════
+
+function revealFinal() {
+  var overlay = document.getElementById('blackout');
+
+  // Build the final screen content while still on scoreboard
+  buildFinal();
+
+  // Phase 1 — fade to black (350ms)
+  gsap.to(overlay, {
+    opacity: 1, duration: 0.35, ease: 'power2.in',
+    onComplete: function() {
+      // Switch screens silently while fully blacked out
+      gsap.set('#final .pr-card', { opacity: 0, y: 38 });
+      go('final');
+
+      // Phase 2 — hold in darkness (280ms), then lift
+      setTimeout(function() {
+        // Fade overlay out
+        gsap.to(overlay, { opacity: 0, duration: 0.65, ease: 'power2.out',
+          onComplete: function() { gsap.set(overlay, { clearProps: 'opacity' }); }
+        });
+        // Stagger cards up one by one — the slow drumroll
+        gsap.to('#final .pr-card', {
+          opacity: 1, y: 0,
+          duration: 0.55, ease: 'power3.out',
+          stagger: 0.14,
+          delay: 0.08,
+          onComplete: function() {
+            gsap.set('#final .pr-card', { clearProps: 'all' });
+          }
+        });
+        // Bars animate in as the first cards settle
+        setTimeout(animateFinalBars, 480);
+      }, 280);
+    }
+  });
+}
+
+// ═══════════════════════════════════════════════════════
 //  SCOREBOARD
 // ═══════════════════════════════════════════════════════
 
@@ -826,8 +867,7 @@ function scoreboardNext() {
   const isLast = S.step >= _total - 1;
   if (isLast) {
     if (MP.active && MP.isHost) mpSyncStatus('final');
-    buildFinal();
-    go('final');
+    revealFinal();
   } else {
     S.step++;
     S.roundChoices = [];
@@ -981,12 +1021,12 @@ function buildFinal() {
       + '</div>';
   }).join('');
 
-  // Animate bars
-  setTimeout(() => {
-    document.querySelectorAll('.pr-fill[data-pct]').forEach(el => {
-      el.style.width = el.getAttribute('data-pct') + '%';
-    });
-  }, 150);
+}
+
+function animateFinalBars() {
+  document.querySelectorAll('.pr-fill[data-pct]').forEach(el => {
+    el.style.width = el.getAttribute('data-pct') + '%';
+  });
 }
 
 function toggleInsights(cardId) {
@@ -1654,7 +1694,7 @@ function restoreGame() {
     else if (sc === 'reveal')                            { buildRevealScreen(); go('reveal'); }
     else if (sc === 'discuss' || sc === 'consequence')   { buildConsequenceScreen(); go('consequence'); }
     else if (sc === 'scoreboard')                        { scoreboardNext(); }
-    else if (sc === 'final')                             { buildFinal(); go('final'); }
+    else if (sc === 'final')                             { buildFinal(); go('final'); setTimeout(animateFinalBars, 150); }
     else { clearState(); return false; }
     return true;
   } catch(e) {
