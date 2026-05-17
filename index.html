@@ -344,9 +344,13 @@
   .cq-choice-text { font-size:14px; font-style:italic; color:var(--body); background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.07); border-radius:10px; padding:12px 16px; line-height:1.7; margin-bottom:16px; }
   .cq-explanation { font-size:14.5px; color:var(--body); line-height:1.85; margin-bottom:16px; font-weight:300; }
   .cq-chips { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:6px; }
-  .cq-chip { font-family:'Poppins',sans-serif; font-size:12px; font-weight:600; padding:5px 12px; border-radius:100px; }
-  .cq-chip.pos { background:var(--gold-dim); border:1px solid var(--gold-border); color:var(--gold); box-shadow:0 0 12px rgba(0,176,255,.1); }
+  .cq-chip { font-family:'Poppins',sans-serif; font-size:12px; font-weight:600; padding:5px 12px; border-radius:100px; display:inline-flex; align-items:center; gap:4px; }
   .cq-chip.zero { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); color:var(--sub); }
+  /* Per-dimension chip colours */
+  .cq-chip-t { background:rgba(0,176,255,.10);  border:1px solid rgba(0,176,255,.38);  color:#00b0ff; }
+  .cq-chip-p { background:rgba(66,219,102,.10); border:1px solid rgba(66,219,102,.38); color:#42db66; }
+  .cq-chip-e { background:rgba(255,199,9,.10);  border:1px solid rgba(255,199,9,.38);  color:#ffc709; }
+  .cq-chip-a { background:rgba(255,0,101,.10);  border:1px solid rgba(255,0,101,.38);  color:#ff0065; }
   .cq-divider { height:1px; background:rgba(255,255,255,.06); margin:12px 0; }
   /* Situation callout — full border, no side stripe */
   .cq-situation { font-size:14px; color:var(--body); line-height:1.75; background:rgba(0,176,255,.06); border:1px solid rgba(0,176,255,.18); border-radius:12px; padding:14px 18px; margin-bottom:8px; font-style:italic; box-shadow:0 0 20px rgba(0,176,255,.06); }
@@ -886,9 +890,8 @@
       <div style="font-family:'Poppins',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--sub);margin-bottom:6px">You did not all see it the same way</div>
       <p id="discuss-split-text" style="font-size:13.5px;color:var(--body);line-height:1.65"></p>
     </div>
-    <div style="display:flex;gap:10px;flex-shrink:0;margin-top:auto;padding-top:16px">
-      <button class="btn btn-ghost" style="flex:1;padding:14px 20px" onclick="skipDiscuss()">Skip</button>
-      <button class="btn btn-gold" style="flex:2;padding:14px 20px" onclick="skipDiscuss()">See What Happened</button>
+    <div style="flex-shrink:0;margin-top:auto;padding-top:16px">
+      <button class="btn btn-gold" style="width:100%;padding:14px 20px" onclick="skipDiscuss()">See What Happened</button>
     </div>
   </div>
 </div>
@@ -1029,8 +1032,8 @@
     <div class="mp-wait-emoji" id="pw-emoji"><svg viewBox="0 0 56 56" width="56" height="56" fill="none"><circle cx="28" cy="28" r="24" stroke="rgba(0,176,255,0.15)" stroke-width="2.5"/><circle cx="28" cy="28" r="24" stroke="#00b0ff" stroke-width="2.5" stroke-dasharray="44 107" stroke-linecap="round" class="wait-ring"/></svg></div>
     <h2 class="mp-wait-heading" id="pw-heading">Waiting...</h2>
     <p class="mp-wait-sub" id="pw-sub">The host will start the game soon.</p>
-    <div class="mp-wait-code" id="pw-room-code"></div>
-    <button class="btn btn-ghost" style="margin-top:24px;max-width:200px" onclick="leaveGame()">Leave Game</button>
+    <div class="mp-wait-code" id="pw-room-code" style="width:220px;text-align:center"></div>
+    <button class="btn btn-ghost" style="margin-top:10px;width:220px;color:#ff0065;border-color:rgba(255,0,101,.35)" onclick="leaveGame()">Leave Game</button>
   </div>
 </div>
 
@@ -1075,7 +1078,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="data.js?v=30"></script>
-<script src="script.js?v=66"></script>
+<script src="script.js?v=68"></script>
 
 <!-- ── GSAP — professional animation engine (vanilla JS, no framework) ── -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>

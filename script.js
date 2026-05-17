@@ -698,7 +698,7 @@ function buildConsequenceScreen() {
     const playerIdxs = choiceGroups[key];
     const chips = DIMS.map(d => {
       const v = choice.scores[d] || 0;
-      const cls = v > 0 ? 'pos' : 'zero';
+      const cls = v > 0 ? 'cq-chip-' + d.toLowerCase() : 'zero';
       const val = v > 0 ? ('+' + v) : '0';
       return '<span class="cq-chip ' + cls + '">' + ICONS[d] + ' ' + DIM_LABELS[d] + ' ' + val + '</span>';
     }).join('');
@@ -734,7 +734,7 @@ function buildConsequenceScreen() {
           + DIMS.map(function(d) {
               var v = choice.scores[d] || 0;
               var val = v > 0 ? '+' + v : '0';
-              var cls = v > 0 ? 'pos' : 'zero';
+              var cls = v > 0 ? 'cq-chip-' + d.toLowerCase() : 'zero';
               var note = choice.signalNotes[d] || '';
               return '<div class="sn-row">'
                 + '<span class="cq-chip ' + cls + '">' + ICONS[d] + ' ' + DIM_LABELS[d] + ' ' + val + '</span>'
