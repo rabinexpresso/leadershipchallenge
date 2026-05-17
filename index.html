@@ -86,67 +86,7 @@
   ──────────────────────────────────────────────────────────── */
   @media (min-width: 600px) {
     body   { display:flex; justify-content:center; }
-    .screen { width:100%; max-width:640px; min-height:100dvh; position:relative; box-shadow:0 0 0 1px rgba(0,176,255,.10), 0 0 80px rgba(0,0,121,.55), 0 0 240px rgba(0,176,255,.08); }
-  }
-
-  /* ── Aurora edge glow — desktop only ─────────────────────────
-     Two strips centred on each panel edge, filter:blur spreads
-     the glow outward into the side space naturally. No mask —
-     gradient transparency + blur handles the falloff. */
-  @media (min-width:600px) {
-    /* Let aurora bleed outside panel into side space */
-    .screen { overflow-x:visible; }
-
-    .screen::before,
-    .screen::after {
-      content:''; position:absolute;
-      width:16px; pointer-events:none; z-index:8;
-      filter:blur(22px);
-    }
-    /* Left edge — centred on the left panel border */
-    .screen::before {
-      top:-50%; left:-8px; height:200%;
-      background:linear-gradient(to bottom,
-        transparent           0%,
-        rgba(0,176,255,1)     6%,   transparent 16%,
-        rgba(66,219,102,1)   25%,   transparent 35%,
-        rgba(255,0,101,1)    44%,   transparent 54%,
-        rgba(0,176,255,.95)  63%,   transparent 73%,
-        rgba(66,219,102,.90) 82%,   transparent 92%,
-        rgba(255,0,101,.85)  98%,   transparent 100%
-      );
-      animation:auroraL 17s ease-in-out infinite;
-    }
-    /* Right edge — centred on the right panel border */
-    .screen::after {
-      top:-25%; right:-8px; height:200%;
-      background:linear-gradient(to bottom,
-        transparent           0%,
-        rgba(255,0,101,1)     7%,   transparent 17%,
-        rgba(0,176,255,1)    26%,   transparent 36%,
-        rgba(66,219,102,1)   45%,   transparent 55%,
-        rgba(255,0,101,.95)  64%,   transparent 74%,
-        rgba(0,176,255,.90)  83%,   transparent 93%,
-        rgba(66,219,102,.85) 99%,   transparent 100%
-      );
-      animation:auroraR 12s ease-in-out infinite;
-    }
-    @keyframes auroraL {
-      0%   { transform:translateY(0%) }
-      20%  { transform:translateY(-14%) }
-      45%  { transform:translateY(-6%) }
-      68%  { transform:translateY(-22%) }
-      88%  { transform:translateY(-10%) }
-      100% { transform:translateY(0%) }
-    }
-    @keyframes auroraR {
-      0%   { transform:translateY(-16%) }
-      25%  { transform:translateY(-4%) }
-      50%  { transform:translateY(-27%) }
-      74%  { transform:translateY(-9%) }
-      90%  { transform:translateY(-20%) }
-      100% { transform:translateY(-16%) }
-    }
+    .screen { width:100%; max-width:640px; min-height:100dvh; position:relative; box-shadow:0 0 0 1px rgba(0,176,255,.10), 0 0 80px rgba(0,0,121,.55), 0 0 320px rgba(0,176,255,.13); }
   }
   @media (min-width: 960px) {
     .screen { max-width:860px; }
@@ -1171,7 +1111,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="data.js?v=31"></script>
-<script src="script.js?v=71"></script>
+<script src="script.js?v=80"></script>
 
 <!-- ── GSAP — professional animation engine (vanilla JS, no framework) ── -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
